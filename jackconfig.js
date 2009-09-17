@@ -1,9 +1,6 @@
-var PinturaApp = require("pintura").App;
-var Cascade = require("jack/cascade").Cascade;
-var Static = require("jack/static").Static;
+var pintura = require("pintura");
 
-exports.app = Cascade([
-	Static(null,{urls:[""],root:["web"]}),
-	PinturaApp({
-	})
+exports.app = require("jack/cascade").Cascade([
+	require("jack/static").Static(null,{urls:[""],root:["web"]}),
+	pintura.app
 ]);

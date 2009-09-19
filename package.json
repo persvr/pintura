@@ -1,0 +1,6 @@
+{
+    "name": "Pintura",
+    "author": "Kris Zyp",
+    "dependencies": ["narwhal", "jack"],
+    "contributors": []
+}

@@ -8,3 +8,7 @@ exports.app = require("jack/cascade").Cascade([
 	require("jack/static").Static(null,{urls:[""],root:["web"]}),
 	pintura.app
 ]);
+
+var stores = require("stores");
+var JsonFile = require("store/json-file").JsonFile;
+stores.registerStore("Test", JsonFile("C:/dev/pintura/test.json"));

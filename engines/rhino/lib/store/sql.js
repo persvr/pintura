@@ -20,9 +20,10 @@ exports.SQLStore = function(parameters){
 				return adapter.recordNewObject(object);
 			}
 			adapter.recordUpdate(id, object);
+			return object;
 		},
-		query: function(query){
-			return new extendForEach(adapter.query(query));			
+		query: function(query, options){
+			return extendForEach(adapter.query(query, options));			
 		},
 		"delete": function(id){
 			adapter.recordDelete(id);
@@ -32,3 +33,6 @@ exports.SQLStore = function(parameters){
 		}
 	}
 }
+
+exports.nameValueToSQL = function(query, options){
+};

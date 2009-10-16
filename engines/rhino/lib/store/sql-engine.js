@@ -1,5 +1,5 @@
 /**
- * This is an SQL store for Rhino (and needs to be moved to engines/rhino/lib)
+ * This is an SQL store for Rhino
  */
 var extendForEach = require("util/lazy").extendForEach;
 exports.SQLStore = function(parameters){
@@ -14,12 +14,17 @@ exports.SQLStore = function(parameters){
 		},
 		put: function(object, id){
 			try{
+				id = id || object[parameters.idColumn];
+				if(id === undefined){
+					throw "Not Found";
+				}
 				adapter.mapObject(id);
 			}
 			catch(e){
 				return adapter.recordNewObject(object);
 			}
 			adapter.recordUpdate(id, object);
+			
 			return object;
 		},
 		query: function(query, options){
@@ -34,5 +39,3 @@ exports.SQLStore = function(parameters){
 	}
 }
 
-exports.nameValueToSQL = function(query, options){
-};

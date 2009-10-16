@@ -1,6 +1,6 @@
 var extendForEach = require("util/lazy").extendForEach;
 var Lucene = exports.Lucene = function(store, name){
-	searcher = new org.persvr.store.LuceneSearch(name);
+	searcher = new org.persvr.store.LuceneSearch("lucene/" + name);
 	var defaultPut = store.put;
 	store.put = function(object, id){
 		id = defaultPut.call(store, object, id);
@@ -9,7 +9,20 @@ var Lucene = exports.Lucene = function(store, name){
 		return id;
 	};
 	store.fulltext = function(query, options){
-		return extendForEach(searcher.query(query, options.start || 0, options.end || 100000000, null));
+		var idResults = searcher.query(query, options.start || 0, options.end || 100000000, null)
+		return extendForEach({
+			forEach: function(callback){
+				idResults.forEach(function(id){
+					try{
+						callback(store.get(id));
+					}
+					catch(e){
+						print(e.message);	
+					}
+				});
+			},
+			totalCount: idResults.totalCount
+		});
 	}
 	var defaultCommitTransaction = store.commitTransaction;
 	store.commitTransaction = function(){

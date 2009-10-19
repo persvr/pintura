@@ -27,7 +27,7 @@ exports.SQLStore = function(parameters){
 			
 			return object;
 		},
-		query: function(query, options){
+		executeSql: function(query, options){
 			return extendForEach(adapter.query(query, options));			
 		},
 		"delete": function(id){

@@ -3,17 +3,19 @@
 */
 
 try{
-	org.mozilla.javascript.tools.shell.Main.global = global;
+	//org.mozilla.javascript.tools.shell.Main.global = global;
 }
 catch(e){
 	print("error initializing Rhino shell: " + e.message);
 	// already initialized
 }
-
+try{
 org.mozilla.javascript.tools.shell.Main.processSource(
 	org.mozilla.javascript.Context.enter(), 
 	null);
-	
+}catch(e){
+
+}
 print("jline failed");
 // if jline is working properly, we shouldn't get to this point, but in eclipse jline doesn't work
 var input = ""

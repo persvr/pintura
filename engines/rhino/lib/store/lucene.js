@@ -8,8 +8,8 @@ var Lucene = exports.Lucene = function(store, name){
 		searcher.create(id, object);
 		return id;
 	};
-	store.fulltext = function(query, options){
-		var idResults = searcher.query(query, options.start || 0, options.end || 100000000, null)
+	store.fulltext = function(query, field, options){
+		var idResults = searcher.query(query, field, options.start || 0, options.end || 100000000, null)
 		return extendForEach({
 			forEach: function(callback){
 				idResults.forEach(function(id){

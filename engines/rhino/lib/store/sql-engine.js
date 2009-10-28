@@ -39,7 +39,7 @@ exports.SQLStore = function(parameters){
 			}
 			adapter.recordUpdate(id, object);
 			
-			return object;
+			return id;
 		},
 		executeSql: function(query, options){
 			return extendForEach(adapter.query(query, options));			

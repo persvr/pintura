@@ -25,7 +25,7 @@ do{
 		input += c;
 	}while(('' + c) != '\n');
 		
-	if (org.mozilla.javascript.Context.enter().stringIsCompilableUnit(input))
+	if (org.mozilla.javascript.Context.getCurrentContext().stringIsCompilableUnit(input))
 	{
 		// if it is syntactically finished, we evaluate
 		try{

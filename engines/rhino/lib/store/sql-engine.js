@@ -26,12 +26,15 @@ exports.SQLStore = function(parameters){
 		put: function(object, id){
 			try{
 				id = id || object[parameters.idColumn];
-				if(id === undefined){
-					throw "Not Found";
+				if(id !== undefined){
+					adapter.mapObject(id);
 				}
-				adapter.mapObject(id);
 			}
 			catch(e){
+				id = undefined;
+			}
+			if(id === undefined){
+				print("record new")
 				return adapter.recordNewObject(object);
 			}
 			adapter.recordUpdate(id, object);

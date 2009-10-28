@@ -1,4 +1,4 @@
-var extendForEach = require("util/lazy").extendForEach;
+var extendForEach = require("../util/lazy").extendForEach;
 var Lucene = exports.Lucene = function(store, name){
 	searcher = new org.persvr.store.LuceneSearch("lucene/" + name);
 	var defaultPut = store.put;
@@ -23,7 +23,7 @@ var Lucene = exports.Lucene = function(store, name){
 			},
 			totalCount: idResults.totalCount
 		});
-	}
+	};
 	var defaultCommitTransaction = store.commitTransaction;
 	store.commitTransaction = function(){
 		defaultCommitTransaction.call(store);

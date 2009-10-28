@@ -1,6 +1,6 @@
-var stores = require("stores");
-var SchemaFacet = require("facet").SchemaFacet;
-var SQLStore = require("store/sql").SQLStore;
+var stores = require("./stores");
+var SchemaFacet = require("./facet").SchemaFacet;
+var SQLStore = require("./store/sql").SQLStore;
 
 
 var store = SQLStore({
@@ -13,11 +13,11 @@ var store = SQLStore({
 });
 
 // we can full-text index the store
-// store = require("store/lucene").Lucene(store, "Sample");
+// store = require("./store/lucene").Lucene(store, "Sample");
 
-var QueryRegExp = require("json-query").QueryRegExp;
-var queryToSql = require("store/sql").JsonQueryToSQL("Sample", ["id", "name", "foo"], ["id", "name", "foo"])
-var deepCopy = require("util/copy").deepCopy;
+var QueryRegExp = require("./json-query").QueryRegExp;
+var queryToSql = require("./store/sql").JsonQueryToSQL("Sample", ["id", "name", "foo"], ["id", "name", "foo"])
+var deepCopy = require("./util/copy").deepCopy;
 
 var SampleClass = stores.registerStore("Sample", store, deepCopy(store.getSchema(),
 	{
@@ -74,3 +74,14 @@ SchemaFacet({
 		
 	}
 });
+
+
+// if this our jackconfig:
+exports.app = require("jack/cascade").Cascade([ 
+		// cascade from static to pintura REST handling
+	require("jack/static").Static(null,{urls:[""],root:["web"]}),
+	pintura.app
+]);
+
+// I like to have a console when jack is running
+new (require("worker").SharedWorker)("console");

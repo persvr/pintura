@@ -10,3 +10,6 @@ Pintura is a cross-platform server side JavaScript based REST style web framewor
 * Comet-based data monitoring capabilities through HTTP Channels with Bayeux transport plugin/negotiation support
 * Cross-site request handling and robust, solid cross-site request forgery protection
 * Class-based data hierarchy object oriented data persistence
+
+See the main Persevere site for more information:
+http://www.persvr.org/

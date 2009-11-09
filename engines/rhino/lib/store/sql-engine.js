@@ -1,7 +1,7 @@
 /**
  * This is an SQL store for Rhino
  */
-var extendForEach = require("util/lazy").extendForEach;
+var extendSome = require("util/lazy").extendSome;
 var drivers = {
 	mysql: "com.mysql.jdbc.Driver",
 	sqlite: "org.sqlite.JDBC",
@@ -31,14 +31,16 @@ exports.SQLStore = function(parameters){
 				}
 			}
 			if(id === undefined){
-				return adapter.recordNewObject(object);
+				id = adapter.recordNewObject(object);
+				object[parameters.idColumn] = id;
+				return id;
 			}
 			adapter.recordUpdate(id, object);
 			
 			return id;
 		},
 		executeSql: function(query, options){
-			return extendForEach(adapter.query(query, options));			
+			return extendSome(adapter.query(query, options));			
 		},
 		"delete": function(id){
 			adapter.recordDelete(id);

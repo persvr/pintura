@@ -2,17 +2,15 @@
 * Send emails
 * Use like this:
 * send({
-* 			host: "mail.mydomain.com",
-* 		},
-* 		{
 * 			from: "john@mydomain.com",
 * 			recipient: "bill@yourdomain.com",
 * 			subject: "hi",
 * 			message: "message text"
 * 		});
+* User should define a settings module that provides a MAIL export with the host
 */
-
-exports.send = function(config, email){
+var config = require("settings").MAIL;
+exports.send = function(email){
 	var props =  new java.util.Properties();
 	props.put("mail.smtp.host", config.host);
 	props.put("mail.smtp.port", config.port || 25);

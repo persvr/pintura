@@ -1,4 +1,4 @@
-var extendSome = require("../util/lazy").extendSome;
+var extendSome = require("lazy").extendSome;
 var FullText = exports.FullText = function(store, name){
 	searcher = new org.persvr.store.LuceneSearch("lucene/" + name);
 	var defaultPut = store.put;
@@ -41,16 +41,19 @@ var FullText = exports.FullText = function(store, name){
 
 var QueryRegExp = require("../json-query").QueryRegExp;
 
-var FullTextRegExp = exports.FullTextRegExp = QueryRegExp(/(\?|&)fulltext\($value\)(&)?/);
+var FullTextRegExp = exports.FullTextRegExp = QueryRegExp(/\?(.*&)?fulltext\($value\)(&.*)?/);
 exports.JsonQueryToFullTextSearch = function(tableName, indexedColumns){
 	return function(query, options){
+		var matches;
 		if((matches = query.match(FullTextRegExp))){
 			print(matches);
-			if(matches[1] == "&" || matches[3] == "&"){
-				//TODO: convert the rest of the query to a lucene search
-				return;
+			var fulltext = eval(matches[2]);
+			if(matches[1] || matches[3]){
+				(matches[1] || matches[3]).replace(QueryRegExp(/&?$prop=$value&?/g), function(t, prop, value){
+					fulltext += " AND " + prop + ":" + value;
+				});
 			}
-			return eval(matches[2]);
+			return fulltext;
 		}
 	};
 };

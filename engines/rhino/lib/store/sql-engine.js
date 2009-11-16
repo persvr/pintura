@@ -1,7 +1,7 @@
 /**
  * This is an SQL store for Rhino
  */
-var extendSome = require("util/lazy").extendSome;
+var extendSome = require("lazy").extendSome;
 var drivers = {
 	mysql: "com.mysql.jdbc.Driver",
 	sqlite: "org.sqlite.JDBC",
@@ -40,7 +40,8 @@ exports.SQLStore = function(parameters){
 			return id;
 		},
 		executeSql: function(query, options){
-			return extendSome(adapter.query(query, options));			
+			// should roughly follow executeSql in http://www.w3.org/TR/webdatabase/
+			return {rows:extendSome(adapter.executeSql(query, options))};			
 		},
 		"delete": function(id){
 			adapter.recordDelete(id);

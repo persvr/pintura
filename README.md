@@ -1,4 +1,5 @@
-Pintura is a cross-platform server side JavaScript based REST style web framework providing JSON/object storage with standards based HTTP client/server interaction. Pintura consists of reusable [CommonJS](http://wiki.commonjs.org/) modules and [JSGI](http://jackjs.org/jsgi-spec.html) middleware such that it can be used on any JSGI compliant JavaScript platform. Pintura forms the core of the [Persevere](http://www.persvr.org/) 2.0 framework which is designed for client-centric applications that rely heavily on Ajax-driven data communication from the browser. Pintura features:
+[Pintura](http://www.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=pintura&sll=40.554798,-111.881839&sspn=0.009211,0.016351&ie=UTF8&hq=&hnear=Pintura,+Washington,+Utah&ll=37.31666,-113.171539&spn=0.308538,0.523224&t=p&z=11)
+is a cross-platform server side JavaScript based REST style web framework providing JSON/object storage with standards based HTTP client/server interaction. Pintura consists of reusable [CommonJS](http://wiki.commonjs.org/) modules and [JSGI](http://jackjs.org/jsgi-spec.html) middleware such that it can be used on any JSGI compliant JavaScript platform. Pintura forms the core of the [Persevere](http://www.persvr.org/) 2.0 framework which is designed for client-centric applications that rely heavily on Ajax-driven data communication from the browser. Pintura features:
 
 * Create, read, update, and delete access to persistent data through a standard JSON HTTP/REST web interface
 * Extensive dynamic JavaScript object persistence extensive with support for storage of dynamic property sets, arrays, dates, and more
@@ -13,3 +14,7 @@ Pintura is a cross-platform server side JavaScript based REST style web framewor
 
 See the main Persevere site for more information:
 http://www.persvr.org/
+
+Pintura is part of the Persevere project, and therefore is licensed under the
+AFL or BSD license. The Persevere project is administered under the Dojo foundation,
+and all contributions require a Dojo CLA.

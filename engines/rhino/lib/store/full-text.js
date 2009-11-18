@@ -39,21 +39,21 @@ var FullText = exports.FullText = function(store, name){
 	return store;
 };
 
-var QueryRegExp = require("../json-query").QueryRegExp;
+var parseQuery = require("../url-object-query").parseQuery;
 
-var FullTextRegExp = exports.FullTextRegExp = QueryRegExp(/\?(.*&)?fulltext\($value\)(&.*)?/);
 exports.JsonQueryToFullTextSearch = function(tableName, indexedColumns){
 	return function(query, options){
-		var matches;
-		if((matches = query.match(FullTextRegExp))){
-			print(matches);
-			var fulltext = eval(matches[2]);
-			if(matches[1] || matches[3]){
-				(matches[1] || matches[3]).replace(QueryRegExp(/&?$prop=$value&?/g), function(t, prop, value){
-					fulltext += " AND " + prop + ":" + value;
-				});
+		query = parseQuery(query);
+		var fulltext, extra = "";
+		query.children.forEach(function(child){
+			if(child.type == "call" && child.method == "fulltext"){
+				fulltext = child.children[0];
+				print(fulltext);
 			}
-			return fulltext;
-		}
+			if(child.type == "comparison"){
+				extra += " AND " + child.name + ":" + child.value;
+			}
+		});
+		return fulltext && (fulltext + extra);
 	};
 };

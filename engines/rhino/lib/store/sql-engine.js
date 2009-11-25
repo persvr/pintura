@@ -20,31 +20,14 @@ exports.SQLStore = function(parameters){
 		startTransaction: function(){
 			adapter.startTransaction();
 		},
-		get: function(id){
-			return adapter.mapObject(id);
-		},
-		put: function(object, id){
-			id = id || object[parameters.idColumn];
-			if(id !== undefined){
-				if(!adapter.mapObject(id)){
-					id = undefined;
-				}
-			}
-			if(id === undefined){
-				id = adapter.recordNewObject(object);
-				object[parameters.idColumn] = id;
-				return id;
-			}
-			adapter.recordUpdate(id, object);
-			
-			return id;
-		},
-		executeSql: function(query, options){
+		executeSql: function(query, parameters){
 			// should roughly follow executeSql in http://www.w3.org/TR/webdatabase/
-			return {rows:extendSome(adapter.executeSql(query, options))};			
-		},
-		"delete": function(id){
-			adapter.recordDelete(id);
+			var rawResults = adapter.executeSql(query, parameters);
+			var results = {rows:extendSome(rawResults)};
+			if(rawResults.insertId){
+				results.insertId = rawResults.insertId; 
+			}
+			return results;
 		},
 		commitTransaction: function(){
 			adapter.commitTransaction();

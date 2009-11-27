@@ -1,6 +1,9 @@
 /**
- * This is an SQL store for Rhino
+ * This is an SQL database engine for Rhino
+ * based on http://www.w3.org/TR/webdatabase/
  */
+
+
 var extendSome = require("lazy").extendSome;
 var drivers = {
 	mysql: "com.mysql.jdbc.Driver",
@@ -10,31 +13,38 @@ var drivers = {
 	oracle: "oracle.jdbc.driver.OracleDriver",
 	postgres: "org.postgresql.Driver"
 }
-exports.SQLStore = function(parameters){
+exports.SQLDatabase = function(parameters){
 	var adapter = new org.persvr.store.SQLStore();
 	if(drivers[parameters.type]){
 		parameters.driver = drivers[parameters.type]; 
 	}
 	adapter.initParameters(parameters);
 	return {
-		startTransaction: function(){
+		transaction: function(callback){
 			adapter.startTransaction();
-		},
-		executeSql: function(query, parameters){
-			// should roughly follow executeSql in http://www.w3.org/TR/webdatabase/
-			var rawResults = adapter.executeSql(query, parameters);
-			var results = {rows:extendSome(rawResults)};
-			if(rawResults.insertId){
-				results.insertId = rawResults.insertId; 
+			var suceeded;
+			try{
+				var result = callback({
+					executeSql: function(query, parameters){
+						// should roughly follow executeSql in http://www.w3.org/TR/webdatabase/
+						var rawResults = adapter.executeSql(query, parameters);
+						var results = {rows:extendSome(rawResults)};
+						if(rawResults.insertId){
+							results.insertId = rawResults.insertId; 
+						}
+						return results;
+					}
+				});
+				adapter.commitTransaction();
+				suceeded = true;
+				return result;
 			}
-			return results;
-		},
-		commitTransaction: function(){
-			adapter.commitTransaction();
-		},
-		abortTransaction: function(){
-			adapter.abortTransaction();
+			finally{
+				if(!suceeded){
+					adapter.abortTransaction();
+				}
+			}
 		}
-	}
+	};	
 }
 

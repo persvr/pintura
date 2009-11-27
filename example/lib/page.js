@@ -4,21 +4,20 @@
 
 var persisted = require("persisted"),
 	Permissive = require("facet").Permissive,
-	Restrictive = require("facet").Restrictive,
-	SQLStore = require("store/sql").SQLStore;
+	Restrictive = require("facet").Restrictive;
+	
 
 // A pintura model consists of three primary layers: the store, the class, and the facet
 // First we create the store for interacting directly with the storage endpoint 
-var pageStore = SQLStore({
-	table: "Page",
-	starterStatements: [
-		"CREATE TABLE Page (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100), status VARCHAR(10), content VARCHAR(100000), PRIMARY KEY(id))",
-		],
-	idColumn: "id"
-});
+var pageStore;
+/* We can switch to the SQL based back-end with: 
+pageStore = require("page-sql").pageStore;
+*/
 
-// add full-text indexing 
+
+/* To add full-text indexing 
 pageStore = require("store/full-text").FullText(pageStore, "Page");
+*/
 
 // this function is used to convert the JSONQuery to SQL (where id and title are the 
 // acceptable columns to query on 

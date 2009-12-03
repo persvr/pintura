@@ -19,31 +19,23 @@ pageStore = require("page-sql").pageStore;
 pageStore = require("store/full-text").FullText(pageStore, "Page");
 */
 
-// this function is used to convert the JSONQuery to SQL (where id and title are the 
-// acceptable columns to query on 
-var queryToSql = require("store/sql").JsonQueryToSQLWhere("Page", ["id","title", "status"])
-// this function is used to convert JSONQuery to Lucene full text query
-var queryToFullText = require("store/full-text").JsonQueryToFullTextSearch("Page", ["id","title", "status"]);
 var auth = require("jsgi/auth");
 var AccessError = require("./errors").AccessError;
 
 // now we create a class, all central model logic is defined here 
 var PageClass = exports.PageClass = persisted.Class("Page", pageStore, 
 	{
+/*	We can create handlers for any of the actions, they will go directly to the store otherwise
 		query: function(query, options){
-			var fulltext = queryToFullText(query, options);
-			if(fulltext){
-				return pageStore.fulltext(fulltext, ["title", "content"], options);
-			}
-
-			var sqlCondition = queryToSql(query, options);
+			var sqlCondition = this.getWhereClause(query, options);
 
 			if(sqlCondition){
-				return pageStore.executeSql(
-					"SELECT id, title FROM Page WHERE " + sqlCondition, options).rows;
+				return pageStore.executeQuery(
+					"SELECT id, title FROM Page WHERE " + sqlCondition, options);
 			}
 		},
-/*	We can create handlers for any of the actions, they will go directly to the store otherwise
+*/
+/*
 		"delete": function(id){
 			// any logic that we want on deletes
 			// now call the store to actually do the delete
@@ -59,21 +51,18 @@ var PageClass = exports.PageClass = persisted.Class("Page", pageStore,
 			initialize: function(){
 				this.status = "New";
 			},
+			// these are used by atom
+			getTitle: function(item){
+				return item.name;
+			},
+			getSummary: function(item){
+				return item.description;
+			},
+			getUpdated: function(item){
+				return item.uploaded;
+			}
 			
 		},
-		// these are used by atom
-		getTitle: function(item){
-			return item.name;
-		},
-		getSummary: function(item){
-			return item.description;
-		},
-		getUpdated: function(item){
-			return item.uploaded;
-		},
-		getId: function(item){
-			return item.id;
-		}
 	});
 
 // Now we create different facets for the different users that may access this data

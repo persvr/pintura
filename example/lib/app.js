@@ -1,4 +1,6 @@
 /**
  * This is an example Wiki web application written on Pintura
  */
-require("page");
+
+require("model/page");
+require("media/wiki-html");

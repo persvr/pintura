@@ -4,12 +4,13 @@
 
 var persisted = require("persisted"),
 	Permissive = require("facet").Permissive,
-	Restrictive = require("facet").Restrictive;
-	
+	Restrictive = require("facet").Restrictive,
+	DefaultStore = require("stores").DefaultStore,
+	Notifying = require("store/notifying").Notifying;
 
 // A pintura model consists of three primary layers: the store, the class, and the facet
 // First we create the store for interacting directly with the storage endpoint 
-var pageStore;
+var pageStore = require("stores").DefaultStore("Page");
 /* We can switch to the SQL based back-end with: 
 pageStore = require("page-sql").pageStore;
 */
@@ -19,8 +20,10 @@ pageStore = require("page-sql").pageStore;
 pageStore = require("store/full-text").FullText(pageStore, "Page");
 */
 
+// to add events
+pageStore = Notifying(pageStore);
+
 var auth = require("jsgi/auth");
-var AccessError = require("./errors").AccessError;
 
 // now we create a class, all central model logic is defined here 
 var PageClass = exports.PageClass = persisted.Class("Page", pageStore, 

@@ -1,0 +1,12 @@
+{
+	"database": {
+		"connection":"jdbc:mysql://localhost/prototype?user=root&password=&useUnicode=true&characterEncoding=utf-8&autoReconnect=true",
+		"type": "mysql"
+	},
+	"mail": {
+		"host":"mail.site.com",
+		"defaultFrom": "app@site.com"
+	},
+	"bypassSecurity": true,
+	"dataFolder": "data"
+}

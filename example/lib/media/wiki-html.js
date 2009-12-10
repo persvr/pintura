@@ -8,11 +8,25 @@ var Media = require("../media").Media,
 Media({
 	mediaType:"text/html",
 	getQuality: function(object){
-		// this is a pretty poor representation
 		return 1;
 	},
 	serialize: function(object, request, response){
-		//TODO: Eventually at least make this into a form that can be submitted to update the object 
-		return;
+		var pageName = escapeHTML(request.pathInfo.substring(1));
+		var action = "edit";
+		if(response.status === 404){
+			action = "create";
+		}
+		return {
+			forEach:function(write){
+				write('<html><title>' + pageName + '</title>');
+				write('<body><h1>' + pageName + '</h1>');
+				write('<p>Content: ');
+				if(object){
+					write('' + object.content);
+				}
+				write('</p>');
+				write('<a href="edit.html?page=' + pageName + '">' + action + ' this page</a>');	
+			}
+		};
 	}
 });

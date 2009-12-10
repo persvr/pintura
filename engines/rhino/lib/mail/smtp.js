@@ -9,7 +9,7 @@
 * 		});
 * User should define a settings module that provides a MAIL export with the host
 */
-var config = require("settings").MAIL;
+var config = require("settings").mail;
 exports.send = function(email){
 	var props =  new java.util.Properties();
 	props.put("mail.smtp.host", config.host);

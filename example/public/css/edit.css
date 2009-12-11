@@ -1,0 +1,10 @@
+#login-form {
+	display: none;
+	position: absolute;
+	top: 200px;
+	left: 200px;
+}
+
+#user-name {
+	float: right;
+}

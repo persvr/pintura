@@ -1,9 +1,23 @@
 <html>
+	<head>
+		<title>Editing content</title>
+		<style type="text/css">
+			@import "css/edit.css";
+		</style>
+	</head>
 	<body>
-		<h2 id="mainHeader">Editing page</h2> 
+		<h2 id="main-header">Editing page</h2>
+		<div id="user-name"></div> 
 		<textarea id="content-area">
 		</textarea>
 		<button id="save-button">Save</button>
+		
+		<div id="login-form">
+			<label>Name:</label><input id="user" type="text" /><br />
+			<label>Password:</label><input id="password" type="password" /><br />
+			<button id="sign-in">Sign in</button>
+			<button id="register">Register</button>
+		</div>
 		<script src="js/bootstrap.js"></script>
 		<script src="lib/promise.js"></script>
 		<script src="lib/jsgi-client.js"></script>

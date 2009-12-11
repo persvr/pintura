@@ -3,8 +3,15 @@
 	position: absolute;
 	top: 200px;
 	left: 200px;
+	border: solid 2px;
 }
 
 #user-name {
 	float: right;
+}
+
+#content-area {
+	display: block;
+	width: 640px;
+	height: 480px;
 }

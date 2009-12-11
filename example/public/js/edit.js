@@ -1,6 +1,7 @@
 var pageName = location.search.match(/page=([^&]+)/);
 pageName = pageName && pageName[1];
 document.title = "Editing " + pageName;
+document.getElementById("main-header").innerHTML = escapeHTML("Editing " + pageName);
 request({
 	url: "Page/" + pageName,
 	headers: {
@@ -23,21 +24,25 @@ request({
 	document.getElementById("save-button").onclick = function(){
 		page.content = contentArea.value;
 		request({
-			url: "Page/" + pageName,
+			url: "/Page/" + pageName,
 			method: "PUT",
 			body: JSON.stringify(page),
 			headers: {
 				"accept": "application/javascript, application/json"
 			}
-		});
+		}).then(function(){
+			// redirect to the page once it is saved
+			location = "/Page/" + pageName;
+		}, errorHandler);
 	};
 
-});
+}, errorHandler);
 
 function login(){
 	document.getElementById("login-form").style.display="block";
 	document.getElementById("sign-in").onclick = function(){
 		userRpc("authenticate").then(function(){
+			document.getElementById("login-form").style.display="none";
 			alert("Logged in");
 		}, errorHandler);
 	};
@@ -46,9 +51,6 @@ function login(){
 			alert("Registered");
 		}, errorHandler);
 	};
-	function errorHandler(error){
-		alert(error);
-	}
 }
 
 function userRpc(method, params){
@@ -74,3 +76,10 @@ function userRpc(method, params){
 		return response.result;
 	});
 	}
+
+function errorHandler(error){
+	alert(error);
+}
+
+
+	

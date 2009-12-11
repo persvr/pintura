@@ -2,6 +2,7 @@
  * Defines the capabilities of different users
  */
 var pageFacets = require("facet/page"),
+	pageChangeFacets = require("facet/page-change"),
 	admins = require("settings").admins,
 	Register = require("security").Register,
 	security = require("pintura").config.security;
@@ -9,9 +10,9 @@ var pageFacets = require("facet/page"),
 security.getAllowedFacets = function(user, request){
 	if(user){
 		if(admins.indexOf(user.name)>-1){
-			return [pageFacets.AdminFacet];
+			return [pageFacets.AdminFacet, pageChangeFacets.AdminFacet];
 		}
-		return [pageFacets.UserFacet];
+		return [pageFacets.UserFacet, pageChangeFacets.PublicFacet];
 	}
-	return [pageFacets.PublicFacet, Register];
+	return [pageFacets.PublicFacet, pageChangeFacets.PublicFacet, Register];
 };

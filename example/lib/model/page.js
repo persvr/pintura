@@ -3,8 +3,6 @@
  */
 
 var persisted = require("persisted"),
-	Permissive = require("facet").Permissive,
-	Restrictive = require("facet").Restrictive,
 	DefaultStore = require("stores").DefaultStore,
 	Notifying = require("store/notifying").Notifying;
 
@@ -21,12 +19,12 @@ pageStore = require("store/full-text").FullText(pageStore, "Page");
 */
 
 // to add events
-pageStore = Notifying(pageStore);
+pageStore = Notifying(pageStore, "Page");
 
 var auth = require("jsgi/auth");
 
 // now we create a class, all central model logic is defined here 
-var PageClass = exports.PageClass = persisted.Class("Page", pageStore, 
+exports.Page = persisted.Class("Page", pageStore, 
 	{
 /*	We can create handlers for any of the actions, they will go directly to the store otherwise
 		query: function(query, options){
@@ -67,24 +65,3 @@ var PageClass = exports.PageClass = persisted.Class("Page", pageStore,
 			
 		},
 	});
-
-// Now we create different facets for the different users that may access this data
-// This facet uses the Restrictive constructor, so any modifying action must be explicilty
-// be enabled (by defining a handler) 
-exports.PublicFacet = Restrictive(PageClass, {
-	query: function(query, options){
-		query = "?status='published'" + (query.match(/^\?\w/) ? "&" : "") + query.substring(1);
-		return PageClass.query(query, options);
-	},
-	prototype: {
-	},
-	quality:0.5
-	
-});
-
-// This facet has full capability by default
-exports.AdminFacet = Permissive(PageClass, {
-	properties: {
-	},
-	quality: 1
-});

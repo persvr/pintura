@@ -8,5 +8,6 @@
 		"defaultFrom": "app@site.com"
 	},
 	"bypassSecurity": true,
+	"admins":["kriszyp"],
 	"dataFolder": "data"
 }

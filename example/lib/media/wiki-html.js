@@ -25,7 +25,7 @@ Media({
 					write('' + object.content);
 				}
 				write('</p>');
-				write('<a href="edit.html?page=' + pageName + '">' + action + ' this page</a>');	
+				write('<a href="/edit.html?page=' + pageName + '">' + action + ' this page</a>');	
 			}
 		};
 	}

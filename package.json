@@ -1,7 +1,7 @@
 {
 	"name": "pintura",
 	"author": "Kris Zyp",
-	"dependencies": ["narwhal", "jack", "json-tools", "commonjs-utils", "narcissus", "browserjs"],
+	"dependencies": ["narwhal", "jack", "commonjs-utils", "narcissus"],
 	"contributors": [],
 	"keywords": [
 		"rest",
@@ -12,5 +12,6 @@
 	],
 	"githubName": "pintura",
 	"type": "zip",
-	"location": "http://github.com/kriszyp/pintura/zipball/master"
+	"location": "http://github.com/kriszyp/pintura/zipball/master",
+	"license":"AFL/BSD"
 }

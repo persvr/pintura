@@ -28,7 +28,8 @@ request({
 			method: "PUT",
 			body: JSON.stringify(page),
 			headers: {
-				"accept": "application/javascript, application/json"
+				"accept": "application/javascript, application/json",
+				"content-type": "application/json"
 			}
 		}).then(function(){
 			// redirect to the page once it is saved
@@ -66,7 +67,8 @@ function userRpc(method, params){
 			]
 		}),
 		headers: {
-			"accept": "application/javascript, application/json"
+			"accept": "application/javascript, application/json",
+			"content-type": "application/json"
 		}
 	}).then(function(response){
 		response = JSON.parse(response);

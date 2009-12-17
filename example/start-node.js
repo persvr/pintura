@@ -11,6 +11,7 @@ require.paths.push.apply(require.paths,[
 					"packages/jack/lib",
 					"packages/narcissus/lib",
 					"packages/hei-jsgi/lib",
+					"engines/default/lib",
 					"lib"
 					].map(function(path){
 						return packagesRoot + path;
@@ -18,6 +19,9 @@ require.paths.push.apply(require.paths,[
 
 var sys = require("sys");
 print = sys.puts;
+global = this;
+require("global");
+
 
 var pintura = require("pintura");
 require("app");
@@ -37,4 +41,4 @@ require("hei-jsgi").run(/*
 ])*/);
 
 // having a REPL is really helpful
-//new (require("worker").SharedWorker)("narwhal/repl");
+require("repl").start();

@@ -71,7 +71,7 @@ function userRpc(method, params){
 			"content-type": "application/json"
 		}
 	}).then(function(response){
-		response = JSON.parse(response.body);
+		response = eval('(' + response.body + ')');
 		if(response.error){
 			throw response.error;
 		}

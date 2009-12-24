@@ -49,7 +49,9 @@ exports.Page = persisted.Class("Page", pageStore, {
 	},
 */
 	put: function(object, id){
-		object.lastModifiedBy = auth.currentUser.username;
+		if(auth.currentUser){
+			object.lastModifiedBy = auth.currentUser.username;
+		}
 		PageChange.create({
 			content: object.content,
 			pageId: object.id
@@ -59,7 +61,9 @@ exports.Page = persisted.Class("Page", pageStore, {
 	prototype: {
 		initialize: function(){
 			this.status = "New";
-			this.createdBy = auth.currentUser.username;
+			if(auth.currentUser){
+				this.createdBy = auth.currentUser.username;
+			}
 		},
 		// these are used by atom
 		getTitle: function(item){

@@ -6,6 +6,7 @@ is a cross-platform server side JavaScript based REST architecture web framework
 * Rich URL-based resource querying language for powerful web-based querying
 * Object capability model security, with facet-based programming approach to protecting and controlling access to resources
 * Data integrity and validation through [JSON Schema](http://tools.ietf.org/html/draft-zyp-json-schema-01)
+* Asynchronous, promise-based cross-platform design built for modern event-loop based JavaScript servers like Node.js and Jack
 * Extensive content negotiation capabilities with out-of-the-box support for JSON, JavaScript, and Atom representations of JavaScript persistent object resources
 * Remote execution of JavaScript methods on the server through JSON-RPC for a consistent client/server language platform
 * Comet-based data monitoring capabilities

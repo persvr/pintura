@@ -1,0 +1,1 @@
+This is where images files go

@@ -3,7 +3,8 @@
 */
 
 var Media = require("../media").Media,
-	escapeHTML = require("html").escapeHTML;
+	escapeHTML = require("html").escapeHTML,
+	wikiToHtml = require("wiky").toHtml; 
 
 Media({
 	mediaType:"text/html",
@@ -20,11 +21,14 @@ Media({
 			forEach:function(write){
 				write('<html><title>' + pageName + '</title>');
 				write('<body><h1>' + pageName + '</h1>');
-				write('<p>Content: ');
-				if(object){
-					write('' + object.content);
+				if(typeof object === "object"){
+					write('<p>Content: ');
+					write('' + wikiToHtml(object.content));
+					write('</p>');
 				}
-				write('</p>');
+				else{
+					write("<p>This page does not exist yet</p>");
+				}
 				write('<a href="/edit.html?page=' + pageName + '">' + action + ' this page</a>');	
 			}
 		};

@@ -1,7 +1,7 @@
 {
 	"name": "pintura",
 	"author": "Kris Zyp",
-	"dependencies": ["narwhal", "jack", "commonjs-utils", "narcissus"],
+	"dependencies": ["narwhal", "jack", "commonjs-utils", "narcissus", "wiky"],
 	"contributors": [],
 	"keywords": [
 		"rest",

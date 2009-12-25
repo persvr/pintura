@@ -11,11 +11,10 @@ exports.app = require("jack/cascade").Cascade([
 	require("jack/static").Static(null, {urls:[""],root:"public"}),
 	// this will provide access to the server side JS libraries from the client
 	require("jack/static").Static(null, {urls:["/lib"],root:""}),
-	// make the root url map to /Page/Root  
-	require("jsgi/rewriter").Rewriter(/^\/$/, "/Page/Root",
-	 	// main Pintura handler 
-		pintura.app
-	)
+	// make the root url redirect to /Page/Root  
+	require("jsgi/redirect-root").redirectRoot,
+ 	// main Pintura handler 
+	pintura.app
 ]);
 
 // having a REPL is really helpful

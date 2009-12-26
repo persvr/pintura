@@ -5,7 +5,8 @@
 var Media = require("../media").Media,
 	escapeHTML = require("html").escapeHTML,
 	wikiToHtml = require("wiky").toHtml; 
-
+		
+	
 Media({
 	mediaType:"text/html",
 	getQuality: function(object){
@@ -34,3 +35,8 @@ Media({
 		};
 	}
 });
+
+var rules = require("wiky").rules,
+	store = require("wiky").store;
+// add a rule for [[target page]] style links
+rules.wikiinlines.push({ rex:/\[\[([^\]]*)\]\]/g, tmplt:function($0,$1,$2){return store("<a href=\""+$1+"\">"+$1+"</a>");}});

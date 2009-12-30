@@ -1,1 +1,0 @@
-exports.root = JSON.parse(posix.cat("local.json").wait());

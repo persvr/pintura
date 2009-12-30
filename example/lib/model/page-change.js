@@ -2,7 +2,7 @@
  * This class is used for tracking all the changes of a page
  */
 
-var persisted = require("persisted"),
+var model = require("model"),
 	DefaultStore = require("stores").DefaultStore,
 	auth = require("jsgi/auth");
 
@@ -13,7 +13,7 @@ pageStore = require("page-sql").pageStore;
 */
 
 // now we create a class, all central model logic is defined here 
-exports.PageChange = persisted.Class("PageChange", pageChangeStore, {
+exports.PageChange = model.Model("PageChange", pageChangeStore, {
 	links:[
 		{
 			rel: "current",

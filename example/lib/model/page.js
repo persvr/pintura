@@ -2,7 +2,7 @@
  * This is a page model for the Wiki example application (in progress)
  */
 
-var persisted = require("persisted"),
+var model = require("model"),
 	DefaultStore = require("stores").DefaultStore,
 	auth = require("jsgi/auth"),
 	Notifying = require("store/notifying").Notifying,
@@ -25,7 +25,7 @@ pageStore = require("store/full-text").FullText(pageStore, "Page");
 pageStore = Notifying(pageStore, "Page");
 
 // now we create a class, all central model logic is defined here 
-exports.Page = persisted.Class("Page", pageStore, {
+exports.Page = model.Model("Page", pageStore, {
 /*	We can create handlers for any of the actions, they will go directly to the store otherwise
 	query: function(query, options){
 		var sqlCondition = this.getWhereClause(query, options);

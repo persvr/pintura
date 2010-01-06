@@ -9,7 +9,8 @@ var Cascade = exports.Cascade = function(apps, status) {
 
     return function(env) {
         var i = 0;
-        var deferred = defer();   
+        var deferred = defer(),
+        	lastResponse;
         function next(){
         	if(i < apps.length){
         		when(apps[i](env), function(response){
@@ -17,15 +18,12 @@ var Cascade = exports.Cascade = function(apps, status) {
 		            if (response.status !== status) {
 		                deferred.resolve(response);
 		            }else{
+		            	lastResponse = response;
 		            	next();
 		            }
         		}, deferred.reject);
         	}else{
-        		deferred.resolve({
-        			status: 404,
-        			headers: {},
-        			body: [env.pathInfo + " not found"]
-        		});
+        		deferred.resolve(lastResponse);
         	}
         }
         next();

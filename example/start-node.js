@@ -33,7 +33,7 @@ require("global");
 var pintura = require("pintura");
 require("app");
 
-require("jsgi-node").run(
+require("jsgi-node").start(
 	require("jsgi/cascade").Cascade([ 
 		// cascade from static to pintura REST handling
 		// the main place for static files accessible from the web
@@ -52,5 +52,5 @@ require("repl").start();
 
 process.addListener("uncaughtException", function(error){
 	// obviously we don't want uncaught exceptions to crash the server
-	print(error);
+	print(error.stack);
 });

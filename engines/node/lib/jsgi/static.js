@@ -1,5 +1,5 @@
 var posix = require("posix"),
-	defer = require("events").defer,
+	defer = require("promise").defer,
 	mime = require("jack/mime");
 exports.Static = function(options){		
 	var options = options || {},

@@ -2,8 +2,8 @@
  * Cascade tries an request on several apps, and returns the first response 
  * that is not 404.
  */
-var defer = require("events").defer,
-	when = require("events").when;
+var defer = require("promise").defer,
+	when = require("promise").when;
 var Cascade = exports.Cascade = function(apps, status) {
     status = status || 404;
 

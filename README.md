@@ -13,8 +13,23 @@ is a cross-platform server side JavaScript based REST architecture web framework
 * Cross-site request handling and robust, solid cross-site request forgery protection
 * Class-based data hierarchy with object oriented data persistence
 
-See the main Persevere site for more information:
-http://www.persvr.org/
+See the main Persevere project for more information:
+
+### Homepage:
+
+* [http://persvr.org/](http://persvr.org/)
+
+### Source & Download:
+
+* [http://github.com/kriszyp/pintura/](http://github.com/kriszyp/pintura)
+
+### Mailing list:
+
+* [http://groups.google.com/group/persevere-framework](http://groups.google.com/group/persevere-framework)
+
+### IRC:
+
+* [\#persevere on irc.freenode.net](http://webchat.freenode.net/?channels=persevere)
 
 Pintura is part of the Persevere project, and therefore is licensed under the
 AFL or BSD license. The Persevere project is administered under the Dojo foundation,

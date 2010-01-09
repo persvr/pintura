@@ -39,47 +39,37 @@ exports.Static = function(options){
 						posix.open(file, process.O_RDONLY, 0666)
 							.addErrback(checkNextRoot)
 							.addCallback(function (fd) {
-								var extension = path.match(/\.([\.]+)$/);
-								extension = extension && extension[1];
+								var extension = path.match(/\.[^\.]+$/);
+								extension = extension && extension[0];
 								var bodyDeferred = defer();
 								var write;
 							    responseDeferred.resolve({
 							    	status: 200,
 							    	headers: {
 							    		"content-length": stat.size,
-										"content-type": extension && mime.mimeType(extension, "text/plain")
+										"content-type": extension && mime.mimeType(extension)
 							    	},
 							    	body: {
 							    		forEach: function(callback){
 							    			write = callback;
+											readAndSend(fd);
 							    			return bodyDeferred.promise;
 							    		}
 							    	}
 							    });
-							    var bufferedData = "";
-								readAndSend(fd);
 								function readAndSend (fd) {
-									posix.read(fd, 1024, null, "binary")
+									posix.read(fd, 4096, null, "binary")
 										.addCallback(function (data, bytesRead) {
 											if (bytesRead === 0){
+												posix.close(fd);
 												bodyDeferred.resolve();
 											}
 											else {
-												if(write){
-													if(bufferedData){
-														write(bufferedData, "binary");
-														bufferedData = null;
-													}
-													write(data, "binary");
-												}
-												else{
-													// forEach hasn't been called yet, buffer data in the meantime
-													bufferedData += data;
-												}
+												write(data, "binary");
 												readAndSend(fd);
 											}
 										});
-								}
+								}							
 							});
 					}
 					else{

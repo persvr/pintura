@@ -4,6 +4,10 @@
 	top: 200px;
 	left: 200px;
 	border: solid 2px;
+	background-color: #bbb;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	padding: 20px;
 }
 
 #user-name {

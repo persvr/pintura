@@ -1,0 +1,128 @@
+/* ---------- reset ----------*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	list-style: none;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: "Trebuchet MS", Verdana, Helvetica, sans-serif;
+	color: #111;
+	background-color:#e8eeef;
+}
+p{
+padding-top:5px;
+padding-bottom:5px;
+}
+
+h1 {
+	font-weight:bold;
+	font-size:1.2em;
+	margin-bottom:1em;
+}
+
+/* ---------- header ----------*/
+#headerContainer {
+	background-color: #ddd;
+	width: 100%;
+	height: 46px;
+	border-top: 5px solid #ccc;
+	border-bottom: 5px solid #ccc;
+	font-size: 30px;
+	padding:10px;
+}
+#headerContainer span {
+	margin-left: 40px;
+}
+
+#headerContainer h1 {
+	font-size:20px;
+	display: block;
+	float: right;
+}
+
+/* ---------- navigation ----------*/
+#mainNav {
+	position: absolute;
+	right: 0px;
+	font-size: 14px;
+	margin: 35px 126px 0 0;
+	background-color: #ddd;
+}
+
+#headerContainer #subNav {
+	margin-top:76px;
+}
+
+.pageName {
+	color: #0093C8;
+}
+
+
+
+/* ---------- content ----------*/
+
+#content {
+	background: #eef2f3 url("../images/bodyBg.png") repeat-x top left;
+	width: 640px;
+	min-height: 250px;
+	height:auto !important;
+	height: 250px;
+	padding: 40px;
+	margin: 25px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+
+#content h2 {
+	background: #E6E6FF;
+	height: 16px;
+	color: #7D3333;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 8px;
+	font-family: "Myriad Pro", "Trebuchet MS", Verdana, Helvetica, sans-serif;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border: 1px solid #E1E1E1;
+	
+	margin: 10px;
+	width:300px;
+	
+}
+
+#content h3 {
+	height: 16px;
+	margin: 15px;
+	color: #515152;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+
+#status {
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:10;
+	background:url('spinner.gif') white no-repeat;
+	border:1px solid black;
+	padding:5px;
+	padding-left:25px;
+	font-family:arial;
+	font-size: 80%;
+}		
+

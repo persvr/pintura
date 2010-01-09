@@ -21,16 +21,17 @@ Media({
 		return {
 			forEach:function(write){
 				write('<html><title>' + pageName + '</title>');
-				write('<body><h1>' + pageName + '</h1>');
+				write('<style type="text/css">@import "/css/common.css";</style>');
+				write('<body><div id="headerContainer"><span class="pageName">' + pageName + '<span></div>');
+				write('<div id="content">');
 				if(typeof object === "object"){
-					write('<p>Content: ');
 					write('' + wikiToHtml(object.content));
-					write('</p>');
 				}
 				else{
 					write("<p>This page does not exist yet</p>");
 				}
-				write('<a href="/edit.html?page=' + pageName + '">' + action + ' this page</a>');	
+				write('<p><a href="/edit.html?page=' + pageName + '">' + action + ' this page</a></p>');	
+				write('</div>');
 			}
 		};
 	}

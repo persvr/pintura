@@ -48,18 +48,26 @@ exports.Page = model.Model("Page", pageStore, {
 		return pageStore.create(object);
 	},
 */
-	put: function(object, id){
+	put: function(object, id){ // handle puts to add to history and define attribution
 		if(auth.currentUser){
+			// set the current user name as the lastModifiedBy property
 			object.lastModifiedBy = auth.currentUser.username;
 		}
+		// create a new change entry in the history log
 		PageChange.create({
 			content: object.content,
 			pageId: object.id
 		});
+		// do the default action of saving to the store
 		return pageStore.put(object, id);
 	},
-	prototype: {
+	properties: { // schema definitions for property types (these are optional)
+		status: String,
+		content: String
+	},
+	prototype: { // define the methods available on the model object instances
 		initialize: function(){
+			// set initial properties on object instantiation
 			this.status = "New";
 			if(auth.currentUser){
 				this.createdBy = auth.currentUser.username;
@@ -77,9 +85,9 @@ exports.Page = model.Model("Page", pageStore, {
 		}
 		
 	},
-	links: [
+	links: [ // define the link relations with other objects
 		{
-			rel: "history",
+			rel: "history", // link to the list of changes for a page
 			href: "../PageChange/?pageId={id}"
 		}
 	]

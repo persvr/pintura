@@ -3,29 +3,32 @@
  */
 
 // first we add all the necessary paths to require.paths
-var packagesRoot = "../../../";
-
-require.paths.push("lib");
-require.paths.push.apply(require.paths,[
-					"packages/pintura/lib",
-					"packages/pintura/engines/node/lib",
-					"packages/pintura/engines/default/lib",
-					"packages/perstore/lib",
-					"packages/perstore/engines/node/lib",
-					"packages/perstore/engines/default/lib",
-					"packages/commonjs-utils/lib",
-					"packages/jack/lib",
-					"packages/narcissus/lib",
-					"packages/jsgi-node/lib",
-					"packages/wiky/lib",
-					"engines/default/lib",
-					"lib"
-					].map(function(path){
-						return packagesRoot + path;
-					    }));
+var packagesRoot = "/projects/kriszyp-narwhal/";
+var packagePaths = [""] // start with the current directory
+			.concat([ // now add alll the packages
+				"packages/pintura/",
+				"packages/pintura/engines/node/",
+				"packages/pintura/engines/default/",
+				"packages/perstore/",
+				"packages/perstore/engines/node/",
+				"packages/perstore/engines/default/",
+				"packages/commonjs-utils/",
+				"packages/jack/",
+				"packages/narcissus/",
+				"packages/jsgi-node/",
+				"packages/wiky/",
+				"engines/default/",
+				""
+				].map(function(path){ // for each package, start in the right directory
+					return packagesRoot + path;
+				    }));
+				    
+require.paths.push.apply(require.paths, packagePaths.map(function(path){
+	return path + "lib";
+}));
 
 var sys = require("sys");
-// upgrade to ES5 and CommonJS globals
+// upgrade to ES5 and CommonJS globals 
 print = sys.puts;
 global = this;
 require("global");
@@ -35,14 +38,14 @@ require("app");
 
 require("jsgi-node").start(
 	require("jsgi/cascade").Cascade([ 
-		// cascade from static to pintura REST handling
+	// cascade from static to pintura REST handling
 		// the main place for static files accessible from the web
-		require("jsgi/static").Static({urls:[""],root:"public"}),
+		require("jsgi/static").Static({urls:[""],roots:["public"]}),
 		// this will provide access to the server side JS libraries from the client
-		require("jsgi/static").Static({urls:["/lib"],root:""}),
+		require("jsgi/static").Static({urls:["/lib"],roots:packagePaths}),
 		// make the root url redirect to /Page/Root  
 		require("jsgi/redirect-root").RedirectRoot(
-	 	// main Pintura handler */
+			// main pintura app		
 			pintura.app
 		)
 ]));

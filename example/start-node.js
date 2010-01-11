@@ -3,7 +3,7 @@
  */
 
 // first we add all the necessary paths to require.paths
-var packagesRoot = "/projects/kriszyp-narwhal/";
+var packagesRoot = "../../../";
 var packagePaths = [""] // start with the current directory
 			.concat([ // now add alll the packages
 				"packages/pintura/",

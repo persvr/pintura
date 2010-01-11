@@ -1,4 +1,5 @@
-global = exports = window; // pull all the CommonJS stuff into the global
+global = window; // pull all the CommonJS stuff into the global
+var exports = {};
 require = function(){
-	return window;
+	return exports;
 };	

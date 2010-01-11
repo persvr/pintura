@@ -1,6 +1,8 @@
 var pageName = location.search.match(/page=([^&]+)/);
 pageName = pageName && pageName[1];
 document.title = "Editing " + pageName;
+var request = require("jsgi-client").request;
+var escapeHTML = require("html").escapeHTML;
 document.getElementById("main-header").innerHTML = escapeHTML("Editing " + pageName);
 request({
 	url: "Page/" + pageName,

@@ -14,9 +14,7 @@ var packagePaths = [""] // start with the current directory
 				"packages/perstore/engines/default/",
 				"packages/commonjs-utils/",
 				"packages/jack/",
-				"packages/narcissus/",
 				"packages/jsgi-node/",
-				"packages/wiky/",
 				"engines/default/",
 				""
 				].map(function(path){ // for each package, start in the right directory
@@ -43,6 +41,7 @@ require("jsgi-node").start(
 		require("jsgi/static").Static({urls:[""],roots:["public"]}),
 		// this will provide access to the server side JS libraries from the client
 		require("jsgi/static").Static({urls:["/lib"],roots:packagePaths}),
+		// main pintura app		
 		pintura.app
 ]));
 

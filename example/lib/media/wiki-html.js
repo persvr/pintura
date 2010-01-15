@@ -14,9 +14,12 @@ Media({
 	},
 	serialize: function(object, request, response){
 		var pageName = escapeHTML(request.pathInfo.substring(1));
-		var action = "edit";
+		var action;
 		if(response.status === 404){
 			action = "create";
+		}
+		else if(response.status === 200){
+			action = "edit";
 		}
 		return {
 			forEach:function(write){
@@ -28,9 +31,11 @@ Media({
 					write('' + wikiToHtml(object.content));
 				}
 				else{
-					write("<p>This page does not exist yet</p>");
+					write("<p>" + object + "</p>");
 				}
-				write('<p><a href="/edit.html?page=' + pageName + '">' + action + ' this page</a></p>');	
+				if(action){
+					write('<p><a href="/edit.html?page=' + pageName + '">' + action + ' this page</a></p>');
+				}	
 				write('</div>');
 			}
 		};

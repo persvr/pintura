@@ -14,7 +14,6 @@ var packagePaths = [""] // start with the current directory
 				"packages/perstore/engines/default/",
 				"packages/commonjs-utils/",
 				"packages/jack/",
-				"packages/narcissus/",
 				"packages/jsgi-node/",
 				"packages/wiky/",
 				"engines/default/",

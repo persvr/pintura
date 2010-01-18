@@ -29,6 +29,6 @@ exports.development = function(app, options){
 	]);
 };
 
-// having a REPL is really helpful
+// we start the REPL (the interactive JS console) because it is really helpful
 new (require("worker").SharedWorker)("narwhal/repl");
 

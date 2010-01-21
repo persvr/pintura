@@ -24,12 +24,7 @@ var packagePaths = [""] // start with the current directory
 require.paths.push.apply(require.paths, packagePaths.map(function(path){
 	return path + "lib";
 }));
-
-var sys = require("sys");
-// upgrade to ES5 and CommonJS globals 
-print = sys.puts;
-global = this;
-require("global");
+require("node-commonjs");
 
 var pintura = require("pintura");
 require("app");
@@ -47,8 +42,3 @@ require("jsgi-node").start(
 
 // having a REPL is really helpful
 require("repl").start();
-
-process.addListener("uncaughtException", function(error){
-	// obviously we don't want uncaught exceptions to crash the server
-	print(error.stack);
-});

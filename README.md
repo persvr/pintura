@@ -13,7 +13,11 @@ is a cross-platform server side JavaScript based REST architecture web framework
 * Cross-site request handling and robust, solid cross-site request forgery protection
 * Class-based data hierarchy with object oriented data persistence
 
-See the main Persevere project for more information:
+See the [introduction to Pintura](http://www.sitepen.com/blog/2010/01/22/introducing-pintura/) for more information. 
+
+### Getting Started:
+
+* [Getting Started with Pintura](http://www.sitepen.com/blog/2010/01/25/getting-started-with-pintura/)
 
 ### Homepage:
 

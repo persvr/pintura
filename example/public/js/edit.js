@@ -5,7 +5,7 @@ var request = require("jsgi-client").request;
 var escapeHTML = require("html").escapeHTML;
 document.getElementById("main-header").innerHTML = escapeHTML("Editing " + pageName);
 request({
-	url: "Page/" + pageName,
+	uri: "Page/" + pageName,
 	headers: {
 		"accept": "application/javascript, application/json"
 	}
@@ -13,7 +13,7 @@ request({
 	if(!response.headers.username){
 		login();
 	}
-	var page = eval("(" + response.body + ")");
+	var page = eval("(" + response.body.join("") + ")");
 	if(typeof page !== "object"){
 		page = {
 			id: pageName,
@@ -26,7 +26,7 @@ request({
 	document.getElementById("save-button").onclick = function(){
 		page.content = contentArea.value;
 		request({
-			url: "/Page/" + pageName,
+			uri: "/Page/" + pageName,
 			method: "PUT",
 			body: JSON.stringify(page),
 			headers: {
@@ -58,7 +58,7 @@ function login(){
 
 function userRpc(method, params){
 	return request({
-		url: "Class/User",
+		uri: "Class/User",
 		method: "POST",
 		body: JSON.stringify({
 			id:"call-id",
@@ -73,7 +73,7 @@ function userRpc(method, params){
 			"content-type": "application/json"
 		}
 	}).then(function(response){
-		response = eval('(' + response.body + ')');
+		response = eval('(' + response.body.join("") + ')');
 		if(response.error){
 			throw response.error;
 		}

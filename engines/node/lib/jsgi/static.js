@@ -1,4 +1,4 @@
-var posix = require("posix"),
+var fs = require("fs"),
 	defer = require("promise").defer,
 	mime = require("jack/mime");
 exports.Static = function(options){		
@@ -32,11 +32,11 @@ exports.Static = function(options){
 			}
 			var file = roots[rootIndex] + path;
 			rootIndex++;
-			posix.stat(file)
+			fs.stat(file)
 				.addCallback(function (stat) {
 					if(stat.isFile()){
 						// file exists.
-						posix.open(file, process.O_RDONLY, 0666)
+						fs.open(file, process.O_RDONLY, 0666)
 							.addErrback(checkNextRoot)
 							.addCallback(function (fd) {
 								var extension = path.match(/\.[^\.]+$/);
@@ -58,10 +58,10 @@ exports.Static = function(options){
 							    	}
 							    });
 								function readAndSend (fd) {
-									posix.read(fd, 4096, null, "binary")
+									fs.read(fd, 4096, null, "binary")
 										.addCallback(function (data, bytesRead) {
 											if (bytesRead === 0){
-												posix.close(fd);
+												fs.close(fd);
 												bodyDeferred.resolve();
 											}
 											else {

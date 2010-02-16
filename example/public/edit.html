@@ -23,6 +23,11 @@
 			<button id="sign-in">Sign in</button>
 			<button id="register">Register</button>
 		</div>
+		<form id="upload-form" method="POST" enctype="multipart/form-data" target="upload-target" action="/Page/Example">
+			<label>Image to upload:</label><input type="file" name="image"/><br />
+			<button>Upload</input>
+			<iframe name="upload-target" style="display:none"></iframe>
+		</form>
 		<script src="js/bootstrap.js"></script>
 		<script src="lib/promise.js"></script>
 		<script src="lib/jsgi-client.js"></script>

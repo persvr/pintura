@@ -48,18 +48,27 @@ exports.Page = model.Model("Page", pageStore, {
 		return pageStore.create(object);
 	},
 */
-	put: function(object, id){ // handle puts to add to history and define attribution
+	put: function(page, options){ // handle puts to add to history and define attribution
 		if(auth.currentUser){
 			// set the current user name as the lastModifiedBy property
-			object.lastModifiedBy = auth.currentUser.username;
+			page.lastModifiedBy = auth.currentUser.username;
 		}
-		// create a new change entry in the history log
-		PageChange.create({
-			content: object.content,
-			pageId: object.id
-		});
+		if(!pageStore.get(page.id)){
+			// set initial properties on object instantiation
+			page.status = "published";
+			if(auth.currentUser){
+				page.createdBy = auth.currentUser.username;
+			}
+			options.overwrite = false;
+		}
 		// do the default action of saving to the store
-		return pageStore.put(object, id);
+		var pageId = pageStore.put(page, options);
+		// create a new change entry in the history log
+		new PageChange({
+			content: page.content,
+			pageId: pageId
+		});
+		return pageId;
 	},
 	properties: { // schema definitions for property types (these are optional)
 		status: String,

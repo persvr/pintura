@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>dojox.grid.DataGrid with Persevere</title>
+	
+	<style type="text/css">
+		@import "../js/dojo/resources/dojo.css";
+		@import "../js/dojox/grid/resources/Grid.css";
+		@import "../js/dojox/grid/resources/tundraGrid.css";
+		@import "../js/dijit/themes/tundra/tundra.css";
+		body {
+			padding:2em !important;
+			font-size: 0.9em;
+			font-family: Geneva, Arial, Helvetica, sans-serif;
+		}
+		.login-link {
+			float: right;
+		}
+	</style>
+	<script djConfig="isDebug:true, parseOnLoad: true" src="../js/dojo/dojo.js" type="text/javascript"></script>
+	<script src="../js/admin.js" type="text/javascript"></script>
+</head>
+<body class="tundra">
+
+	<div dojoType="persevere.LoginLink" mustLogin="true" jsid="loginLink" class="login-link"></div>
+	<h1>Example Wiki Adminstration</h1>
+
+	<table rowSelector="20px" rowsPerPage="20" query="''" height="200px" store="pageStore" id="grid" jsid="grid" dojoType="dojox.grid.DataGrid">
+		<thead>
+			<tr>
+				<th field="id">Page</th>
+				<th editable="true" field="status">Status</th>
+				<th editable="true" field="createdBy">Created By</th>
+				<th editable="true" field="lastModifiedBy">Last Modified By</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="controls">
+		<button onclick="pageStore.save({onError:function(e){console.log('the error', e)}})">Save</button>
+		<button onclick="pageStore.revert()">Revert</button>
+		<button onclick="addItem()">Add</button>
+		<button onclick="remove()">Remove</button>&nbsp;&nbsp;&nbsp;
+	</div>
+
+	
+</body>
+</html>

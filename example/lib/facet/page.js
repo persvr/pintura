@@ -12,7 +12,7 @@ var Page = require("model/page").Page,
 // be enabled (by defining a handler) 
 exports.PublicFacet = Restrictive(Page, {
 	query: function(query, options){
-		query = "?status='published'" + (query.match(/^\?\w/) ? "&" : "") + query.substring(1);
+		query = "?status=published" + (query.match(/^\?\w/) ? "&" : "") + query.substring(1);
 		return Page.query(query, options);
 	},
 	prototype: {

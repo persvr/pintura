@@ -17,6 +17,7 @@ Media({
 		var action;
 		if(response.status === 404){
 			action = "create";
+			object = "This page does not exist yet";
 		}
 		else if(response.status === 200){
 			action = "edit";

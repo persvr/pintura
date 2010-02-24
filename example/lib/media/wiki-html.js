@@ -24,20 +24,20 @@ Media({
 		}
 		return {
 			forEach:function(write){
-				write('<html><title>' + pageName + '</title>');
-				write('<style type="text/css">@import "/css/common.css";</style>');
-				write('<body><div id="headerContainer"><span class="pageName">' + pageName + '<span></div>');
-				write('<div id="content">');
+				write('<html><title>' + pageName + '</title>\n');
+				write('<style type="text/css">@import "/css/common.css";</style>\n');
+				write('<body><div id="headerContainer"><span class="pageName">' + pageName + '<span></div>\n');
+				write('<div id="content">\n');
 				if(typeof object === "object"){
 					write('' + wikiToHtml(object.content));
 				}
 				else{
-					write("<p>" + object + "</p>");
+					write("<p>" + object + "</p>\n");
 				}
 				if(action){
-					write('<p><a href="/edit.html?page=' + pageName + '">' + action + ' this page</a></p>');
+					write('<p><a href="/edit.html?page=' + pageName + '">' + action + ' this page</a></p>\n');
 				}	
-				write('</div>');
+				write('</div></body></html>\n');
 			}
 		};
 	}

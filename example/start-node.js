@@ -22,9 +22,11 @@ var packagePaths = [""] // start with the current directory
 					return packagesRoot + path;
 				    }));
 				    
-require.paths.push.apply(require.paths, packagePaths.map(function(path){
+require.paths.unshift.apply(require.paths, packagePaths.slice(0, -2).map(addLib));
+require.paths.push.apply(require.paths, packagePaths.slice(-2).map(addLib));
+function addLib(path){
 	return path + "lib";
-}));
+}
 require("node-commonjs");
 
 var pintura = require("pintura");

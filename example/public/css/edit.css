@@ -1,4 +1,4 @@
-#login-form {
+#login-form, #upload-form {
 	display: none;
 	position: absolute;
 	top: 200px;

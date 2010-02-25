@@ -62,7 +62,7 @@ exports.Page = model.Model("Page", pageStore, {
 			options.overwrite = false;
 		}
 		// do the default action of saving to the store
-		var pageId = pageStore.put(page, options);
+		var pageId = pageStore.put(page, options) || page.id;
 		// create a new change entry in the history log
 		new PageChange({
 			content: page.content,
@@ -77,7 +77,7 @@ exports.Page = model.Model("Page", pageStore, {
 	prototype: { // define the methods available on the model object instances
 		initialize: function(){
 			// set initial properties on object instantiation
-			this.status = "New";
+			this.status = "new";
 			if(auth.currentUser){
 				this.createdBy = auth.currentUser.username;
 			}

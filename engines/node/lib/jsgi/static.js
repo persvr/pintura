@@ -1,4 +1,4 @@
-var fs = require("fs"),
+var fs = require("fs-promise"),
 	defer = require("promise").defer,
 	mime = require("jack/mime");
 exports.Static = function(options){		

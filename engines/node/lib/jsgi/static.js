@@ -33,12 +33,11 @@ exports.Static = function(options){
 			var file = roots[rootIndex] + path;
 			rootIndex++;
 			fs.stat(file)
-				.addCallback(function (stat) {
+				.then(function (stat) {
 					if(stat.isFile()){
 						// file exists.
 						fs.open(file, process.O_RDONLY, 0666)
-							.addErrback(checkNextRoot)
-							.addCallback(function (fd) {
+							.then(function (fd) {
 								var extension = path.match(/\.[^\.]+$/);
 								extension = extension && extension[0];
 								var bodyDeferred = defer();
@@ -58,8 +57,10 @@ exports.Static = function(options){
 							    	}
 							    });
 								function readAndSend (fd) {
-									fs.read(fd, 4096, null, "binary")
-										.addCallback(function (data, bytesRead) {
+									fs.read(fd, 4096)
+										.then(function (dataRead) {
+											var data = dataRead[0];
+											var bytesRead = dataRead[1];
 											if (bytesRead === 0){
 												fs.close(fd);
 												bodyDeferred.resolve();
@@ -70,14 +71,13 @@ exports.Static = function(options){
 											}
 										});
 								}							
-							});
+							}, checkNextRoot);
 					}
 					else{
 						checkNextRoot();
 					}
 				
-			})
-			.addErrback(checkNextRoot);
+			}, checkNextRoot);
 		}
 	};
 };

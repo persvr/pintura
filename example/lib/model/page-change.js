@@ -9,7 +9,14 @@ var model = require("model"),
 // This class contains  
 var pageChangeStore = require("stores").DefaultStore("PageChange");
 /* We can switch to the SQL based back-end with: 
-pageStore = require("page-sql").pageStore;
+pageChangeStore = SQLStore({
+	table: "PageChange",
+	idColumn: "id"
+	indexedProperties:{
+		id: true,
+		pageId: true
+	}
+});
 */
 
 // now we create a class, all central model logic is defined here 

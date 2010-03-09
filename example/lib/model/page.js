@@ -13,7 +13,7 @@ var model = require("model"),
 // First we create the store for interacting directly with the storage endpoint 
 var pageStore = require("stores").DefaultStore("Page");
 /* We can switch to the SQL based back-end with: 
-pageStore = require("page-sql").pageStore;
+pageStore = require("./page-sql").pageStore;
 */
 
 

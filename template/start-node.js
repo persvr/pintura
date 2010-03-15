@@ -37,7 +37,11 @@ require("jsgi-node").start(
 		// the main place for static files accessible from the web
 		require("jsgi/static").Static({urls:[""],roots:["public"]}),
 		// this will provide access to the server side JS libraries from the client
-		require("jsgi/static").Static({urls:["/lib"],roots:packagePaths}),
+		require("jsgi/transporter").Transporter(null, {paths: [packagesRoot + "engines/browser/lib"].concat(require.paths.map(function(path){
+        	return path.replace(/[\\\/]engines[\\\/](\w*)/,function(t, engine){
+        		return "/engines/" + (engine === "default" ? "default" : "browser");
+        	})
+        }))}),
 		// main pintura app		
 		pintura.app
 ]));

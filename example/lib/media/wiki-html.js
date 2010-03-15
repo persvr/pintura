@@ -3,7 +3,7 @@
 */
 
 var Media = require("../media").Media,
-	escapeHTML = require("html").escapeHTML,
+	escapeHTML = require("html").escape,
 	wikiToHtml = require("wiky").toHtml; 
 		
 	
@@ -17,6 +17,7 @@ Media({
 		var action;
 		if(response.status === 404){
 			action = "create";
+			
 			object = "This page does not exist yet";
 		}
 		else if(response.status === 200){

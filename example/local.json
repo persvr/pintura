@@ -1,7 +1,10 @@
 {
 	"database": {
 		"connection":"jdbc:mysql://localhost/wiki?user=root&password=&useUnicode=true&characterEncoding=utf-8&autoReconnect=true",
-		"type": "mysql"
+		"type": "mysql",
+		"host": "localhost",
+		"port": 27017,
+		"name": "wiki"
 	},
 	"mail": {
 		"host":"mail.site.com",

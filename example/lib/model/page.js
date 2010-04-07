@@ -13,7 +13,7 @@ var model = require("model"),
 // First we create the store for interacting directly with the storage endpoint 
 var pageStore = require("stores").DefaultStore("Page");
 /* We can switch to the SQL based back-end with: 
-pageStore = require("page-sql").pageStore;
+pageStore = require("./page-sql").pageStore;
 */
 
 
@@ -43,24 +43,22 @@ exports.Page = model.Model("Page", pageStore, {
 		pageStore["delete"](id);
 	},
 */
-/*
-	create: function(object){
-		return pageStore.create(object);
+
+	construct: function(page, directives){
+		// set initial properties on object instantiation
+		if(auth.currentUser){
+			page.createdBy = auth.currentUser.username;
+		}
+		page.status = "published";
+		return page.save(directives);
 	},
-*/
+
 	put: function(page, options){ // handle puts to add to history and define attribution
 		if(auth.currentUser){
 			// set the current user name as the lastModifiedBy property
 			page.lastModifiedBy = auth.currentUser.username;
 		}
-		if(!pageStore.get(page.id)){
-			// set initial properties on object instantiation
-			page.status = "published";
-			if(auth.currentUser){
-				page.createdBy = auth.currentUser.username;
-			}
-			options.overwrite = false;
-		}
+		page.status = "published";
 		// do the default action of saving to the store
 		var pageId = pageStore.put(page, options) || page.id;
 		// create a new change entry in the history log
@@ -70,18 +68,13 @@ exports.Page = model.Model("Page", pageStore, {
 		});
 		return pageId;
 	},
+	
 	properties: { // schema definitions for property types (these are optional)
 		status: String,
 		content: String
 	},
+
 	prototype: { // define the methods available on the model object instances
-		initialize: function(){
-			// set initial properties on object instantiation
-			this.status = "new";
-			if(auth.currentUser){
-				this.createdBy = auth.currentUser.username;
-			}
-		},
 		// these are used by atom
 		getTitle: function(item){
 			return item.name;
@@ -100,6 +93,9 @@ exports.Page = model.Model("Page", pageStore, {
 			href: "../PageChange/?pageId={id}"
 		}
 	]
+
+	// this is flag to indicate that if Perstore should check to see an object exists when a PUT occurs, and call construct if it doesn't. The default is false	
+	// noConstructPut: false,
 });
 
 // The facets for accessing the page class are defined in facet/page

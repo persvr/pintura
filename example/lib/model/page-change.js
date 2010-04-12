@@ -2,7 +2,7 @@
  * This class is used for tracking all the changes of a page
  */
 
-var model = require("model"),
+var Model = require("model").Model,
 	DefaultStore = require("stores").DefaultStore,
 	auth = require("jsgi/auth");
 
@@ -20,7 +20,14 @@ pageChangeStore = SQLStore({
 */
 
 // now we create a class, all central model logic is defined here 
-exports.PageChange = model.Model("PageChange", pageChangeStore, {
+exports.PageChange = Model("PageChange", pageChangeStore, {
+	properties: {
+		content: String,
+		pageId: {
+			type: "integer",
+			description:"This is the id for the current page from the Page model"
+		}
+	},
 	links:[
 		{
 			rel: "current",

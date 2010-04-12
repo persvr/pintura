@@ -1,6 +1,16 @@
 {
     "name": "",
     "author": "",
-    "dependencies": ["pintura"],
-    "contributors": []
+    "dependencies": ["persevere"],
+    "contributors": [],
+	"mappings": {
+	"mappings":{
+		"perstore/": "http://github.com/kriszyp/perstore/zipball/master!/lib/",
+		"commonjs-utils/": "http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/"
+		"pintura/": "http://github.com/kriszyp/pintura/zipball/master!/lib/"
+		"wiky/": "http://github.com/kriskowal/wiky/zipball/master!/lib/",
+		"model": "http://github.com/kriszyp/perstore/zipball/master!/lib/model",
+		"facet": "http://github.com/kriszyp/perstore/zipball/master!/lib/facet",
+		"media": "http://github.com/kriszyp/pintura/zipball/master!/lib/media"
+	}
 }

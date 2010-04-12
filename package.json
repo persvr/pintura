@@ -2,7 +2,7 @@
 	"name": "pintura",
 	"author": "Kris Zyp",
 	"email": "kriszyp@gmail.com",
-	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus", "wiky"],
+	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
 	"contributors": [],
 	"keywords": [
 		"rest",
@@ -11,8 +11,14 @@
 		"json",
 		"persevere"
 	],
+	"mappings":{
+		"perstore/": "http://github.com/kriszyp/perstore/raw/master/lib/",
+		"commonjs-utils/": "http://github.com/kriszyp/commonjs-utils/raw/master/lib/"
+	},
 	"githubName": "pintura",
+	"engines": {"node":">=0.1.30", "rhino": true},
 	"type": "zip",
+	"version": "0.1",
 	"location": "http://github.com/kriszyp/pintura/zipball/master",
 	"license":"AFL/BSD"
 }

@@ -28,9 +28,10 @@ function addLib(path){
 	return path + "lib";
 }
 require("node-commonjs");
-
-var pintura = require("pintura");
-require("app");
+require.reloadable(function(){
+	var pintura = require("pintura");
+	require("app");
+});
 
 require("jsgi-node").start(
 	require("jsgi/cascade").Cascade([ 
@@ -38,15 +39,17 @@ require("jsgi-node").start(
 		// the main place for static files accessible from the web
 		require("jsgi/static").Static({urls:[""],roots:["public"]}),
 		// this will provide access to the server side JS libraries from the client
-		require("jsgi/transporter").Transporter(null, {paths: [packagesRoot + "engines/browser/lib"].concat(require.paths.map(function(path){
+		require("jsgi/transporter").Transporter({paths: [packagesRoot + "engines/browser/lib"].concat(require.paths.map(function(path){
         	return path.replace(/[\\\/]engines[\\\/](\w*)/,function(t, engine){
         		return "/engines/" + (engine === "default" ? "default" : "browser");
         	})
         }))}),
 		// make the root url redirect to /Page/Root  
 		require("jsgi/redirect-root").RedirectRoot(
-			// main pintura app		
-			pintura.app
+			// main pintura app
+			function(request){		
+				return pintura.app(request);
+			}
 		)
 ]));
 

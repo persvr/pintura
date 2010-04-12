@@ -1,9 +1,12 @@
+require("require");
+require("json");
 var pageName = location.search.match(/page=([^&]+)/);
 pageName = pageName && pageName[1];
 document.title = "Editing " + pageName;
 var request = require("jsgi-client").request;
 var escapeHTML = require("html").escapeHTML;
 document.getElementById("main-header").innerHTML = escapeHTML("Editing " + pageName);
+debugger;
 request({
 	uri: "Page/" + pageName,
 	headers: {

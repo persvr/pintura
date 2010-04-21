@@ -1,1 +1,2 @@
-exports.Multipart = require("multipart").Multipart;
+// TODO: use isaacs multipart parser
+exports.Multipart = {};

@@ -2,7 +2,7 @@ require("settings").admins = ["user"];// must do this first
 var MockRequest = require("jack/mock").MockRequest, 
 	mock = new MockRequest(require("pintura").app),
 	assert = require("assert"),
-	parse = require("json-ext").parse;
+	parse = require("commonjs-utils/json-ext").parse;
 require("./app");
 
 exports.testGet = function(){

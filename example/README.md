@@ -1,1 +1,1 @@
-This is example Wiki has been moved to (http://github.com/kriszyp/persevere-example-wiki/)[http://github.com/kriszyp/persevere-example-wiki/].
+This is example Wiki has been moved to [http://github.com/kriszyp/persevere-example-wiki/](http://github.com/kriszyp/persevere-example-wiki/).

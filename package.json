@@ -12,21 +12,21 @@
 		"persevere"
 	],
 	"mappings":{
-		"perstore/": "jar:http://github.com/kriszyp/perstore/zipball/master!/lib/",
-		"commonjs-utils/": "jar:http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/",
-		"narwhal-lib/": "jar:http://github.com/kriskowal/narwhal-lib/zipball/narwhal-lib!/lib/",
-		"jack/": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/"
+		"perstore": "jar:http://github.com/kriszyp/perstore/zipball/master!/lib/",
+		"commonjs-utils": "jar:http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/",
+		"narwhal-lib": "jar:http://github.com/kriskowal/narwhal-lib/zipball/master!/lib/narwhal/",
+		"jack": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/"
 	},
 	"overlay": {
 		"narwhal": {
 			"mappings": {
 				"uri": "url",
-				"jsgi/multipart$": "./engines/rhino/lib/jsgi/multipart"
+				"jsgi/multipart": "./engines/rhino/lib/jsgi/multipart.js"
 			}
 		},
 		"node": {
 			"mappings": {
-				"jsgi/multipart$": "./engines/node/lib/jsgi/multipart"
+				"jsgi/multipart": "./engines/node/lib/jsgi/multipart.js"
 			}
 		}
 	},

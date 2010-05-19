@@ -15,6 +15,7 @@
 		"perstore": "jar:http://github.com/kriszyp/perstore/zipball/master!/lib/",
 		"commonjs-utils": "jar:http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/",
 		"narwhal-lib": "jar:http://github.com/kriskowal/narwhal-lib/zipball/master!/lib/narwhal/",
+		"tunguska": "jar:http://github.com/kriszyp/tunguska/zipball/master!/lib/",
 		"jack": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/"
 	},
 	"overlay": {

@@ -82,6 +82,7 @@ configuration object can then be configured to define how users are authenticate
 and which facets or access levels each user is given. The security configuration object
 is available at require("pintura/pintura").config.security. The primary functions
 that can be overriden are:
+
 * authenticate(username, password) -  The authenticate method
 allows you to define a custom authentication method and defaults to authenticating
 against the auto-generated User model. Should return a user object.
@@ -117,7 +118,8 @@ One of the core concepts of the REST architecture is content negotiation which p
 multiple views or representations of resources or objects. Providing content negotiation
 is a key functionality that Pintura provides. Pintura utilizes a set of media type handlers
 to find the best representation for serializing (or deserializing) data. Pintura comes
-with several media type handlers including: 
+with several media type handlers including:
+ 
 * json – JSON media handler
 * javascript – Similar to the JSON media handler, but will serialize to additional JavaScript specific types such as dates, NaN, functions, and other types that do not exist in JSON.
 * multipart-form-data and url-encoded – Used for parsing form data.
@@ -136,6 +138,7 @@ but also can include date literals and special numeric types like NaN and Infini
 Creating new media types is common way to extend Pintura with additional formats.
 To create a new media type handler, use the Media constructor from the "media" module.
 This constructor takes an object argument with four properties:
+
 * mediaType - The name of the media type.
 * quality - A numeric value indicating the quality of the media type (generally a number from 0 - 1).
 * serialize - A function that is called to serialize the data (JavaScript objects or arrays) to string output for the response.

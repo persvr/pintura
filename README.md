@@ -13,6 +13,33 @@ article provides a great starting point for using Pintura to build Persevere app
 Pintura is primarily composed of JSGI middleware components, and these components
 are [described here](http://www.sitepen.com/blog/2010/03/04/pintura-jsgi-modules/).
 
+Setup Pintura
+=================
+
+One of the easiest way to get started with Pintura is start with the 
+[Persevere example app](http://github.com/kriszyp/persevere-example-wiki),
+which can be downloaded and started with [Nodules](http://github.com/kriszyp/nodules).
+It is recommended that you install Pintura such that it is available in require statements
+under the "pintura" path. This can easily be done with a package mapping compliant module
+loader like [Nodules](http://github.com/kriszyp/nodules) by using a mapping in your 
+package.json (and then Pintura will be automatically downloaded for you):
+
+    "mappings": {
+	    "pintura": "jar:http://github.com/kriszyp/pintura/zipball/master!/lib/"
+    }
+
+You can then use "app" property from require("pintura/pintura") as a JSGI application. 
+With [jsgi-node](http://github.com/kriszyp/jsgi-node) you can start Pintura:
+
+    require("jsgi-node").start(require("pintura/pintura").app); 
+
+Or with Jack:
+
+    exports.app = require("pintura/pintura").app;
+    
+You can see a more in-depth example of serving static files in combination with Pintura
+in the Persevere example app [startup file](http://github.com/kriszyp/persevere-example-wiki/blob/master/lib/index.js).
+ 
 Using Pintura
 ===========
 

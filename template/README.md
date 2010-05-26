@@ -1,1 +1,0 @@
-This is a template starting application for Pintura. 

@@ -2,7 +2,7 @@
 	"name": "pintura",
 	"author": "Kris Zyp",
 	"email": "kriszyp@gmail.com",
-	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus", "wiky"],
+	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
 	"contributors": [],
 	"keywords": [
 		"rest",
@@ -11,8 +11,30 @@
 		"json",
 		"persevere"
 	],
+	"mappings":{
+		"perstore": "jar:http://github.com/kriszyp/perstore/zipball/master!/lib/",
+		"commonjs-utils": "jar:http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/",
+		"narwhal-lib": "jar:http://github.com/kriskowal/narwhal-lib/zipball/master!/lib/narwhal/",
+		"tunguska": "jar:http://github.com/kriszyp/tunguska/zipball/master!/lib/",
+		"jack": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/"
+	},
+	"overlay": {
+		"narwhal": {
+			"mappings": {
+				"uri": "url",
+				"jsgi/multipart": "./engines/rhino/lib/jsgi/multipart.js"
+			}
+		},
+		"node": {
+			"mappings": {
+				"jsgi/multipart": "./engines/node/lib/jsgi/multipart.js"
+			}
+		}
+	},
 	"githubName": "pintura",
+	"engines": {"node":">=0.1.30", "rhino": true},
 	"type": "zip",
+	"version": "0.1",
 	"location": "http://github.com/kriszyp/pintura/zipball/master",
 	"license":"AFL/BSD"
 }

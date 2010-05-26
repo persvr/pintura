@@ -1,1 +1,0 @@
-This is where the persisted model classes go

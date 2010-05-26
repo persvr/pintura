@@ -1,1 +1,0 @@
-This is where client side JavaScript files go

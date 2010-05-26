@@ -96,7 +96,9 @@ request like:
 This would call the "put" handler defined in the model above.
 One can also query stores through HTTP. Requests of the form /{model}/?{query}
 are passed through to the model by calls to the "query" method on the model.
-Perstore provides query parsing capabilities and stores implement handling queries.
+Perstore provides 
+[query parsing capabilities](http://github.com/kriszyp/perstore) and stores implement 
+query execution (dependent on the capabilities of the DB).
 An example of a query:
 
     GET /Product/?type=shoe&price=lt=20&sort(-rating)
@@ -128,7 +130,7 @@ Error Handling
 ===========
 
 Pintura includes middleware for catching errors and converting them to appropriate
-HTTP error status codes. The following errors that are uncaught errors (until the error middleware catches them)
+HTTP error status codes. The following uncaught errors (until the error middleware catches them)
 are translated:
 
 * URIError - 400
@@ -173,6 +175,7 @@ This constructor takes an object argument with four properties:
 * serialize - A function that is called to serialize the data (JavaScript objects or arrays) to string output for the response.
 * deserialize - A function that is called to deserialize the request input data to JavaScript objects or arrays.
 
+
 Paging/Range Requests
 -------------------
 
@@ -195,6 +198,94 @@ parameter
 
     /Product/33?callback=my_callback
 
+Bulk Updates and Comet
+================
+
+(not fully implemented yet)
+
+Pintura utilizes the message/* category of media types for indicating a set of requests 
+or messages. Normally each HTTP request triggers one action in the store in its own
+transaction, but a 
+request with a content type of message/sub-type (usually message/json or message/javascript)
+will be treated as a set of requests
+that are all processed within one transaction. This allows you to do several updates
+with one HTTP request. For request with a set of messages, the body should be an
+array of objects, where each object can have the following properties (only "method" is required):
+
+* target - The id/path of the target object of the action. This is resolved relative to the path of the request URI.
+* method - The method to execute, can be "get", "put", "post", "subscribe", or any other method on the target store.
+* body - The body of the request; the main payload of data.
+* queryString - query string
+* id - A message id, any subsequent message with the same id should be ignored (allows for idempotent messages) 
+* metadata - Any metadata needed for the request
+
+For example, updating two objects could be done:
+
+    POST /Product/
+    Content-Type: message/json 
+    Accept: message/javascript
+    
+    [
+      {target:"2", method:"put", body:{name:"updated 2"}, id: 1},
+      {target:"3", method:"put", body:{name:"updated 3"}, id: 2}
+    ]
+    
+The message/* media type can also be used in Accept headers to indicate that a response
+with a set of messages should be returned. This should be used for bulk updates. A
+response will be an array of objects where each object may have the following properties:
+
+* source - The id/path of the object that was acted on 
+* body - The body of the response
+* id - The id of the message that this message is in response to
+* type - The type of the action that was executed
+
+An example response (for the requests above):
+
+    Content-Type: message/javascript
+    
+    [
+      {source:"2", body:{name:"updated 2"}, id: 1},
+      {source:"3", body:{name:"updated 3"}, id: 2}
+    ]
+
+Real-Time/Comet
+-----
+
+The message/* media type can also be useful for real-time notification of events, AKA
+comet. Stores and models that support notifications can return observable objects, typically
+through the "subscribe" method, to indicate that multiple events may be emitted that
+can later be delivered to the client. When message requests are observable instead of
+direct value, responses will not be sent to the client until there is a message ready to be sent.
+For example, to subscribe to all events that take place on /User/john:
+
+    POST /User/
+    Content-Type: message/json
+    Client-Id: 251ab4ac9312f
+    Accept: message/javascript
+    
+    [
+      {target:"john", method:"subscribe"}
+    ]
+
+The response to the client will be delayed until an event/message for /User/john occurs.
+
+For maximum browser compatibility, typically long-polling is used for comet applications.
+However, there is always a time gap between responses and the next request from the
+browser. Consequently for continuous gap-free subscriptions, it can be highly useful
+to emulate a continuous connection or queue for messages. This can be done by 
+including a Client-Id header. Clients can generate a random id, and repeated connect
+using the same client id. Between requests, any events (from subscriptions) will be
+pushed into a queue for the given client id until the next request.
+
+The Client-Id header can be included in standard requests as well, allowing other operations
+to add event sources and subscriptions to the current client queue. 
+
+Some browsers support XHR streaming and do not require long-polling repeated reconnections.
+If you wish to use streaming, include a Streaming header:
+
+    Streaming: true
+    
+The response will continue indefinitely, sending new messages as they occur.  
 
 ### Homepage:
 

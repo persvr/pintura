@@ -1,6 +1,8 @@
 [Pintura](http://www.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=pintura&sll=40.554798,-111.881839&sspn=0.009211,0.016351&ie=UTF8&hq=&hnear=Pintura,+Washington,+Utah&ll=37.31666,-113.171539&spn=0.308538,0.523224&t=p&z=11)
 is a cross-platform server side JavaScript based REST architecture web framework 
-using standards based HTTP client/server interaction. Pintura consists of reusable 
+using standards based HTTP client/server interaction with a focus on JSON formatted data. 
+Pintura gives you out of the box RESTful HTTP/JSON interface to data, you can simply
+create data models and Pintura automatically provides an HTTP interface. Pintura consists of reusable 
 [CommonJS](http://wiki.commonjs.org/) modules and 
 [JSGI](http://jackjs.org/jsgi-spec.html) middleware such that it can be used on any 
 JSGI compliant JavaScript platform, but is tested on Node.js and Jack 0.3. Pintura 

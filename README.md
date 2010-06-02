@@ -189,19 +189,8 @@ include a Range header:
 The server will return a Content-Range header indicating the range returned and total
 count of the results. 
 
-Cross domain support
--------------------
-
-Pintura includes support for cross-domain requests from the browser/JavaScript through
-JSONP, window.name, or CORS. To make a request with JSONP, you can do add a callback
-parameter
-
-    /Product/33?callback=my_callback
-
 Bulk Updates and Comet
 ================
-
-(not fully implemented yet)
 
 Pintura utilizes the message/* category of media types for indicating a set of requests 
 or messages. Normally each HTTP request triggers one action in the store in its own
@@ -286,6 +275,15 @@ If you wish to use streaming, include a Streaming header:
     Streaming: true
     
 The response will continue indefinitely, sending new messages as they occur.  
+
+Cross domain support
+-------------------
+
+Pintura includes support for cross-domain requests from the browser/JavaScript through
+JSONP, window.name, or CORS. To make a request with JSONP, you can do add a callback
+parameter
+
+    /Product/33?callback=my_callback
 
 ### Homepage:
 

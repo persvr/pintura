@@ -215,8 +215,8 @@ For example, updating two objects could be done:
     Accept: message/javascript
     
     [
-      {target:"2", method:"put", body:{name:"updated 2"}, id: 1},
-      {target:"3", method:"put", body:{name:"updated 3"}, id: 2}
+      {to:"2", method:"put", body:{name:"updated 2"}, id: 1},
+      {to:"3", method:"put", body:{name:"updated 3"}, id: 2}
     ]
     
 The message/* media type can also be used in Accept headers to indicate that a response
@@ -230,11 +230,11 @@ response will be an array of objects where each object may have the following pr
 
 An example response (for the requests above):
 
-    Content-Type: message/javascript
+    Content-Type: message/json
     
     [
-      {source:"2", body:{name:"updated 2"}, id: 1},
-      {source:"3", body:{name:"updated 3"}, id: 2}
+      {"from":"2", "body":{"name":"updated 2"}, "id": 1},
+      {"from":"3", "body":{"name":"updated 3"}, "id": 2}
     ]
 
 Real-Time/Comet
@@ -253,7 +253,7 @@ For example, to subscribe to all events that take place on /User/john:
     Accept: message/javascript
     
     [
-      {target:"john", method:"subscribe"}
+      {to:"john", method:"subscribe"}
     ]
 
 The response to the client will be delayed until an event/message for /User/john occurs.

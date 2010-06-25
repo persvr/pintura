@@ -1,6 +1,6 @@
 var CSRFDetect = require("jsgi/csrf").CSRFDetect, 
 	assert = require("assert"),
-	print = require("system").print;
+	print = require("commonjs-utils/system").print;
 	
 
 exports.testCSRF = function(){

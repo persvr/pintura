@@ -1,4 +1,4 @@
-require("settings").admins = ["user"];// must do this first
+require("commonjs-utils/settings").admins = ["user"];// must do this first
 var MockRequest = require("jack/mock").MockRequest, 
 	mock = new MockRequest(require("pintura").app),
 	assert = require("assert"),

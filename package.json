@@ -10,7 +10,7 @@
 		"web",
 		"json",
 		"persevere"
-	],
+	],	
 	"mappings":{
 		"perstore": "jar:http://github.com/kriszyp/perstore/zipball/master!/lib/",
 		"commonjs-utils": "jar:http://github.com/kriszyp/commonjs-utils/zipball/master!/lib/",
@@ -28,6 +28,15 @@
 		"node": {
 			"mappings": {
 				"jsgi/multipart": "./engines/node/lib/jsgi/multipart.js"
+			}
+		},
+		"npm": {
+			"dependencies": {
+				"perstore": "*",
+				"commonjs-utils": "*",
+				"narwhal-lib": "*",
+				"tunguska": "*",
+				"jack": "*"
 			}
 		}
 	},

@@ -9,11 +9,5 @@ exports.testCSRF = function(){
 	})({method:"POST", headers:{}});
 };
 
-if(require.main === module){
-	for(var i in exports){
-		if(i.substring(0,4) == "test"){
-			print("testing " + i);
-			exports[i]();
-		}
-	}
-}
+if (require.main === module)
+    require("patr/runner").run(exports);

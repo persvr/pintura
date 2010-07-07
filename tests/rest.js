@@ -25,6 +25,6 @@ exports.testPerformance = function(){
 	}
 	print("Performed " + 1000000 / (new Date().getTime() - startTime) + " requests per second");
 }
-if (require.main == module)
-    require("os").exit(require("test/runner").run(exports));
+if (require.main === module)
+    require("patr/runner").run(exports);
 

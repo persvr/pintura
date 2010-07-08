@@ -285,6 +285,29 @@ parameter
 
     /Product/33?callback=my_callback
 
+Sessions
+========
+
+Pintura provides session management through session middleware. This middleware
+adds a getSession(createIfNecessary, expires) method to the request object. There is
+also a statically accessible exported function for accessing sessions:
+
+    require("pintura/jsgi/session").getCurrentSession(createIfNecessary, expires)
+     
+Cross-Site Request Forgery Protection
+==========================
+
+Pintura provides CSRF protection to safeguard against malicious attempts to change
+data from other websites. This protection means that requests must prove that they
+are from your (same-origin) page and are therefore authorized requests. XHR requests
+can be validated by including a Client-Id header (with any value) to prove that the request
+was generated through XHR. Non-XHR requests (such as form-based requests) can prove
+their same-origin validation by including the cookie value from the "pintura-session" in
+a "pintura-session" query parameter.
+
+If a request is not provably same-origin, the request object will include a "crossSiteForgeable"
+property value of true to indicate that it should be regarded with suspicion.
+ 
 ### Homepage:
 
 * [http://persvr.org/](http://persvr.org/)

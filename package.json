@@ -3,7 +3,7 @@
 	"author": "Kris Zyp",
 	"email": "kriszyp@gmail.com",
 	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
-	"contributors": [],
+	"contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
 	"keywords": [
 		"rest",
 		"database",

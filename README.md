@@ -201,7 +201,7 @@ that are all processed within one transaction. This allows you to do several upd
 with one HTTP request. For request with a set of messages, the body should be an
 array of objects, where each object can have the following properties (only "method" is required):
 
-* target - The id/path of the target object of the action. This is resolved relative to the path of the request URI.
+* to - The id/path of the target object of the action. This is resolved relative to the path of the request URI.
 * method - The method to execute, can be "get", "put", "post", "subscribe", or any other method on the target store.
 * body - The body of the request; the main payload of data.
 * queryString - query string
@@ -223,7 +223,7 @@ The message/* media type can also be used in Accept headers to indicate that a r
 with a set of messages should be returned. This should be used for bulk updates. A
 response will be an array of objects where each object may have the following properties:
 
-* source - The id/path of the object that was acted on 
+* from - The id/path of the object that was acted on 
 * body - The body of the response
 * id - The id of the message that this message is in response to
 * type - The type of the action that was executed

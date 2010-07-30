@@ -18,7 +18,9 @@
 		"patr": "jar:http://github.com/kriszyp/patr/zipball/master!/lib/",
 		"narwhal-lib": "jar:http://github.com/kriskowal/narwhal-lib/zipball/master!/lib/narwhal/",
 		"tunguska": "jar:http://github.com/kriszyp/tunguska/zipball/master!/lib/",
-		"jack": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/"
+		"jack": "jar:http://github.com/kriszyp/jack/zipball/master!/lib/jack/",
+		"jsgi-node": "jar:http://github.com/kriszyp/jsgi-node/zipball/master!/lib/",
+		"node-formidable": "jar:http://github.com/felixge/node-formidable/zipball/master!/lib/"
 	},
 	"overlay": {
 		"narwhal": {

@@ -13,7 +13,7 @@
 	],	
 	"mappings":{
 		"perstore": "http://github.com/kriszyp/perstore/zipball/master",
-		"cjsTemplate": "http://github.com/dmachi/cjsTemplate/zipball/master",
+		"templify": "http://github.com/dmachi/templify/zipball/master",
 		"commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/master",
 		"promised-io": "http://github.com/kriszyp/promised-io/zipball/master",
 		"patr": "http://github.com/kriszyp/patr/zipball/master",

@@ -17,10 +17,6 @@
 		"commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/master",
 		"promised-io": "http://github.com/kriszyp/promised-io/zipball/master",
 		"patr": "http://github.com/kriszyp/patr/zipball/master",
-		"narwhal-lib": {
-			"archive": "http://github.com/kriskowal/narwhal-lib/zipball/master",
-			"descriptor":{"directories":{"lib":"lib/narwhal"}}
-		},
 		"tunguska": "http://github.com/kriszyp/tunguska/zipball/master",
 		"jack": {
 			"archive": "http://github.com/kriszyp/jack/zipball/master",
@@ -45,7 +41,6 @@
 			"dependencies": {
 				"perstore": "*",
 				"commonjs-utils": "*",
-				"narwhal-lib": "*",
 				"tunguska": "*",
 				"jack": "*"
 			}

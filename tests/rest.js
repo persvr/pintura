@@ -2,9 +2,14 @@ require("commonjs-utils/settings").admins = ["user"];// must do this first
 var MockRequest = require("jack/mock").MockRequest, 
 	mock = new MockRequest(require("pintura").app),
 	assert = require("assert"),
+	TestStore = require("perstore/stores").DefaultStore();
 	parse = require("commonjs-utils/json-ext").parse;
-require("./app");
-
+TestStore.setPath("TestStore");
+require("pintura").config.getDataModel = function(){
+	return {
+		TestStore: TestStore
+	};
+};
 exports.testGet = function(){
 	var body = mock.GET("/TestStore/", {
 		headers:{
@@ -14,17 +19,6 @@ exports.testGet = function(){
 	assert.equal(parse(body).length, 3);
 };
 
-exports.testPerformance = function(){
-	var startTime = new Date().getTime();
-	for(var i = 0;i < 1000;i++){
-		mock.GET("/Class/TestStore", {
-			headers:{
-				authorization: "user:pass"
-			}
-		});
-	}
-	print("Performed " + 1000000 / (new Date().getTime() - startTime) + " requests per second");
-}
 if (require.main === module)
     require("patr/runner").run(exports);
 

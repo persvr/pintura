@@ -12,22 +12,18 @@
 		"persevere"
 	],	
 	"mappings":{
-		"perstore": "http://github.com/kriszyp/perstore/zipball/master",
+		"perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.1",
 		"templify": "http://github.com/dmachi/templify/zipball/master",
-		"commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/master",
-		"promised-io": "http://github.com/kriszyp/promised-io/zipball/master",
-		"patr": "http://github.com/kriszyp/patr/zipball/master",
-		"narwhal-lib": {
-			"archive": "http://github.com/kriskowal/narwhal-lib/zipball/master",
-			"descriptor":{"directories":{"lib":"lib/narwhal"}}
-		},
-		"tunguska": "http://github.com/kriszyp/tunguska/zipball/master",
+		"commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.1",
+		"promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.1",
+		"patr": "http://github.com/kriszyp/patr/zipball/v0.2.1",
+		"tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.1",
 		"jack": {
 			"archive": "http://github.com/kriszyp/jack/zipball/master",
 			"descriptor":{"directories":{"lib":"lib/jack"}}
 		},
-		"jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/master",
-		"node-formidable": "http://github.com/felixge/node-formidable/zipball/master"
+		"jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.1",
+		"node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
 	},
 	"overlay": {
 		"narwhal": {
@@ -45,7 +41,6 @@
 			"dependencies": {
 				"perstore": "*",
 				"commonjs-utils": "*",
-				"narwhal-lib": "*",
 				"tunguska": "*",
 				"jack": "*"
 			}

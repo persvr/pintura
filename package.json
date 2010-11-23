@@ -1,55 +1,67 @@
 {
-	"name": "pintura",
-	"author": "Kris Zyp",
-	"email": "kriszyp@gmail.com",
-	"dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
-	"contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
-	"keywords": [
-		"rest",
-		"database",
-		"web",
-		"json",
-		"persevere"
-	],	
-	"mappings":{
-		"perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.1",
-		"templify": "http://github.com/dmachi/templify/zipball/master",
-		"commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.1",
-		"promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.1",
-		"patr": "http://github.com/kriszyp/patr/zipball/v0.2.1",
-		"tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.1",
-		"jack": {
-			"archive": "http://github.com/kriszyp/jack/zipball/master",
-			"descriptor":{"directories":{"lib":"lib/jack"}}
-		},
-		"jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.1",
-		"node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
-	},
-	"overlay": {
-		"narwhal": {
-			"mappings": {
-				"uri": "url",
-				"jsgi/multipart": "./engines/rhino/lib/jsgi/multipart.js"
-			}
-		},
-		"node": {
-			"mappings": {
-				"jsgi/multipart": "./engines/node/lib/jsgi/multipart.js"
-			}
-		},
-		"npm": {
-			"dependencies": {
-				"perstore": "*",
-				"commonjs-utils": "*",
-				"tunguska": "*",
-				"jack": "*"
-			}
-		}
-	},
-	"githubName": "pintura",
-	"engines": {"node":">=0.1.30", "rhino": true},
-	"type": "zip",
-	"version": "0.1",
-	"location": "http://github.com/kriszyp/pintura/zipball/master",
-	"license":"AFL/BSD"
+  "name": "pintura",
+  "version": "0.2.4",
+  "author": "Kris Zyp",
+  "email": "kriszyp@gmail.com",
+  "dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
+  "contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
+  "keywords": [
+    "rest",
+    "database",
+    "web",
+    "json",
+    "persevere"
+  ],  
+  "mappings":{
+    "perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.1",
+    "templify": "http://github.com/dmachi/templify/zipball/master",
+    "commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.1",
+    "promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.1",
+    "patr": "http://github.com/kriszyp/patr/zipball/v0.2.1",
+    "tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.1",
+    "jack": {
+      "archive": "http://github.com/kriszyp/jack/zipball/master",
+      "descriptor":{"directories":{"lib":"lib/jack"}}
+    },
+    "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.1",
+    "node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
+  },
+  "overlay": {
+    "narwhal": {
+      "mappings": {
+        "uri": "url",
+        "jsgi/multipart": "./engines/rhino/lib/jsgi/multipart.js"
+      }
+    },
+    "node": {
+      "mappings": {
+        "jsgi/multipart": "./engines/node/lib/jsgi/multipart.js"
+      }
+    }
+  },
+  "licenses": [
+     {
+         "type": "AFLv2.1",
+         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+     },
+     {
+         "type": "BSD",
+         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+     }
+  ],
+  "repository": {
+    "type":"git",
+    "url":"http://github.com/kriszyp/tunguska"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "dependencies":{
+    "tunguska": ">=0.2.2",
+    "rql": ">=0.2.2",
+    "patr": ">=0.2.2",
+    "promised-io": ">=0.2.2",
+    "commonjs-utils": ">=0.2.2",
+    "mongodb": "*"
+  }
 }

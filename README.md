@@ -212,7 +212,7 @@ For example, updating two objects could be done:
 
     POST /Product/
     Content-Type: message/json 
-    Accept: message/javascript
+    Accept: message/json
     
     [
       {to:"2", method:"put", body:{name:"updated 2"}, id: 1},
@@ -250,7 +250,7 @@ For example, to subscribe to all events that take place on /User/john:
     POST /User/
     Content-Type: message/json
     Client-Id: 251ab4ac9312f
-    Accept: message/javascript
+    Accept: message/json
     
     [
       {to:"john", method:"subscribe"}

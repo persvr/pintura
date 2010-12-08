@@ -27,7 +27,7 @@
       "archive": "http://github.com/kriszyp/jack/zipball/master",
       "descriptor":{"directories":{"lib":"lib/jack"}}
     },
-    "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.1",
+    "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.3",
     "node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
   },
   "overlay": {

@@ -308,6 +308,25 @@ a "pintura-session" query parameter.
 If a request is not provably same-origin, the request object will include a "crossSiteForgeable"
 property value of true to indicate that it should be regarded with suspicion.
  
+JSON-RPC
+========
+Pintura supports JSON-RPC to call methods on objects. One can call a method on a
+persisted object by using the URL for the object, and JSON-RPC encoded request entity
+that describes the method invocation to make. For example:
+
+    POST /Product/33
+    Content-Type: application/json
+    Accept: application/json
+    
+    {
+      method:"addNote",
+      params:["cool product"],
+      id:"call1"
+    }
+
+Pintura will then lookup the object with the id of "/Product/33" and call object.addNote("cool product").
+The return value or thrown error from the call will be returned in a JSON-RPC response. 
+
 ### Homepage:
 
 * [http://persvr.org/](http://persvr.org/)

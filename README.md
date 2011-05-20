@@ -293,6 +293,10 @@ adds a getSession(createIfNecessary, expires) method to the request object. Ther
 also a statically accessible exported function for accessing sessions:
 
     require("pintura/jsgi/session").getCurrentSession(createIfNecessary, expires)
+
+The session object is a persistent object and therefore the save() method that must 
+be called if any changes are made to the session object (that need to be persisted to 
+future requests).
      
 Cross-Site Request Forgery Protection
 ==========================

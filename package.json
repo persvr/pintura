@@ -13,21 +13,21 @@
     "persevere"
   ],  
   "mappings":{
-    "perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.3",
+    "perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.4",
     "templify": "http://github.com/dmachi/templify/zipball/master",
     "ws": {
       "archive": "http://github.com/miksago/node-websocket-server/zipball/v1.4.01",
       "descriptor":{"directories":{"lib":"lib/ws"}}
     },
     "commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.2",
-    "promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.2",
-    "patr": "http://github.com/kriszyp/patr/zipball/v0.2.2",
-    "tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.3",
+    "promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.3",
+    "patr": "http://github.com/kriszyp/patr/zipball/v0.2.6",
+    "tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.4",
     "jack": {
       "archive": "http://github.com/kriszyp/jack/zipball/master",
       "descriptor":{"directories":{"lib":"lib/jack"}}
     },
-    "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.3",
+    "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.5",
     "node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
   },
   "overlay": {
@@ -61,12 +61,12 @@
     "lib": "./lib"
   },
   "dependencies":{
-    "tunguska": ">=0.2.2",
+    "tunguska": ">=0.2.4",
     "rql": ">=0.2.2",
-    "patr": ">=0.2.2",
+    "patr": ">=0.2.6",
     "ws": ">=1.3.51",
-    "perstore": ">=0.2.3",
-    "promised-io": ">=0.2.2",
+    "perstore": ">=0.2.4",
+    "promised-io": ">=0.2.3",
     "commonjs-utils": ">=0.2.2",
     "mongodb": "*"
   }

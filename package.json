@@ -3,7 +3,6 @@
   "version": "0.2.4",
   "author": "Kris Zyp",
   "email": "kriszyp@gmail.com",
-  "dependencies": ["narwhal", "jack", "perstore", "commonjs-utils", "narcissus"],
   "contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
   "keywords": [
     "rest",

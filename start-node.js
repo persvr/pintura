@@ -1,6 +1,6 @@
 // helpful for debugging
 var settings = require("commonjs-utils/settings"),
-	ws = require("node-websocket-server"),
+	ws = require("websocket-server"),
 	messageJson = require("./media/message/json"),
 	multiNode = require("multi-node");
 

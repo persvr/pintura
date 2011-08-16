@@ -68,6 +68,7 @@
     "promised-io": ">=0.2.3",
     "commonjs-utils": ">=0.2.2",
     "mongodb": "*",
-    "multi-node": ">=0.2.3"
+    "multi-node": ">=0.2.3",
+    "jsgi-node": ">=0.2.5"
   }
 }

@@ -6,11 +6,11 @@ var Media = require("../media").Media,
 	filesystem = require("perstore/store/filesystem").FileSystem({dataFolder: "../templates", defaultExtension: "template"}),
 	transform = require("../html-transform"),
 	Response=require("../jsgi/response").Response,
-	resolver = require("templify/templify").Resolver,
+	resolver = require("templify/lib/templify").Resolver,
 	toJSON = require("commonjs-utils/json-ext").stringify,
 	when = require("promised-io/promise").when,
 	copy = require("commonjs-utils/copy").copy;
-var templateEngine =  require('templify/templify').TemplateEngine({resolver: resolver, store: filesystem});
+var templateEngine =  require('templify/lib/templify').TemplateEngine({resolver: resolver, store: filesystem});
 
 var defaultHandler = {
 	mediaType:"text/html",

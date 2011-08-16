@@ -1,8 +1,8 @@
 // helpful for debugging
 var settings = require("commonjs-utils/settings"),
-	ws = require("websocket-server/server"),
+	ws = require("node-websocket-server"),
 	messageJson = require("./media/message/json"),
-	multiNode = require("multi-node/multi-node");
+	multiNode = require("multi-node");
 
 exports.start = function(jsgiApp, socketApp){
 	var http = require("http").createServer(

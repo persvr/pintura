@@ -2,7 +2,7 @@
  * Combines JsonP, WindowName, and CrossSiteXhr for full support for all common
  * of cross-site web app access to resources
  */ 
-var parseQuery = require("jack/querystring").parseQuery,
+var parseQuery = require("./querystring").parseQuery,
 	when = require("promised-io/promise").when;
 	
 exports.CrossSite = function(nextApp){

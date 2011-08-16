@@ -19,8 +19,8 @@
       "descriptor":{"directories":{"lib":"lib/ws"}}
     },
     "commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.2",
-    "promised-io": "http://github.com/kriszyp/promised-io/zipball/v0.2.3",
-    "patr": "http://github.com/kriszyp/patr/zipball/v0.2.6",
+    "promised-io": "jar:http://github.com/kriszyp/promised-io/zipball/v0.2.3!/",
+    "patr": "jar:http://github.com/kriszyp/patr/zipball/v0.2.6!/",
     "tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.4",
     "jack": {
       "archive": "http://github.com/kriszyp/jack/zipball/master",

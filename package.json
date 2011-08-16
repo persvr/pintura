@@ -67,6 +67,7 @@
     "perstore": ">=0.2.4",
     "promised-io": ">=0.2.3",
     "commonjs-utils": ">=0.2.2",
-    "mongodb": "*"
+    "mongodb": "*",
+    "multi-node": ">=0.2.3"
   }
 }

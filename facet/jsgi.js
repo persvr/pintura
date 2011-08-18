@@ -5,6 +5,7 @@
 var Facet = require("perstore/facet").Facet,
 	directApp = require("../pintura").directApp,
 	defer = require("promised-io/promise").defer,
+	// FIXME: what is this module?
 	namedFacets = require("../facet-resolver").namedFacets;
 
 namedFacets["application/jsgi"] = exports.JsgiFacet = Facet(Object, function(store){

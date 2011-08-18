@@ -1,4 +1,4 @@
-var CSRFDetect = require("jsgi/csrf").CSRFDetect, 
+var CSRFDetect = require("../../jsgi/csrf").CSRFDetect, 
 	assert = require("assert"),
 	print = require("promised-io/process").print;
 	

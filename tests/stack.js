@@ -15,36 +15,36 @@ var emptyApp = function(){
 		body:[]
 	} 
 };
-var lowerAppMock = new MockRequest(require("jsgi/context").SetContext({},
+var lowerAppMock = new MockRequest(require("../jsgi/context").SetContext({},
 			// We detect if the request could have been forged from another site
-			require("jsgi/csrf").CSRFDetect(emptyApp)));
+			require("../jsgi/csrf").CSRFDetect(emptyApp)));
 				// Support handling various cross-site request mechanisms like JSONP, window.name, CS-XHR
-var lowerApp2Mock = new MockRequest(require("jsgi/xsite").CrossSite(
+var lowerApp2Mock = new MockRequest(require("../jsgi/xsite").CrossSite(
 					// Handle header emulation through query parameters (useful for cross-site and links)
-					require("jsgi/http-params").HttpParams(emptyApp)));
+					require("../jsgi/http-params").HttpParams(emptyApp)));
 						// Handle HEAD requests
-var lowerApp3Mock = new MockRequest(require("jsgi/head").Head(
+var lowerApp3Mock = new MockRequest(require("../jsgi/head").Head(
 							// Add some useful headers
-							require("jsgi/pintura-headers").PinturaHeaders(config.serverName,
+							require("../jsgi/pintura-headers").PinturaHeaders(config.serverName,
 								// Handle conditional requests
-								require("jsgi/conditional").Conditional(true,emptyApp
+								require("../jsgi/conditional").Conditional(true,emptyApp
 								))));
-var middleAppMock = new MockRequest(require("jsgi/media").Serialize(config.mediaSelector,
+var middleAppMock = new MockRequest(require("../jsgi/media").Serialize(config.mediaSelector,
 										// Handle errors that are thrown, converting to appropriate status codes
-										require("jsgi/error").ErrorHandler(
+										require("../jsgi/error").ErrorHandler(
 											//	Handle transactions
 											require("perstore/jsgi/transactional").Transactional(
 												// Handle sessions
-												require("jsgi/session").Session({},
+												require("../jsgi/session").Session({},
 													// Do authentication
-													require("jsgi/auth").Authentication(config.security, emptyApp))))));
-var upperAppMock = new MockRequest(require("jsgi/media").Deserialize(config.mediaSelector,
+													require("../jsgi/auth").Authentication(config.security, emptyApp))))));
+var upperAppMock = new MockRequest(require("../jsgi/media").Deserialize(config.mediaSelector,
 															// Non-REST custom handlers
-															require('jsgi/routes').Routes(config.customRoutes,
+															require('../jsgi/routes').Routes(config.customRoutes,
 																// Add and retrieve metadata from objects
-																exports.directApp = require("jsgi/metadata").Metadata(
+																exports.directApp = require("../jsgi/metadata").Metadata(
 																	// Final REST handler
-																	require("jsgi/rest-store").RestStore(config)))));
+																	require("../jsgi/rest-store").RestStore(config)))));
 var emptyMock = new MockRequest(emptyApp);
 config.getDataModel = function(){
 	return {

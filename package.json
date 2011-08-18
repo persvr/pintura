@@ -3,6 +3,7 @@
   "version": "0.2.6",
   "author": "Kris Zyp",
   "email": "kriszyp@gmail.com",
+  "description": "JSGI-based RESTful JSON/JavaScript server",
   "contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
   "keywords": [
     "rest",
@@ -57,18 +58,19 @@
     "url":"http://github.com/kriszyp/tunguska"
   },
   "directories": {
-    "lib": "./lib"
+    "lib": "."
   },
   "dependencies":{
-    "tunguska": ">=0.2.4",
-    "rql": ">=0.2.2",
-    "patr": ">=0.2.6",
+    "tunguska": ">0.2.4",
+    "rql": ">0.2.2",
     "websocket-server": ">=1.4.01",
-    "perstore": ">=0.2.4",
-    "promised-io": ">=0.2.3",
-    "commonjs-utils": ">=0.2.2",
-    "mongodb": "*",
-    "multi-node": ">=0.2.3",
-    "jsgi-node": ">=0.2.5"
+    "perstore": ">0.2.4",
+    "promised-io": ">0.2.3",
+    "commonjs-utils": ">0.2.2",
+    "multi-node": ">0.2.3",
+    "jsgi-node": ">0.2.5"
+  },
+  "devDependencies": {
+    "patr": ">0.2.6"
   }
 }

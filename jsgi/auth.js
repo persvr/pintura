@@ -2,7 +2,7 @@
  * This middleware module provides authentication
  */
 var AccessError = require("perstore/errors").AccessError,
-	Response = require("../jsgi/response").Response,
+	Response = require("./response").Response,
 	DatabaseError = require("perstore/errors").DatabaseError,
 	promiseModule = require("promised-io/promise"),
 	when = promiseModule.when,

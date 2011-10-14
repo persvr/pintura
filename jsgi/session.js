@@ -78,7 +78,7 @@ exports.forceSession = function(request, expires){
 	if (!expires) expires = -(settings.sessionTTL || 300);
 	if (expires < 0)
 		expires = ((new Date()).valueOf())-expires*1000;
-	expiration = new Date(expires);
+	var expiration = new Date(expires);
 
 	// TODO: use add()
 	session = request.session = {

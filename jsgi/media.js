@@ -13,28 +13,44 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 function Deserialize(mediaSelector, nextApp){
 	return function(request){
 		// TODO: Do any character set conversion
-		request.variedOn = ""; // let middleware add varied on headers to the request so we can efficiently add them all at once
+		request.variedOn = ""; // let middleware add varied on headers to the request so we can efficiently add them all at once		
+		
 		if(METHOD_HAS_BODY[request.method.toLowerCase()]){
+			var body = request.body;
+			if(!body){
+				// deal with Ringo's lack of a body property
+				var input = request.input;
+				request.body = body = {
+					forEach: function(callback) {
+						var encoding = this.encoding || "UTF-8";
+						input.forEach(function(data){
+							callback(data.decodeToString(encoding));
+						});
+					}
+		    	};
+			}
+			
+			
 			if(request.headers["content-disposition"]){
 				var contentDisposition = request.headers["content-disposition"];
 				contentDisposition.split(";").forEach(function(dispositionParam){
 					var parts = dispositionParam.split("=");
 					if(parts.length === 1){
-						request.body["content-disposition"] = parts[0];
+						body["content-disposition"] = parts[0];
 					}else{
-						request.body[parts[0].trim()] = parts[1].trim().replace(/"/g,'');
+						body[parts[0].trim()] = parts[1].trim().replace(/"/g,'');
 					}
 				});
 				var contentType = request.headers["content-type"];
 				contentType.split(";").forEach(function(typeParam){
 					var parts = typeParam.split("=");
 					if(parts.length === 1){
-						request.body["content-type"] = parts[0];
+						body["content-type"] = parts[0];
 					}else{
-						request.body[parts[0].trim()] = parts[1].trim().replace(/"/g,'');
+						body[parts[0].trim()] = parts[1].trim().replace(/"/g,'');
 					}
 				});
-				return when(mediaModule.saveFile(request.body), function(fileObject){
+				return when(mediaModule.saveFile(body), function(fileObject){
 					request.body = fileObject;
 					if(request.method == "PUT"){
 						request.method = "GET";
@@ -68,7 +84,7 @@ function Deserialize(mediaSelector, nextApp){
 //					return {status: 415, headers:{}, body: ["Unsupported Media Type"]};
 				}
 				try{
-					var body = requestMedia.media.deserialize(request.body, requestMedia.parameters, request);
+					body = requestMedia.media.deserialize(body, requestMedia.parameters, request);
 				}catch(e){
 					e.status = 400;
 					throw e;

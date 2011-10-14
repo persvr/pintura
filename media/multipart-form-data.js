@@ -11,7 +11,7 @@ var stringToValue = require("./auto-type").stringToValue,
 	
 var parseMultipart = typeof process == "undefined" ?
 	// jack form parser
-	require("jack/utils").parseMultipart :
+	require("jack/lib/jack/utils").parseMultipart :
 	// node form parser
 	(function(IncomingForm, Node){
 		return function(request){ 

@@ -60,6 +60,12 @@
   "directories": {
     "lib": "."
   },
+  "maintainers": [
+  	{
+  		"name": "Kris Zyp",
+  		"email": "kriszyp@gmail.com"
+  	}
+  ],
   "dependencies":{
     "tunguska": ">0.2.4",
     "rql": ">0.2.2",

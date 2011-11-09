@@ -10,7 +10,7 @@ exports.start = function(context){
 			for (var i in context) if (context.hasOwnProperty(i)) repl.context[i] = context[i];
 		}
 	}catch(e){
-		require("sys").puts("Unabled to start repl " + e.stack);
+		console.log("Unabled to start repl " + e.stack);
 	}
 
 	if(settings.replPort){

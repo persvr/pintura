@@ -28,11 +28,3 @@ exports.unescape = function(string) {
 exports.stripTags = function (str) {
     return str.replace(/<([^>]+)>/g, "");
 }
-
-// deprecated
-
-exports.escapeHTML = function (str) {
-    require("sys").debug("html.escapeHTML is deprecated.");
-    return exports.escape(str);
-};
-

@@ -15,18 +15,10 @@
   "mappings":{
     "perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.4",
     "templify": "http://github.com/dmachi/templify/zipball/master",
-    "websocket-server": {
-      "archive": "http://github.com/miksago/node-websocket-server/zipball/v1.4.01",
-      "descriptor":{"directories":{"lib":"lib/ws"}}
-    },
     "commonjs-utils": "http://github.com/kriszyp/commonjs-utils/zipball/v0.2.2",
     "promised-io": "jar:http://github.com/kriszyp/promised-io/zipball/v0.2.3!/",
     "patr": "jar:http://github.com/kriszyp/patr/zipball/v0.2.6!/",
     "tunguska": "http://github.com/kriszyp/tunguska/zipball/v0.2.4",
-    "jack": {
-      "archive": "http://github.com/kriszyp/jack/zipball/master",
-      "descriptor":{"directories":{"lib":"lib/jack"}}
-    },
     "jsgi-node": "http://github.com/kriszyp/jsgi-node/zipball/v0.2.5",
     "node-formidable": "http://github.com/felixge/node-formidable/zipball/v0.9.8"
   },

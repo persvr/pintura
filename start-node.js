@@ -1,17 +1,16 @@
 // helpful for debugging
 var settings = require("commonjs-utils/settings"),
-	ws = require("websocket-server"),
-	messageJson = require("./media/message/json"),
-	multiNode = require("multi-node");
+	ws = require("node-websocket-server"),
+	messageJson = require("./media/message/json");
 
 exports.start = function(jsgiApp, socketApp){
-	var http = require("http").createServer(
+	var server = require("http").createServer(
 			require("jsgi-node").Listener(jsgiApp)
 		);
 	var port = settings.port || 8080;
-	var nodes = multiNode.listen({port: port, nodes: settings.processes || 1}, http);
+	server.listen(port);
 	require("jsgi-node/ws-jsgi")(ws.createServer({
-		server: http
+		server: server
 	}), function(request){
 		request.method = "POST";
 		var headers = request.headers;
@@ -21,12 +20,9 @@ exports.start = function(jsgiApp, socketApp){
 		return jsgiApp(request);
 	});
 	
-	nodes.addListener("node", function(stream){
-		require("./pintura").app.addConnection(multiNode.frameStream(stream, true));
-	});
 	console.log("Listening on port " + port);
 	// having a REPL is really helpful
-	if(nodes.isMaster){
+//	if(nodes.isMaster){
 		require("./util/repl").start();
-	}
+	//}
 };

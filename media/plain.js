@@ -6,7 +6,7 @@ var Media = require("../media").Media,
 	when = require("promised-io/promise").when,
 	getColumnsToExport = require("../media").getColumnsToExport,
 	print = require("promised-io/process").print,
-	JSONExt = require("commonjs-utils/json-ext");
+	JSONExt = require("perstore/util/json-ext");
 
 Media({
 	mediaType: "text/plain",

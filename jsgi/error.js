@@ -7,7 +7,6 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 	AccessError = require("perstore/errors").AccessError,
 	MethodNotAllowedError = require("perstore/errors").MethodNotAllowedError,
 	print = require("promised-io/process").print,
-	ErrorConstructor = require("commonjs-utils/extend-error").ErrorConstructor,
 	when = require("promised-io/promise").when;
 
 exports.ErrorHandler = function(nextApp){

@@ -28,7 +28,7 @@ Media({
                 }
                 if (typeof object.forEach === "function") {
                     var headers = object.getMetadata && object.getMetadata() || {},
-                        range = require("commonjs-utils/jsgi/parse-header")["content-range"](headers["content-range"], 25);
+                        range = require("../util/parse-header")["content-range"](headers["content-range"], 25);
                     if (range && range.prev) {
                         var prevRange = [range.prev.start, range.prev.end].join("-");
                         write('<div id="prevLink"><a rel="prev" href="' + qs + '&http-range=items%3d' + prevRange + '">Previous</a></div>')

@@ -7,8 +7,8 @@ var AccessError = require("perstore/errors").AccessError,
 	when = require("promised-io/promise").when,
 	getCurrentSession = require("./jsgi/session").getCurrentSession,
 	Restrictive = require("perstore/facet").Restrictive,
-	sha1 = require("commonjs-utils/sha1").b64_sha1,
-	settings = require("commonjs-utils/settings");
+	sha1 = require("./util/sha1").b64_sha1,
+	settings = require("perstore/util/settings");
 
 try{
 	var uuid = require("uuid");

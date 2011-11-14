@@ -21,7 +21,7 @@ Media({
 				}
 				write('<link rel="alternate" type="text/html" href="' + (qs.length > 1 && qs || '') + '"/>\n');
 				if(typeof object.forEach === "function") {
-					var range = require("commonjs-utils/jsgi/parse-header")["content-range"](response.headers["content-range"], 25);
+					var range = require("../util/parse-header")["content-range"](response.headers["content-range"], 25);
 					 // TODO escape entities, especially in qs
                     if (range.prev) {
                         var prevRange = [range.prev.start, range.prev.end].join("-");

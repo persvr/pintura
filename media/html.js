@@ -7,9 +7,9 @@ var Media = require("../media").Media,
 	transform = require("../html-transform"),
 	Response=require("../jsgi/response").Response,
 	resolver = require("templify/lib/templify").Resolver,
-	toJSON = require("commonjs-utils/json-ext").stringify,
+	toJSON = require("perstore/util/json-ext").stringify,
 	when = require("promised-io/promise").when,
-	copy = require("commonjs-utils/copy").copy;
+	copy = require("perstore/util/copy").copy;
 var templateEngine =  require('templify/lib/templify').TemplateEngine({resolver: resolver, store: filesystem});
 
 var defaultHandler = {

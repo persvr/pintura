@@ -1,5 +1,5 @@
 // helpful for debugging
-var settings = require("commonjs-utils/settings"),
+var settings = require("perstore/util/settings"),
 	ws = require("node-websocket-server"),
 	messageJson = require("./media/message/json");
 
@@ -22,7 +22,7 @@ exports.start = function(jsgiApp, socketApp){
 	
 	console.log("Listening on port " + port);
 	// having a REPL is really helpful
-//	if(nodes.isMaster){
+	if (require.main === module) {
 		require("./util/repl").start();
-	//}
+	}
 };

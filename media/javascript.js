@@ -1,7 +1,7 @@
 /**
  * Registers JavaScript media type handling
  */
-var JSONExt = require("commonjs-utils/json-ext"),
+var JSONExt = require("perstore/util/json-ext"),
 	StreamingSerializer = require("./json").StreamingSerializer,
 	when = require("promised-io/promise").when,
 	Media = require("../media").Media,

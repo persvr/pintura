@@ -8,7 +8,7 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 	when = promiseModule.when,
 	resolve = require("perstore/path").resolve,
 	Response = require("./response").Response,
-	settings = require("commonjs-utils/settings");
+	settings = require("perstore/util/settings");
 
 function dir(){var sys=require('sys');for(var i=0,l=arguments.length;i<l;i++)sys.debug(sys.inspect(arguments[i]));}
 exports.RestStore = function(options){

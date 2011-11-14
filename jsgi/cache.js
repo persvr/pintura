@@ -2,7 +2,7 @@ var CacheStore = require("perstore/store/cache").Cache,
 	shash = require("narwhal/sha").hash;
 	
 exports.FetchCache= function(cache, nextApp) {
-	var config = require("commonjs-utils/settings").cache || {};
+	var config = require("perstore/util/settings").cache || {};
 	config.alwaysVaryOn = config.alwaysVaryOn || [];
 
 	return function(request) {
@@ -67,7 +67,7 @@ exports.FetchCache= function(cache, nextApp) {
 
 
 exports.UpdateCache = function(cache, nextApp){
-	var config = require("commonjs-utils/settings").cache || {};
+	var config = require("perstore/util/settings").cache || {};
 	config.alwaysVaryOn = config.alwaysVaryOn || [];
 
 	return function(request) {

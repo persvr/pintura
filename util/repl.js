@@ -1,4 +1,4 @@
-var settings = require("commonjs-utils/settings");
+var settings = require("perstore/util/settings");
 
 exports.start = function(context){
 	if (!context) context = {require: require};

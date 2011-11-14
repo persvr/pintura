@@ -1,7 +1,7 @@
 /**
  * Registers JSON media type handling
  */
-var JSONExt = require("commonjs-utils/json-ext"),
+var JSONExt = require("perstore/util/json-ext"),
 	Media = require("../media").Media,
 	when = require("promised-io/promise").when,
 	forEachableToString = require("../media").forEachableToString;

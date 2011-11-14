@@ -7,7 +7,7 @@ var AccessError = require("perstore/errors").AccessError,
 	promiseModule = require("promised-io/promise"),
 	when = promiseModule.when,
 	print = require("promised-io/process").print,
-	base64 = require("commonjs-utils/base64");
+	base64 = require("../util/base64");
 
 exports.Authentication = function(security, nextApp){
 	// initialize the user model

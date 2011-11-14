@@ -7,9 +7,9 @@
  */
 var promiseModule = require("promised-io/promise"),
 	when = promiseModule.when,
-	settings = require("commonjs-utils/settings"),
+	settings = require("perstore/util/settings"),
 	sessionModel,
-	sha1 = require("commonjs-utils/sha1").hex_sha1;
+	sha1 = require("../util/sha1").hex_sha1;
 
 exports.Session = function(options, nextApp){
 	// assign defaults

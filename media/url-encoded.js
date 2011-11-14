@@ -1,7 +1,7 @@
 /**
  * Registers URLEncoded media type handling
  */
-var JSONExt = require("commonjs-utils/json-ext"),
+var JSONExt = require("perstore/util/json-ext"),
 	stringToValue = require("./auto-type").stringToValue,
 	print = require("promised-io/process").print,
 	when = require("promised-io/promise").when,

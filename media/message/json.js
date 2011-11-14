@@ -2,7 +2,7 @@
  * Registers message/json media handler. This is used for sending and receiving multiple
  * requests/responses/messages, and is very useful for bulk updates and Comet
  */
-var JSONExt = require("commonjs-utils/json-ext"),
+var JSONExt = require("perstore/util/json-ext"),
 	Media = require("../../media").Media,
 	all = require("promised-io/promise").all,
 	when = require("promised-io/promise").when,

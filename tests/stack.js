@@ -1,10 +1,10 @@
-require("commonjs-utils/settings").admins = ["user"];// must do this first
+require("perstore/util/settings").admins = ["user"];// must do this first
 var MockRequest = require("jack/mock").MockRequest, 
 	mock = new MockRequest(require("pintura").app),
 	assert = require("assert"),
 	TestStore = require("perstore/stores").DefaultStore();
 	var config = require("pintura").config;
-	var parse = require("commonjs-utils/json-ext").parse;
+	var parse = require("perstore/util/json-ext").parse;
 TestStore.setPath("TestStore");
 
 

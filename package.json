@@ -62,10 +62,12 @@
     "rql": ">=0.3.1",
     "websocket-server": ">=1.4.01",
     "perstore": ">=0.3.0",
-    "promised-io": ">0.3.0",
+    "promised-io": ">=0.3.0",
+    "formidable": ">=1.0.0",
+    "templify": ">=0.9.0",
     "jsgi-node": ">=0.2.5"
   },
   "devDependencies": {
-    "patr": ">0.2.6"
+    "patr": ">=0.2.6"
   }
 }

@@ -1,6 +1,6 @@
 // helpful for debugging
 var settings = require("perstore/util/settings"),
-	ws = require("node-websocket-server"),
+	ws = require("websocket-server"),
 	messageJson = require("./media/message/json");
 
 exports.start = function(jsgiApp, socketApp){

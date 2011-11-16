@@ -81,14 +81,12 @@ function Deserialize(mediaSelector, nextApp){
 					var unsupportedError = new Error("Unsupported Media Type");
 					unsupportedError.status = 415;
 					throw unsupportedError;
-//					return {status: 415, headers:{}, body: ["Unsupported Media Type"]};
 				}
 				try{
 					body = requestMedia.media.deserialize(body, requestMedia.parameters, request);
 				}catch(e){
 					e.status = 400;
 					throw e;
-//					return {status: 400, headers: {}, body: [e.message]};
 				}
 				if(typeof body.callNextApp === "function"){
 					return body.callNextApp(nextApp);
@@ -96,11 +94,8 @@ function Deserialize(mediaSelector, nextApp){
 			}
 
 		}
-//function dir(){var sys=require('sys');for(var i=0,l=arguments.length;i<l;i++)sys.debug(sys.inspect(arguments[i]));}
-//dir('DES?:', body);
 		return when(body, function(body){
-//dir('DES!:', body);
-			request.body = body
+			request.body = body;
 			return nextApp(request);
 		});
 	};

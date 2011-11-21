@@ -1,0 +1,1 @@
+module.exports = (module.path || require.resolve('./packages-dir')).replace(/pintura[\\\/]util[\\\/]packages-dir(\.js)?$/,'');

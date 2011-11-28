@@ -21,8 +21,4 @@ exports.start = function(jsgiApp, socketApp){
 	});
 	
 	console.log("Listening on port " + port);
-	// having a REPL is really helpful
-	if (require.main === module) {
-		require("./util/repl").start();
-	}
 };

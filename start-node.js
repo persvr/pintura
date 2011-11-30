@@ -7,7 +7,7 @@ exports.start = function(jsgiApp, socketApp){
 	var server = require("http").createServer(
 			require("jsgi-node").Listener(jsgiApp)
 		);
-	var port = settings.port || 8080;
+	var port = settings.port || process.env.PORT || 80;
 	server.listen(port);
 	require("jsgi-node/ws-jsgi")(ws.createServer({
 		server: server

@@ -5,7 +5,7 @@ Pintura gives you out of the box RESTful HTTP/JSON interface to data, you can si
 create data models and Pintura automatically provides an HTTP interface. Pintura consists of reusable 
 [CommonJS](http://wiki.commonjs.org/) modules and 
 [JSGI](http://jackjs.org/jsgi-spec.html) middleware such that it can be used on any 
-JSGI compliant JavaScript platform, but is tested on Node.js and Jack 0.3. Pintura 
+JSGI compliant JavaScript platform, but is tested on NodeJS and RingoJS. Pintura 
 forms the core of the [Persevere](http://www.persvr.org/) 2.0 framework which is 
 designed for rich Internet applications that rely heavily on Ajax-driven data 
 communication from the browser. To learn more about features, capabilities, and philosophy of
@@ -18,26 +18,26 @@ are [described here](http://www.sitepen.com/blog/2010/03/04/pintura-jsgi-modules
 Setup Pintura
 =================
 
-One of the easiest way to get started with Pintura is start with the 
-[Persevere example app](http://github.com/kriszyp/persevere-example-wiki),
-which can be downloaded and started with [Nodules](http://github.com/kriszyp/nodules).
-It is recommended that you install Pintura such that it is available in require statements
-under the "pintura" path. This can easily be done with a package mapping compliant module
-loader like [Nodules](http://github.com/kriszyp/nodules) by using a mapping in your 
-package.json (and then Pintura will be automatically downloaded for you):
+Pintura can be installed with NPM via:
 
-    "mappings": {
-	    "pintura": "jar:http://github.com/kriszyp/pintura/zipball/master!/lib/"
-    }
+	npm install pintura
+
+However, one of the easiest way to get started with Pintura is start with the 
+[Persevere example app](http://github.com/kriszyp/persevere-example-wiki),
+which can be installed with:
+
+	npm install persevere-example-wiki
+
+Pintura can be installed in RingoJS likewise:
+
+	ringo-admin install kriszyp/pintura
+
+See the [Persevere installation instructions for more information](http://persvr.org/Page/Installation).
 
 You can then use "app" property from require("pintura/pintura") as a JSGI application. 
 With [jsgi-node](http://github.com/kriszyp/jsgi-node) you can start Pintura:
 
     require("jsgi-node").start(require("pintura/pintura").app); 
-
-Or with Jack:
-
-    exports.app = require("pintura/pintura").app;
     
 You can see a more in-depth example of serving static files in combination with Pintura
 in the Persevere example app [startup file](http://github.com/kriszyp/persevere-example-wiki/blob/master/lib/index.js).
@@ -48,7 +48,9 @@ Using Pintura
 Persevere applications are generally built upon models, which act as classes for data.
 [Perstore](http://github.com/kriszyp/perstore) is the persistence library that is used 
 by Persevere for defining models. Models defined with Perstore are automatically
-made accessible through HTTP by Pintura. A simple example of a model is:
+made accessible through HTTP by Pintura. The goal of Pintura is that your application
+will primarily consist of model design and Pintura will handle the most of the mechanics
+of exposing that model through an HTTP/REST API. A simple example of a model is:
 
     var Model = require("perstore/model").Model,
     	store = require("perstore/mongodb").MongoDB("Product");
@@ -63,6 +65,7 @@ made accessible through HTTP by Pintura. A simple example of a model is:
             store.put(object, directives);
         }
     }); 
+
 
 HTTP/REST Basics
 ----------------
@@ -149,7 +152,7 @@ One of the core concepts of the REST architecture is content negotiation which p
 multiple views or representations of resources or objects. Providing content negotiation
 is a key functionality that Pintura provides. Pintura utilizes a set of media type handlers
 to find the best representation for serializing (or deserializing) data. Pintura comes
-with several media type handlers including:
+with several media type handlers (found in pintura/media/) including:
  
 * json – JSON media handler
 * javascript – Similar to the JSON media handler, but will serialize to additional JavaScript specific types such as dates, NaN, functions, and other types that do not exist in JSON.
@@ -166,7 +169,7 @@ Accept headers can include multiple options and quality values. By default appli
 is considered the highest quality represention by Pintura (it is basically the same as JSON
 but also can include date literals and special numeric types like NaN and Infinite).
 
-Creating new media types is common way to extend Pintura with additional formats.
+Creating new media types is a common way to extend Pintura with additional formats.
 To create a new media type handler, use the Media constructor from the "media" module.
 This constructor takes an object argument with four properties:
 
@@ -174,7 +177,6 @@ This constructor takes an object argument with four properties:
 * quality - A numeric value indicating the quality of the media type (generally a number from 0 - 1).
 * serialize - A function that is called to serialize the data (JavaScript objects or arrays) to string output for the response.
 * deserialize - A function that is called to deserialize the request input data to JavaScript objects or arrays.
-
 
 Paging/Range Requests
 -------------------
@@ -238,7 +240,7 @@ An example response (for the requests above):
     ]
 
 Real-Time/Comet
------
+-------------
 
 The message/* media type can also be useful for real-time notification of events, AKA
 comet. Stores and models that support notifications can return observable objects, typically
@@ -331,6 +333,89 @@ that describes the method invocation to make. For example:
 Pintura will then lookup the object with the id of "/Product/33" and call object.addNote("cool product").
 The return value or thrown error from the call will be returned in a JSON-RPC response. 
 
+# Modules
+
+Below are the modules that are available in Pintura:
+
+## pintura
+
+This module provides the default stack of Pintura middleware and an interface for 
+configuring it. It also registers the default set of media types.
+ 
+### app
+
+This is a JSGI application composed of the full stack of middleware that will expose
+your data models through RESTful requests.
+
+### config
+
+This takes the Pintura configuration object. Properties on this object can be overriden
+to provide customize the behavior.
+
+### addConnection(connection)
+
+This function adds a connection to another server for the purposes of clustering. The
+connection object should conform to the WebSocket API, and provides a communication
+channel for the data to be shared. 
+
+## start-node
+
+This module provides a convenience function for easily starting Pintura on NodeJS 
+using the jsgi-node delegator with WebSocket support.
+
+### start(app)
+
+This will start the given app, and route WebSocket requests through the app as well. For example:
+
+	require("pintura/start-node").start(require("pintura/pintura").app);
+	
+## security
+
+This module is responsible for implementing authentication and authorization. Typically
+you would modify the pintura module's config.security object to customize the security.
+However, the module also allows you to create new security objects.
+
+### DefaultSecurity()
+
+This is a constructor that creates a new security object.
+
+## media
+
+This module is responsible for handling content negotiation, determining the appropriate
+media deserialization or renderer for a given content type or requested content type, by
+choosing the media type with the highest calculated quality setting for the negotiation.
+
+This module provides a constructor for creating new media handlers that will be registered
+for the content negotiation process. This constructor is described in the "Content Negotiation"
+section above.
+
+## media
+
+This folder contains modules that implement various media types. These media
+types can deserialize raw content to objects and serialize objects to raw content. These
+media types are registered by pintura module. Below are the media type modules,
+their name and default quality. The quality is a number between 0 - 1 that determines
+it's preference.
+
+* media/javascript - application/javascript, q=0.9: This represents utilizing JavaScript constructs
+like native Date objects, NaN, Infinite, etc. to extend JSON
+* media/json - application/json, q=0.8: JSON representation of objects
+* media/plain - text/plain, q=0.1
+* media/uri-list - text/uri-list, q=0.05: Represents arrays as a plain text list, one item per line
+* media/url-encoded - application/x-www-form-urlencoded, q=0.1: This is default encoding
+of forms in web pages, and is useful for decoding form data sent from form submissions
+* media/csv - text/csv, q=0.2: Comma seperated values representation 
+* media/atom+xml - application/atom+xml, q=0.5: Atom feed representation of data
+* media/html - text/html, q=0.1: A simple default representation of data as HTML. If 
+you are planning on rendering objects as HTML, you will probably want to register your
+own HTML media type handler. This handler only serializes.
+* media/multipart-form-data - multipart/form-data, q=0.2: Deserializes form data
+submitted with multipart/form-data as the content type. This media type is important
+for handling forms with file uploads
+* media/message/json - message/json, q=0.75: This is a representation of messages
+in JSON format. This can be used for triggering a series of actions in a single request.
+This is described in more detail above in the Bulk Updates section.
+ 
 ### Homepage:
 
 * [http://persvr.org/](http://persvr.org/)

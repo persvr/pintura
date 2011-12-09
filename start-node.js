@@ -3,7 +3,7 @@ var settings = require("perstore/util/settings"),
 	ws = require("websocket-server"),
 	messageJson = require("./media/message/json");
 
-exports.start = function(jsgiApp, socketApp){
+exports.start = function(jsgiApp){
 	var server = require("http").createServer(
 			require("jsgi-node").Listener(jsgiApp)
 		);

@@ -379,7 +379,7 @@ However, the module also allows you to create new security objects.
 
 This is a constructor that creates a new security object.
 
-## media
+## media (module)
 
 This module is responsible for handling content negotiation, determining the appropriate
 media deserialization or renderer for a given content type or requested content type, by
@@ -389,7 +389,7 @@ This module provides a constructor for creating new media handlers that will be 
 for the content negotiation process. This constructor is described in the "Content Negotiation"
 section above.
 
-## media
+## media (folder)
 
 This folder contains modules that implement various media types. These media
 types can deserialize raw content to objects and serialize objects to raw content. These
@@ -415,6 +415,41 @@ for handling forms with file uploads
 * media/message/json - message/json, q=0.75: This is a representation of messages
 in JSON format. This can be used for triggering a series of actions in a single request.
 This is described in more detail above in the Bulk Updates section.
+ 
+## jsgi
+
+The jsgi folder contains the set of JSGI middleware components that comprise Pintura.
+
+### auth
+
+The auth module handles HTTP authorization, performing the HTTP request side of user 
+authentication and calling the security module to perform the authentication and determine the authorization of
+the user. This module will set the "remoteUser" property on the request and the "currentUser"
+property on the promise context if a user is authenticated.
+
+
+### rest-store
+
+This module delegates the HTTP REST requests to the appropriate data model. This
+component will call the method on the model corresponding the request method name 
+(converted to lowercase), so a PUT request will result in a model.put() call. The model
+is determined by the path of the request before the first slash. The first argument provided
+to the call will be the path for the requests without a body, and the body for requests
+with a body. The second argument is an object with the headers and the path as the "id"
+property.
+
+This component will alternately call the query() method if the request is a GET with a 
+query string. It will also handle the Range header, converting it to an appropriate limit()
+parameter in the query string.
+
+### media
+
+This component processes the HTTP content negotiation headers, calling the pintura/media
+module to perform content negotiation. This handles the request body deserialization
+and response body serialization. The upstream middleware/apps can expect the request.body
+value to be a deserialized object (for example, JSON would be parsed), and can return
+an object, array, or other value in the response.body and this middleware component
+will serialize it based on the client's preferred media type (defined in the Accept header).
  
 ### Homepage:
 

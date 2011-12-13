@@ -2,7 +2,7 @@
  * Provides the request as the context (across async promises)
  */
 var promiseModule = require("promised-io/promise");
-exports.SetContext= function(vars, nextApp){
+var SetContext = function(vars, nextApp){
 	return function(request){
 		try{
 			promiseModule.currentContext = request.context = ((typeof vars === 'function') ? vars(request) : vars) || {};
@@ -13,3 +13,5 @@ exports.SetContext= function(vars, nextApp){
 		}
 	};
 };
+SetContext.SetContext = SetContext;
+module.exports = SetContext;

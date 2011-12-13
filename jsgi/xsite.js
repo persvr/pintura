@@ -5,12 +5,12 @@
 var parseQuery = require("./querystring").parseQuery,
 	when = require("promised-io/promise").when;
 	
-exports.CrossSite = function(nextApp){
+var CrossSite = function(nextApp){
 	return JsonP(
 		WindowName(
 			CrossSiteXhr(nextApp)));
 };
-
+CrossSite.CrossSite = CrossSite;
 
 function JsonP(nextApp){
 	return function(request){
@@ -36,7 +36,7 @@ function JsonP(nextApp){
 		// TODO: Handle 401 with a dialog to enter credentials 
 	};
 };
-exports.JsonP = JsonP;
+CrossSite.JsonP = JsonP;
 
 function WindowName(nextApp){
 	return function(request){
@@ -62,7 +62,7 @@ function WindowName(nextApp){
 		return nextApp(request);
 	};
 };
-exports.WindowName = WindowName;
+CrossSite.WindowName = WindowName;
 
 function CrossSiteXhr(nextApp){
 	return function(request, allowed){
@@ -99,4 +99,5 @@ function CrossSiteXhr(nextApp){
 	};
 };
 
-exports.CrossSiteXhr = CrossSiteXhr;
+CrossSite.CrossSiteXhr = CrossSiteXhr;
+module.exports = CrossSite;

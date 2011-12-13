@@ -4,7 +4,7 @@
  */
 var defer = require("promised-io/promise").defer,
 	when = require("promised-io/promise").when;
-var Cascade = exports.Cascade = function(apps, status) {
+var Cascade = function(apps, status) {
     status = status || 404;
 
     return function(env) {
@@ -34,3 +34,5 @@ var Cascade = exports.Cascade = function(apps, status) {
         return deferred.promise;
     }
 }
+Cascade.Cascade = Cascade;
+module.exports = Cascade;

@@ -1,6 +1,6 @@
 var classModel = require('model').classModel;
 
-exports.Handler = function(nextApp) {
+var Handler = function(nextApp) {
     return function(request) {
         try {
             var modelPath = request.pathInfo.substring(1);
@@ -10,3 +10,5 @@ exports.Handler = function(nextApp) {
         return nextApp(request);
     };
 };
+Handler.Handler = Handler;
+module.exports = Handler;

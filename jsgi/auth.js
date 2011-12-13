@@ -9,7 +9,7 @@ var AccessError = require("perstore/errors").AccessError,
 	print = require("promised-io/process").print,
 	base64 = require("../util/base64");
 
-exports.Authentication = function(security, nextApp){
+var Authentication = function(security, nextApp){
 	// initialize the user model
 	security.getUserModel();
 	return function(request){
@@ -61,3 +61,5 @@ exports.Authentication = function(security, nextApp){
 
 	};
 };
+Authentication.Authentication = Authentication;
+module.exports = Authentication;

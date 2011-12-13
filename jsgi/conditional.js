@@ -3,7 +3,7 @@
  */
 var DatabaseError = require("perstore/errors").DatabaseError,
 	when = require("promised-io/promise").when;
-exports.Conditional = function(onlyHandleGet, nextApp){
+var Conditional = function(onlyHandleGet, nextApp){
 	return function(request){
 		if(!onlyHandleGet && request.method !== "GET"){
 			// onlyHandleGet is appropriate when an error really needs to be thrown to 
@@ -53,3 +53,5 @@ exports.Conditional = function(onlyHandleGet, nextApp){
 		});
 	};
 }
+Conditional.Conditional = Conditional;
+module.exports = Conditional;

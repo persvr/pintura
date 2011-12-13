@@ -3,7 +3,7 @@
  */
 var when = require("promised-io/promise").when;
 
-exports.Compress = function(nextApp){
+var Compress = function(nextApp){
 	return function(request){
 		var encoding = 'gzip';
 		if ((request.headers['accept-encoding']||'').indexOf(encoding) >= 0) {
@@ -53,3 +53,5 @@ exports.Compress = function(nextApp){
 		return nextApp(request);
 	};
 };
+Compress.Compress = Compress;
+module.exports = Compress;

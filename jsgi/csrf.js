@@ -2,7 +2,7 @@
  * Detects cross-site forgeable requests and warns downstream middleware/apps
  * by adding a crossSiteForgeable property to the request
  */
-exports.CSRFDetect = function(customHeader, nextApp){
+var CSRFDetect = function(customHeader, nextApp){
 	if(typeof customHeader == "function"){
 		nextApp = customHeader;
 	}
@@ -17,3 +17,6 @@ exports.CSRFDetect = function(customHeader, nextApp){
 		return nextApp(request);
 	};
 };
+
+CSRFDetect.CSRFDetect = CSRFDetect;
+module.exports = CSRFDetect;

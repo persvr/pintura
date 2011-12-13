@@ -4,7 +4,7 @@ using standards based HTTP client/server interaction with a focus on JSON format
 Pintura gives you out of the box RESTful HTTP/JSON interface to data, you can simply
 create data models and Pintura automatically provides an HTTP interface. Pintura consists of reusable 
 [CommonJS](http://wiki.commonjs.org/) modules and 
-[JSGI](http://jackjs.org/jsgi-spec.html) middleware such that it can be used on any 
+[JSGI](http://wiki.commonjs.org/wiki/JSGI/Level0/A/Draft2) middleware such that it can be used on any 
 JSGI compliant JavaScript platform, but is tested on NodeJS and RingoJS. Pintura 
 forms the core of the [Persevere](http://www.persvr.org/) 2.0 framework which is 
 designed for rich Internet applications that rely heavily on Ajax-driven data 
@@ -152,14 +152,8 @@ One of the core concepts of the REST architecture is content negotiation which p
 multiple views or representations of resources or objects. Providing content negotiation
 is a key functionality that Pintura provides. Pintura utilizes a set of media type handlers
 to find the best representation for serializing (or deserializing) data. Pintura comes
-with several media type handlers (found in pintura/media/) including:
- 
-* json – JSON media handler
-* javascript – Similar to the JSON media handler, but will serialize to additional JavaScript specific types such as dates, NaN, functions, and other types that do not exist in JSON.
-* multipart-form-data and url-encoded – Used for parsing form data.
-* csv - Comma separated values
-* atom - Atom based view
-* html - A very simple HTML view of data.
+with several media type handlers (found in pintura/media/) including JSON, JavaScript,
+multipart form-data, HTML, Atom, and others.
 
 To request a JSON view of data, include an Accept header in your HTTP request:
 
@@ -169,8 +163,42 @@ Accept headers can include multiple options and quality values. By default appli
 is considered the highest quality represention by Pintura (it is basically the same as JSON
 but also can include date literals and special numeric types like NaN and Infinite).
 
+## media (folder)
+
+This folder contains modules that implement various media types. These media
+types can deserialize raw content to objects and serialize objects to raw content. These
+media types are registered by pintura module. Below are the media type modules,
+their name and default quality. The quality is a number between 0 - 1 that determines
+it's preference.
+
+* media/javascript - application/javascript, q=0.9: This represents utilizing JavaScript constructs
+like native Date objects, NaN, Infinite, etc. to extend JSON
+* media/json - application/json, q=0.8: JSON representation of objects
+* media/plain - text/plain, q=0.1
+* media/uri-list - text/uri-list, q=0.05: Represents arrays as a plain text list, one item per line
+* media/url-encoded - application/x-www-form-urlencoded, q=0.1: This is default encoding
+of forms in web pages, and is useful for decoding form data sent from form submissions
+* media/csv - text/csv, q=0.2: Comma seperated values representation 
+* media/atom+xml - application/atom+xml, q=0.5: Atom feed representation of data
+* media/html - text/html, q=0.1: A simple default representation of data as HTML. If 
+you are planning on rendering objects as HTML, you will probably want to register your
+own HTML media type handler. This handler only serializes.
+* media/multipart-form-data - multipart/form-data, q=0.2: Deserializes form data
+submitted with multipart/form-data as the content type. This media type is important
+for handling forms with file uploads
+* media/message/json - message/json, q=0.75: This is a representation of messages
+in JSON format. This can be used for triggering a series of actions in a single request.
+This is described in more detail above in the Bulk Updates section.
+
+## media (module)
+
+This module is responsible for handling content negotiation, determining the appropriate
+media deserialization or renderer for a given content type or requested content type, by
+choosing the media type with the highest calculated quality setting for the negotiation.
+
 Creating new media types is a common way to extend Pintura with additional formats.
-To create a new media type handler, use the Media constructor from the "media" module.
+This module provides a constructor for creating new media handlers that will be registered
+for the content negotiation process. To create a new media type handler, use the Media constructor.
 This constructor takes an object argument with four properties:
 
 * mediaType - The name of the media type.
@@ -299,21 +327,7 @@ also a statically accessible exported function for accessing sessions:
 The session object is a persistent object and therefore the save() method that must 
 be called if any changes are made to the session object (that need to be persisted to 
 future requests).
-     
-Cross-Site Request Forgery Protection
-==========================
-
-Pintura provides CSRF protection to safeguard against malicious attempts to change
-data from other websites. This protection means that requests must prove that they
-are from your (same-origin) page and are therefore authorized requests. XHR requests
-can be validated by including a Client-Id header (with any value) to prove that the request
-was generated through XHR. Non-XHR requests (such as form-based requests) can prove
-their same-origin validation by including the cookie value from the "pintura-session" in
-a "pintura-session" query parameter.
-
-If a request is not provably same-origin, the request object will include a "crossSiteForgeable"
-property value of true to indicate that it should be regarded with suspicion.
- 
+      
 JSON-RPC
 ========
 Pintura supports JSON-RPC to call methods on objects. One can call a method on a
@@ -333,9 +347,178 @@ that describes the method invocation to make. For example:
 Pintura will then lookup the object with the id of "/Product/33" and call object.addNote("cool product").
 The return value or thrown error from the call will be returned in a JSON-RPC response. 
 
-# Modules
 
-Below are the modules that are available in Pintura:
+## JSGI
+
+Pintura is composed of a set of JSGI middleware components. JSGI is designed for 
+asynchronous web applications, and is well-suited for NodeJS's asynchronous 
+architecture. JSGI applications are functions that can be called with a request object as an argument,
+and return a response object, or a promise for a response. JSGI middleware generally
+refers to a function that takes a JSGI application as an argument and returns a new
+JSGI application with adding functionality. For example, we could be create a very simple
+JSGI application:
+
+	app = function(request){
+		return {
+			status: 200,
+			headers: {},
+			body: ['{"some":"json"}']
+		};
+	}
+
+Now we could apply middleware to this application to add functionality. For example,
+we could add JsonP support (for cross-domain requests) with the xsite middleware:
+
+	newApp = require("pintura/jsgi/xsite").JsonP(app);
+
+The top-level pintura module applies a set of 16 middleware components to create a JSGI
+application providing a robust web framework. An introduction to the Pintura middleware
+can be found [here](http://www.sitepen.com/blog/2010/03/04/pintura-jsgi-modules/).
+By default you don't need to directly
+manipulate these JSGI modules unless you want to customize or alter the middleware
+stack. The pintura module provides all these middleware components with a default working 
+setup that be immediately used without any knowledge of the middleware components
+described below. However, understanding the middleware modules can be important
+in understanding the full capabilities of Pintura.
+
+The middleware modules in Pintura 
+are found in the "jsgi" folder. Most of these modules directly a function that can be
+used as the middleware function, and typically take configuration information as the
+first parameter and the next application as the second. Below are the syntax and description of these modules:
+
+### auth
+
+	app = require('pintura/jsgi/auth')(security, nextApp);
+
+The auth module handles HTTP authorization, performing the HTTP request side of user 
+authentication and calling the security module to perform the authentication and determine the authorization of
+the user. This module will set the "remoteUser" property on the request and the "currentUser"
+property on the promise context if a user is authenticated. This module returns
+a middleware function that takes a security object as the first argument, and the
+next app as the second argument.  
+
+### rest-store
+
+	app = require('pintura/jsgi/rest-store')(config);
+
+This module delegates the HTTP REST requests to the appropriate data model. This
+component will call the method on the model corresponding the request method name 
+(converted to lowercase), so a PUT request will result in a model.put() call. The model
+is determined by the path of the request before the first slash. The first argument provided
+to the call will be the path for the requests without a body, and the body for requests
+with a body. The second argument is an object with the headers and the path as the "id"
+property.
+
+This component will alternately call the query() method if the request is a GET with a 
+query string. It will also handle the Range header, converting it to an appropriate limit()
+parameter in the query string.
+
+### media
+
+	app = require('pintura/jsgi/rest-store')(options);
+
+This component processes the HTTP content negotiation headers, calling the pintura/media
+module to perform content negotiation. This handles the request body deserialization
+and response body serialization. The upstream middleware/apps can expect the request.body
+value to be a deserialized object (for example, JSON would be parsed), and can return
+an object, array, or other value in the response.body and this middleware component
+will serialize it based on the client's preferred media type (defined in the Accept header).
+The content negotiation is described in more detail in the Content Negotiation section.
+
+The options object must have a getDataModel(request) that returns the data model
+object that provides all the data to be returned from the server requests.
+
+### csrf
+
+	app = require('pintura/jsgi/csrf')(customHeader, nextApp);
+
+This module provides CSRF protection to safeguard against malicious attempts to change
+data from other websites. This protection means that requests must prove that they
+are from your (same-origin) page and are therefore authorized requests. XHR requests
+can be validated by including a custom header (defaults to header named "x-requested-with", with any header value) to prove that the request
+was generated through XHR. Non-XHR requests (such as form-based requests) can prove
+their same-origin validation by including the cookie value from the "pintura-session" in
+a "pintura-session" query parameter.
+
+If a request is not provably same-origin, the request object will include a "crossSiteForgeable"
+property value of true to indicate that it should be regarded with suspicion.
+
+The customHeader argument can be the name of an alternate custom header to test for.
+
+### xsite
+
+	app = require('pintura/jsgi/xsite')(nextApp);
+	app = require('pintura/jsgi/xsite').JsonP(nextApp);
+	
+This module provides support for cross-domain requests, that is, it enables web pages
+that originate from other servers to request data from your server. This module
+supports three different forms of cross-domain support (each of these is a property:
+
+* JsonP - With JsonP the response is wrapped in a callback function so that the requesting
+page can provide a function to be called with the response data. The response will normally
+use the Javascript media type.
+* CrossSiteXhr - Modern browsers support cross-domain XHR requests if the server
+provides the proper authorization headers. This middleware component provides these
+headers to enable these XHR requests.
+* WindowName - This technique is similar to JsonP, but allows the requesting page
+to embed the response in a frame to insulate it from arbitrary code execution, and
+is described [here](http://www.sitepen.com/blog/2008/07/22/windowname-transport/).
+* CrossSite - This combines support for all three of the mechanisms above. This is the export
+of the module.
+ 
+### http-params
+
+	app = require('pintura/jsgi/http-params')(nextApp);
+
+This module provides a means for emulating HTTP headers and methods using query
+parameters. This is usually used in conjunction with the xsite middleware to enable 
+further functionality for cross-domain requests. The following query parameters
+can be included:
+
+* path?http-<header-name>=<header-value> - The middleware will translate this to having 
+a header of the with the specified header name and value. For example, we could emulate
+a Accept: application/json with path?http-Accept=application/json
+* path?http-method=<method-name> - This will be translated to a request with the 
+given HTTP method
+* path?http-content=<content> - This will be translated to having the parameter value
+as the request body. For example, we could emulate a POST with content: path?http-method=POST&http-content=%7B%22some%22%3A%22json%22%7D
+
+### compress
+
+	app = require('pintura/jsgi/compress')(nextApp);
+
+This module provides gzipping of content. Gzipping can significantly reduce the size
+of responses and improve performance. This module requires the installation of the
+"compress" package (npm install compress).
+
+### cascade
+
+	app = require('pintura/jsgi/cascade')(apps);
+
+This module provides the ability to progressively try several JSGI applications until
+one provides a successful response. For example:
+
+	app = require('pintura/jsgi/cascade')([
+		app1, app2, app3
+	]);
+
+In this scenario, the request would be first handled by app1. If the response was successful (not a 404),
+then the response would go to the client. If the response was a 404, then cascade will
+delegate to app2 to handle the request, and so on.
+
+### static
+
+	app = require('pintura/jsgi/static')({
+		urls: urls,
+		root: root,
+		directoryListing
+	});
+
+This module provides request handling for static files.
+
+# Top-Level Modules
+
+Below are the top-level modules that are available in Pintura:
 
 ## pintura
 
@@ -379,78 +562,7 @@ However, the module also allows you to create new security objects.
 
 This is a constructor that creates a new security object.
 
-## media (module)
 
-This module is responsible for handling content negotiation, determining the appropriate
-media deserialization or renderer for a given content type or requested content type, by
-choosing the media type with the highest calculated quality setting for the negotiation.
-
-This module provides a constructor for creating new media handlers that will be registered
-for the content negotiation process. This constructor is described in the "Content Negotiation"
-section above.
-
-## media (folder)
-
-This folder contains modules that implement various media types. These media
-types can deserialize raw content to objects and serialize objects to raw content. These
-media types are registered by pintura module. Below are the media type modules,
-their name and default quality. The quality is a number between 0 - 1 that determines
-it's preference.
-
-* media/javascript - application/javascript, q=0.9: This represents utilizing JavaScript constructs
-like native Date objects, NaN, Infinite, etc. to extend JSON
-* media/json - application/json, q=0.8: JSON representation of objects
-* media/plain - text/plain, q=0.1
-* media/uri-list - text/uri-list, q=0.05: Represents arrays as a plain text list, one item per line
-* media/url-encoded - application/x-www-form-urlencoded, q=0.1: This is default encoding
-of forms in web pages, and is useful for decoding form data sent from form submissions
-* media/csv - text/csv, q=0.2: Comma seperated values representation 
-* media/atom+xml - application/atom+xml, q=0.5: Atom feed representation of data
-* media/html - text/html, q=0.1: A simple default representation of data as HTML. If 
-you are planning on rendering objects as HTML, you will probably want to register your
-own HTML media type handler. This handler only serializes.
-* media/multipart-form-data - multipart/form-data, q=0.2: Deserializes form data
-submitted with multipart/form-data as the content type. This media type is important
-for handling forms with file uploads
-* media/message/json - message/json, q=0.75: This is a representation of messages
-in JSON format. This can be used for triggering a series of actions in a single request.
-This is described in more detail above in the Bulk Updates section.
- 
-## jsgi
-
-The jsgi folder contains the set of JSGI middleware components that comprise Pintura.
-
-### auth
-
-The auth module handles HTTP authorization, performing the HTTP request side of user 
-authentication and calling the security module to perform the authentication and determine the authorization of
-the user. This module will set the "remoteUser" property on the request and the "currentUser"
-property on the promise context if a user is authenticated.
-
-
-### rest-store
-
-This module delegates the HTTP REST requests to the appropriate data model. This
-component will call the method on the model corresponding the request method name 
-(converted to lowercase), so a PUT request will result in a model.put() call. The model
-is determined by the path of the request before the first slash. The first argument provided
-to the call will be the path for the requests without a body, and the body for requests
-with a body. The second argument is an object with the headers and the path as the "id"
-property.
-
-This component will alternately call the query() method if the request is a GET with a 
-query string. It will also handle the Range header, converting it to an appropriate limit()
-parameter in the query string.
-
-### media
-
-This component processes the HTTP content negotiation headers, calling the pintura/media
-module to perform content negotiation. This handles the request body deserialization
-and response body serialization. The upstream middleware/apps can expect the request.body
-value to be a deserialized object (for example, JSON would be parsed), and can return
-an object, array, or other value in the response.body and this middleware component
-will serialize it based on the client's preferred media type (defined in the Accept header).
- 
 ### Homepage:
 
 * [http://persvr.org/](http://persvr.org/)

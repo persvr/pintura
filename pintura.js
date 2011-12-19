@@ -21,11 +21,13 @@ var config = exports.config = {
 	responseCache: require("perstore/store/memory").Memory({path: "response"}), //require("perstore/store/filesystem").FileSystem("response", {defaultExtension: "cache",dataFolder: "cache" }),
 	serverName: "Pintura",
 	customRoutes: [],
-	getDataModel: function(){ 
-		throw new Error("You must assign a getDataModel method to the pintura config object in order to expose data");
+	getDataModel: function(request){ 
+		return exports.getDataModel(request);
 	}
 };
-
+exports.getDataModel = function(){ 
+	throw new Error("You must assign a getDataModel method to the pintura config object in order to expose data");
+};
 exports.app = JsgiApp(null, config);
 
 function JsgiApp(nextApp, config){

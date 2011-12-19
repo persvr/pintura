@@ -39,6 +39,11 @@ With [jsgi-node](http://github.com/kriszyp/jsgi-node) you can start Pintura:
 
     require("jsgi-node").start(require("pintura/pintura").app); 
     
+Pintura requires a local.json file to be present in the current working directory.
+An example of this file can be found [here](https://github.com/kriszyp/persevere-example-wiki/blob/master/local.json).
+At a minimum Pintura also requires an implementation of the require("pintura/pintura").getDataModel
+function to provide the data model that drives the HTTP REST interface.
+
 You can see a more in-depth example of serving static files in combination with Pintura
 in the Persevere example app [startup file](http://github.com/kriszyp/persevere-example-wiki/blob/master/lib/index.js).
  
@@ -54,7 +59,7 @@ of exposing that model through an HTTP/REST API. A simple example of a model is:
 
     var Model = require("perstore/model").Model,
     	store = require("perstore/mongodb").MongoDB("Product");
-    Product = Model("Product",store, {
+    Product = Model(store, {
         properties: {
             name: String
             // we can define other properties, all 
@@ -66,6 +71,18 @@ of exposing that model through an HTTP/REST API. A simple example of a model is:
         }
     }); 
 
+We can then expose this data model through Pintura's HTTP REST interface by implementing 
+the getDataModel function on the pintura module. This function is called for each HTTP
+request:
+
+	require("pintura/pintura").getDataModel = function(request){
+		return {
+			Product: Product
+		};
+	};
+
+Our data model will then be available at the path of /Product/ such that we can make
+HTTP requests like GET /Product/2.
 
 HTTP/REST Basics
 ----------------
@@ -129,6 +146,41 @@ credentials.
 * {g|s}etUserClass - Retrieve or set the user class used to find users
 * {g|s}etAuthClass - Retrieve or set the authentication class used to find authentication tokens
 
+We could then use the security authorization state to restrict or allow access to different
+parts of the application data model. For example, we could check to see if a user is
+logged to determine if we should provide access to the "Secret" data: 
+
+	var publicModel = {
+		Product: Product
+	};
+	var authorizedModel = {
+		Product: Product,
+		Secret: SecretModel
+	};
+	require("pintura/pintura").getDataModel = function(request){
+		var user = request.remoteUser;
+		if(user){
+			return authorizedModel;
+		}
+		return publicModel;
+	};
+
+We could also potentially have a data model that is readonly for some users and 
+editable for others. In the example above, we could specify that the Product table
+is readonly for users that are not logged in:
+
+	var Restrictive = require("perstore/facet").Restrictive;
+	var publicModel = {
+		// the Product table is restricted to readonly for public access 
+		Product: Restrictive(Product)
+	};
+	var authorizedModel = {
+		// the Product table is unrestricted here for authorized users 
+		Product: Product,
+		Secret: SecretModel
+	};
+	// assign the data model as above
+	
 Error Handling
 ===========
 
@@ -432,9 +484,6 @@ an object, array, or other value in the response.body and this middleware compon
 will serialize it based on the client's preferred media type (defined in the Accept header).
 The content negotiation is described in more detail in the Content Negotiation section.
 
-The options object must have a getDataModel(request) that returns the data model
-object that provides all the data to be returned from the server requests.
-
 By default the mediaSelector should come from require("./media").Media.optimumMedia.
 
 ### csrf
@@ -602,7 +651,10 @@ Below are the top-level modules that are available in Pintura:
 ## pintura
 
 This module provides the default stack of Pintura middleware and an interface for 
-configuring it. It also registers the default set of media types.
+configuring it. It registers the default set of media types. This module is the main interface
+for implementing access to the data model.
+
+ 
  
 ### app
 

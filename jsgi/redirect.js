@@ -1,6 +1,6 @@
 var uri = require("../util/url");
 
-exports.Redirect = function (path, status) {
+var Redirect = function (path, status) {
     
     status = status || 301;
     
@@ -27,3 +27,5 @@ exports.Redirect = function (path, status) {
         }
     }
 }
+Redirect.Redirect = Redirect;
+module.exports = Redirect;

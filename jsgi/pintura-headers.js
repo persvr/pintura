@@ -16,4 +16,5 @@ function PinturaHeaders(serverName, nextApp){
 		});
 	};
 }
-exports.PinturaHeaders = PinturaHeaders;
+PinturaHeaders.PinturaHeaders = PinturaHeaders;
+module.exports = PinturaHeaders;

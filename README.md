@@ -133,7 +133,9 @@ Error Handling
 ===========
 
 Pintura includes middleware for catching errors and converting them to appropriate
-HTTP error status codes. The following uncaught errors (until the error middleware catches them)
+HTTP error status codes. This makes it easy for application code to throw an error
+and have it automatically propagate to an appropriate HTTP failure response.
+The following uncaught errors (until the error middleware catches them)
 are translated:
 
 * URIError - 400
@@ -327,7 +329,11 @@ also a statically accessible exported function for accessing sessions:
 The session object is a persistent object and therefore the save() method that must 
 be called if any changes are made to the session object (that need to be persisted to 
 future requests).
-      
+
+It is worth noting that one of the goals of REST applications is to minimize server
+management of application state, so session use should be generally be avoided or
+kept to a minimum when possible.
+
 JSON-RPC
 ========
 Pintura supports JSON-RPC to call methods on objects. One can call a method on a
@@ -415,7 +421,8 @@ parameter in the query string.
 
 ### media
 
-	app = require('pintura/jsgi/rest-store')(options);
+	app = require('pintura/jsgi/media').Serialize(mediaSelector, nextApp);
+	app = require('pintura/jsgi/media').Deserialize(mediaSelector, nextApp);
 
 This component processes the HTTP content negotiation headers, calling the pintura/media
 module to perform content negotiation. This handles the request body deserialization
@@ -427,6 +434,8 @@ The content negotiation is described in more detail in the Content Negotiation s
 
 The options object must have a getDataModel(request) that returns the data model
 object that provides all the data to be returned from the server requests.
+
+By default the mediaSelector should come from require("./media").Media.optimumMedia.
 
 ### csrf
 
@@ -514,7 +523,77 @@ delegate to app2 to handle the request, and so on.
 		directoryListing
 	});
 
-This module provides request handling for static files.
+This module provides request handling for static files. The static handler will only match
+paths that begin with one of the strings provided in the "urls" array. It will look in the
+directory specified by the "root" parameter for a file matching the path. The
+directoryListing parameter is a boolean indicating whether or not to show directory
+listings.
+
+### error
+
+	app = require('pintura/jsgi/error')(nextApp);
+
+This module provides error handling, catching JavaScript errors and converting them
+to corresponding HTTP error responses. These responses are documented above in
+the Error Handling section.
+
+### session
+
+	app = require('pintura/jsgi/session').Session({
+		model: model
+	}, nextApp);
+
+The session component adds support for HTTP sessions that persist across HTTP requests.
+Sessions are often used for maintaining user authorization and other application state
+information. If the optional "model" parameter is provided, the provided model will be
+used to store the sessions for the application. The Sessions section above for more
+information on accessing the current session.
+
+### context
+
+	app = require('pintura/jsgi/context')(vars, nextApp);
+
+One of the challenges with working asynchronous code is that there can be times when
+you wish for some contextual state information to be preserved across multiple
+asynchronous actions, without having to actually pass the state to each function in
+the asynchronous chain. A common examples of such contextual state would be tracking
+the current transaction, or the currently logged in user. Such state information could be 
+stored in a singleton (a module property or a global variable), but with asynchronous
+actions being interleaved, this is unsuitable for tracking state across asynchronous continuations
+of an action. 
+
+The promised-io package's promise module provides a facility for tracking state across
+asynchronous operations. The promise module tracks the "context" global variable,
+and whatever value that was in the variable at the time a promise was created
+will be restored when that promise is fulfilled (or rejected). The pintura/jsgi/context module adds a context object to the JSGI request object
+that is tied to the promise module.
+
+### head
+
+	app = require('pintura/jsgi/head')(nextApp);
+
+This is a very simple middleware module that adds automatic support for HTTP HEAD
+requests. This component will convert HEAD requests to a GET request for downstream
+applications and then strip the response body from the response.
+
+### cache
+
+	app = require('pintura/jsgi/cache').FetchCache(cache, nextApp);
+	app = require('pintura/jsgi/cache').UpdateCache(cache, nextApp);
+ 
+Provides caching of downstream responses JSGI applications.
+
+### redirect
+
+	app = require('pintura/jsgi/redirect')(path);
+	
+Sends a redirect response to the provided path.
+
+### pintura-headers
+
+	app = require('pintura/jsgi/pintura-headers')(serverName, nextApp);
+
+This middleware adds a Server header and a username header to the HTTP responses.
 
 # Top-Level Modules
 

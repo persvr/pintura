@@ -199,6 +199,20 @@ are translated:
 * RangeError - 416
 * Other errors - 500 or if the error object has a "status" property, that will be used
 
+For example, if we had a model definition, we could throw a TypeError if the date
+property on PUT requests is not a valid date. This will result in a 403 response from the server
+to the client for PUT requests that violate this condition:
+
+	Purchase = Model(store, {
+	    // we can define handlers
+	    put: function(object, directives){
+	    	if(isNaN(new Date(object.date).getTime())){
+	    		throw new TypeError("Invalid date");
+	    	}
+	    	...
+	    }
+	}); 
+
 Content Negotiation
 ===============
 

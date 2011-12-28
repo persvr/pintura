@@ -23,35 +23,35 @@ Pintura can be installed with NPM via:
 	npm install pintura
 
 However, one of the easiest way to get started with Pintura is start with the 
-[Persevere example app](http://github.com/kriszyp/persevere-example-wiki),
+[Persevere example app](http://github.com/persvr/persevere-example-wiki),
 which can be installed with:
 
 	npm install persevere-example-wiki
 
 Pintura can be installed in RingoJS likewise:
 
-	ringo-admin install kriszyp/pintura
+	ringo-admin install persvr/pintura
 
 See the [Persevere installation instructions for more information](http://persvr.org/Page/Installation).
 
 You can then use "app" property from require("pintura/pintura") as a JSGI application. 
-With [jsgi-node](http://github.com/kriszyp/jsgi-node) you can start Pintura:
+With [jsgi-node](http://github.com/persvr/jsgi-node) you can start Pintura:
 
     require("jsgi-node").start(require("pintura/pintura").app); 
     
 Pintura requires a local.json file to be present in the current working directory.
-An example of this file can be found [here](https://github.com/kriszyp/persevere-example-wiki/blob/master/local.json).
+An example of this file can be found [here](https://github.com/persvr/persevere-example-wiki/blob/master/local.json).
 At a minimum Pintura also requires an implementation of the require("pintura/pintura").getDataModel
 function to provide the data model that drives the HTTP REST interface.
 
 You can see a more in-depth example of serving static files in combination with Pintura
-in the Persevere example app [startup file](http://github.com/kriszyp/persevere-example-wiki/blob/master/lib/index.js).
+in the Persevere example app [startup file](http://github.com/persvr/persevere-example-wiki/blob/master/lib/index.js).
  
 Using Pintura
 ===========
 
 Persevere applications are generally built upon models, which act as classes for data.
-[Perstore](http://github.com/kriszyp/perstore) is the persistence library that is used 
+[Perstore](http://github.com/persvr/perstore) is the persistence library that is used 
 by Persevere for defining models. Models defined with Perstore are automatically
 made accessible through HTTP by Pintura. The goal of Pintura is that your application
 will primarily consist of model design and Pintura will handle the most of the mechanics
@@ -117,7 +117,7 @@ This would call the "put" handler defined in the model above.
 One can also query stores through HTTP. Requests of the form /{model}/?{query}
 are passed through to the model by calls to the "query" method on the model.
 Perstore provides 
-[query parsing capabilities](http://github.com/kriszyp/perstore) and stores implement 
+[query parsing capabilities](http://github.com/persvr/perstore) and stores implement 
 query execution (dependent on the capabilities of the DB).
 An example of a query:
 
@@ -714,7 +714,7 @@ This is a constructor that creates a new security object.
 
 ### Source & Download:
 
-* [http://github.com/kriszyp/pintura/](http://github.com/kriszyp/pintura)
+* [http://github.com/persvr/pintura/](http://github.com/persvr/pintura)
 
 ### Mailing list:
 

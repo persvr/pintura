@@ -46,7 +46,7 @@
   ],
   "repository": {
     "type":"git",
-    "url":"http://github.com/kriszyp/tunguska"
+    "url":"http://github.com/persvr/pintura"
   },
   "directories": {
     "lib": "."

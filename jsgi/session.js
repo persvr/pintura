@@ -20,9 +20,15 @@ exports.Session = function(options, nextApp){
 	if (!options.expires) options.expires = -(settings.sessionTTL || 300);
 	// start the reaper
 	// TODO: get a timer for narwhal
-	if (typeof exports.getSessionModel().validate === 'function' && typeof setTimeout !== "undefined") setTimeout(function(){
-		exports.getSessionModel().validate();
-	}, options.expires*1000);
+	function validate() {
+		// allow for this to occur asynchronously
+		when(exports.getSessionModel().validate(), function () {
+			setTimeout(validate, options.expires * -1000);
+		});
+	}
+	if (typeof exports.getSessionModel().validate === 'function' && typeof setTimeout !== "undefined") {
+		validate();
+	}
 	//
 	return function(request){
 		var session;

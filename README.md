@@ -400,8 +400,8 @@ It is worth noting that one of the goals of REST applications is to minimize ser
 management of application state, so session use should be generally be avoided or
 kept to a minimum when possible.
 
-JSON-RPC
-========
+# JSON-RPC
+
 Pintura supports JSON-RPC to call methods on objects. One can call a method on a
 persisted object by using the URL for the object, and JSON-RPC encoded request entity
 that describes the method invocation to make. For example:
@@ -420,7 +420,7 @@ Pintura will then lookup the object with the id of "/Product/33" and call object
 The return value or thrown error from the call will be returned in a JSON-RPC response. 
 
 
-## JSGI
+# JSGI
 
 Pintura is composed of a set of JSGI middleware components. JSGI is designed for 
 asynchronous web applications, and is well-suited for NodeJS's asynchronous 
@@ -458,7 +458,7 @@ are found in the "jsgi" folder. Most of these modules directly a function that c
 used as the middleware function, and typically take configuration information as the
 first parameter and the next application as the second. Below are the syntax and description of these modules:
 
-### auth
+## auth
 
 	app = require('pintura/jsgi/auth')(security, nextApp);
 
@@ -469,7 +469,7 @@ property on the promise context if a user is authenticated. This module returns
 a middleware function that takes a security object as the first argument, and the
 next app as the second argument.  
 
-### rest-store
+## rest-store
 
 	app = require('pintura/jsgi/rest-store')(config);
 
@@ -485,7 +485,7 @@ This component will alternately call the query() method if the request is a GET 
 query string. It will also handle the Range header, converting it to an appropriate limit()
 parameter in the query string.
 
-### media
+## media
 
 	app = require('pintura/jsgi/media').Serialize(mediaSelector, nextApp);
 	app = require('pintura/jsgi/media').Deserialize(mediaSelector, nextApp);
@@ -500,7 +500,7 @@ The content negotiation is described in more detail in the Content Negotiation s
 
 By default the mediaSelector should come from require("./media").Media.optimumMedia.
 
-### csrf
+## csrf
 
 	app = require('pintura/jsgi/csrf')(customHeader, nextApp);
 
@@ -517,7 +517,7 @@ property value of true to indicate that it should be regarded with suspicion.
 
 The customHeader argument can be the name of an alternate custom header to test for.
 
-### xsite
+## xsite
 
 	app = require('pintura/jsgi/xsite')(nextApp);
 	app = require('pintura/jsgi/xsite').JsonP(nextApp);
@@ -537,8 +537,8 @@ to embed the response in a frame to insulate it from arbitrary code execution, a
 is described [here](http://www.sitepen.com/blog/2008/07/22/windowname-transport/).
 * CrossSite - This combines support for all three of the mechanisms above. This is the export
 of the module.
- 
-### http-params
+
+## http-params
 
 	app = require('pintura/jsgi/http-params')(nextApp);
 
@@ -547,15 +547,15 @@ parameters. This is usually used in conjunction with the xsite middleware to ena
 further functionality for cross-domain requests. The following query parameters
 can be included:
 
-* path?http-<header-name>=<header-value> - The middleware will translate this to having 
+* path?http-&lt;header-name>=&lt;header-value> - The middleware will translate this to having 
 a header of the with the specified header name and value. For example, we could emulate
 a Accept: application/json with path?http-Accept=application/json
-* path?http-method=<method-name> - This will be translated to a request with the 
+* path?http-method=&lt;method-name> - This will be translated to a request with the 
 given HTTP method
-* path?http-content=<content> - This will be translated to having the parameter value
+* path?http-content=&lt;content> - This will be translated to having the parameter value
 as the request body. For example, we could emulate a POST with content: path?http-method=POST&http-content=%7B%22some%22%3A%22json%22%7D
 
-### compress
+## compress
 
 	app = require('pintura/jsgi/compress')(nextApp);
 
@@ -563,7 +563,7 @@ This module provides gzipping of content. Gzipping can significantly reduce the 
 of responses and improve performance. This module requires the installation of the
 "compress" package (npm install compress).
 
-### cascade
+## cascade
 
 	app = require('pintura/jsgi/cascade')(apps);
 
@@ -578,7 +578,7 @@ In this scenario, the request would be first handled by app1. If the response wa
 then the response would go to the client. If the response was a 404, then cascade will
 delegate to app2 to handle the request, and so on.
 
-### static
+## static
 
 	app = require('pintura/jsgi/static')({
 		urls: urls,
@@ -592,7 +592,7 @@ directory specified by the "root" parameter for a file matching the path. The
 directoryListing parameter is a boolean indicating whether or not to show directory
 listings.
 
-### error
+## error
 
 	app = require('pintura/jsgi/error')(nextApp);
 
@@ -600,7 +600,7 @@ This module provides error handling, catching JavaScript errors and converting t
 to corresponding HTTP error responses. These responses are documented above in
 the Error Handling section.
 
-### session
+## session
 
 	app = require('pintura/jsgi/session').Session({
 		model: model
@@ -612,7 +612,7 @@ information. If the optional "model" parameter is provided, the provided model w
 used to store the sessions for the application. The Sessions section above for more
 information on accessing the current session.
 
-### context
+## context
 
 	app = require('pintura/jsgi/context')(vars, nextApp);
 
@@ -631,7 +631,7 @@ and whatever value that was in the variable at the time a promise was created
 will be restored when that promise is fulfilled (or rejected). The pintura/jsgi/context module adds a context object to the JSGI request object
 that is tied to the promise module.
 
-### head
+## head
 
 	app = require('pintura/jsgi/head')(nextApp);
 
@@ -639,20 +639,20 @@ This is a very simple middleware module that adds automatic support for HTTP HEA
 requests. This component will convert HEAD requests to a GET request for downstream
 applications and then strip the response body from the response.
 
-### cache
+## cache
 
 	app = require('pintura/jsgi/cache').FetchCache(cache, nextApp);
 	app = require('pintura/jsgi/cache').UpdateCache(cache, nextApp);
  
 Provides caching of downstream responses JSGI applications.
 
-### redirect
+## redirect
 
 	app = require('pintura/jsgi/redirect')(path);
 	
 Sends a redirect response to the provided path.
 
-### pintura-headers
+## pintura-headers
 
 	app = require('pintura/jsgi/pintura-headers')(serverName, nextApp);
 

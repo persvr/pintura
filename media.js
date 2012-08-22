@@ -64,7 +64,14 @@ Media.optimumMedia = function(source, acceptTypeHeader){
 				if("*/*" == type || mediaType == type){;
 					checkMedia({
 						serialize: function(){
-							return exports.loadFile(alternate);
+							return {
+								// loadFile could return a promise
+								forEach: function(each){
+									return when(exports.loadFile(alternate), function(file){
+										file.forEach(each);
+									});
+								}
+							};
 						},
 						getQuality: function(){
 							return +(alternate.q || 0.5);

@@ -99,6 +99,7 @@ Pintura converts HTTP requests to method calls on the model. When an HTTP reques
 is received it is converted to a call to the model of the form:
 
     {model}.{httpMethod}({id or body},metadata);
+
 For example if a request is received:
 
     GET /Product/33 
@@ -118,7 +119,7 @@ One can also query stores through HTTP. Requests of the form /{model}/?{query}
 are passed through to the model by calls to the "query" method on the model.
 Perstore provides 
 [query parsing capabilities](http://github.com/persvr/perstore) and stores implement 
-query execution (dependent on the capabilities of the DB).
+query execution (dependent on the capabilities of the DB), based on [RQL](http://github.com/persvr/rql).
 An example of a query:
 
     GET /Product/?type=shoe&price=lt=20&sort(-rating)
@@ -132,21 +133,30 @@ Facets are used to define the different levels of access for models. Pintura's s
 configuration object can then be configured to define how users are authenticated
 and which facets or access levels each user is given. The security configuration object
 is available at require("pintura/pintura").config.security. The primary functions
-that can be overriden are:
+that can be overriden or used are:
 
 * authenticate(username, password) -  The authenticate method
 allows you to define a custom authentication method and defaults to authenticating
 against the auto-generated User model. Should return a user object.
-* getAllowedFacets(user, request) - Allows you to define which facets are available
-for a given user. This should return an array of facets. By default this grants 
-full access to everything (the require("pintura/security").FullAccess facet) for all users.
 * createUser(username, password) - This should create a new user for with the given
 credentials.
 * getUsername(user) - Should return the name of the given user.
 * {g|s}etUserClass - Retrieve or set the user class used to find users
 * {g|s}etAuthClass - Retrieve or set the authentication class used to find authentication tokens
+* encryptPassword(username, password) - By default applies SHA1 hashing to the password.
+* getUserModel()/getAuthenticationFacet() - Allows you to define your own user model
+and facet for access to the user model (for unauthenticated users).
 
-We could then use the security authorization state to restrict or allow access to different
+For example, we could choose to store passwords in plaintext by changing the
+encryptPassword method to a return the password unchanged:
+
+	require("pintura/pintura").config.security.encryptPassword = function(username, password){
+		return password;
+	};
+
+## Access After Authentication
+
+Once authentication is established, we could then use the user's authentication state to restrict or allow access to different
 parts of the application data model. For example, we could check to see if a user is
 logged to determine if we should provide access to the "Secret" data: 
 
@@ -179,7 +189,7 @@ is readonly for users that are not logged in:
 		Product: Product,
 		Secret: SecretModel
 	};
-	// assign the data model as above
+	// assign the data model based on authentication as above
 	
 Error Handling
 ===========
@@ -237,7 +247,8 @@ This folder contains modules that implement various media types. These media
 types can deserialize raw content to objects and serialize objects to raw content. These
 media types are registered by pintura module. Below are the media type modules,
 their name and default quality. The quality is a number between 0 - 1 that determines
-it's preference.
+it's preference. The content type is selected by choosing the media with the highest product of the 
+requested quality setting (from the Accept header) and the server's quality setting (defined by the media module).
 
 * media/javascript - application/javascript, q=0.9: This represents utilizing JavaScript constructs
 like native Date objects, NaN, Infinite, etc. to extend JSON
@@ -270,14 +281,16 @@ for the content negotiation process. To create a new media type handler, use the
 This constructor takes an object argument with four properties:
 
 * mediaType - The name of the media type.
-* quality - A numeric value indicating the quality of the media type (generally a number from 0 - 1).
-* serialize - A function that is called to serialize the data (JavaScript objects or arrays) to string output for the response.
-* deserialize - A function that is called to deserialize the request input data to JavaScript objects or arrays.
+* getQuality(object) - A function that returns a numeric value indicating the quality of the media type (generally a number from 0 - 1).
+* serialize(object, parameters, request, response) - A function that is called to serialize the data (JavaScript objects or arrays) to string output for the response.
+* deserialize(inputStream, request) - A function that is called to deserialize the request input data to JavaScript objects or arrays.
+
+Make sure you include your media module in your top level app module so it is executed.
 
 Paging/Range Requests
 -------------------
 
-Pintura can handle requests for "pages" of data, query results with start and ending
+Pintura can handle requests for "pages" of data, providing query results with start and ending
 index limits, through Range headers. To request items 10 through 19 of a query,
 include a Range header:
 
@@ -285,7 +298,10 @@ include a Range header:
     Range: items=10-19
 
 The server will return a Content-Range header indicating the range returned and total
-count of the results. 
+count of the results:
+
+	HTTP/1.1 206 Partial Content
+	Content-Range: items 10-19/122
 
 Bulk Updates and Comet
 ================
@@ -443,7 +459,7 @@ we could add JsonP support (for cross-domain requests) with the xsite middleware
 
 	newApp = require("pintura/jsgi/xsite").JsonP(app);
 
-The top-level pintura module applies a set of 16 middleware components to create a JSGI
+The top-level pintura module, by default, applies a set of 16 middleware components to create a JSGI
 application providing a robust web framework. An introduction to the Pintura middleware
 can be found [here](http://www.sitepen.com/blog/2010/03/04/pintura-jsgi-modules/).
 By default you don't need to directly
@@ -666,19 +682,20 @@ Below are the top-level modules that are available in Pintura:
 
 This module provides the default stack of Pintura middleware and an interface for 
 configuring it. It registers the default set of media types. This module is the main interface
-for implementing access to the data model.
+for implementing access to the data model, and provides several important properties:
 
- 
- 
 ### app
 
 This is a JSGI application composed of the full stack of middleware that will expose
-your data models through RESTful requests.
+your data models through RESTful requests. You can use this if you want to resuse the
+stack and add more middleware components.
 
 ### config
 
 This takes the Pintura configuration object. Properties on this object can be overriden
-to provide customize the behavior.
+to customize the behavior. The most important property on this object is the getDataModel,
+which has been described above as the means for defining which data models are exposed
+through the HTTP interface.
 
 ### addConnection(connection)
 

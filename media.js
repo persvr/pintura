@@ -142,7 +142,7 @@ exports.saveFile = function(file, directives){
 	}
 	return when(exports.getFileModel().put(file, directives), function(result){
 		var id = result.id || result;
-		result = {id: id};
+		result = {id: id, getMetadata: result.getMetadata};
 		Object.defineProperty(result, "getMetadata",{
 			value: function(){
 				return metadata;

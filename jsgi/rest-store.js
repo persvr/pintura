@@ -73,7 +73,9 @@ exports.RestStore = function(options){
 						};
 					}
 				}
-				metadata.id = decodeURIComponent(path);
+				if(path){
+					metadata.id = decodeURIComponent(path);
+				}
 	
 				if(!METHOD_HAS_BODY[method]){
 					if(method === "get" && (!path || path.charAt(path.length-1) == '/')){

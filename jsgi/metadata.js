@@ -9,16 +9,20 @@ exports.Metadata = function(nextApp){
 		// first add metadata to the incoming request
 		if(request.method !== "GET"){
 			if(input.__proto__ === Object.prototype){
-				input.__proto__ = {
-					getMetadata: function(){
+				Object.defineProperty(input.__proto__ = {}, 'getMetadata', {
+					value: function(){
 						return request.headers;
-					}
-				};
+					},
+					enumerable: false
+				});
 			}
 			if(input.__proto__ === Array.prototype){
-				(input.__proto__ = []).getMetadata = function(){
+				Object.defineProperty(input.__proto__ = [], 'getMetadata', {
+					value: function(){
 						return request.headers;
-					};
+					},
+					enumerable: false
+				});
 			}
 		}
 		return when(nextApp(request), function(response){

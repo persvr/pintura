@@ -140,6 +140,7 @@ exports.saveFile = function(file, directives){
 			metadata[i] = file[i];
 		}
 	}
+	file['content-type'] = file['content-type'] || file.type;
 	return when(exports.getFileModel().put(file, directives), function(result){
 		var id = result.id || result;
 		result = {id: id, getMetadata: result.getMetadata};

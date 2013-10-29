@@ -68,7 +68,7 @@ Media.optimumMedia = function(source, acceptTypeHeader){
 								// loadFile could return a promise
 								forEach: function(each){
 									return when(exports.loadFile(alternate), function(file){
-										file.forEach(each);
+										return file.forEach(each);
 									});
 								}
 							};

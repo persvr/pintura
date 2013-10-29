@@ -21,4 +21,5 @@ exports.start = function(jsgiApp){
 	});
 	
 	console.log("Listening on port " + port);
+	return server;
 };

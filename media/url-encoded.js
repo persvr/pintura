@@ -34,8 +34,8 @@ Media({
 			var props = {};
 			for(var i = 0; i < parts.length; i++){
 				var nameValue = parts[i].split("=");
-				var value = decodeURIComponent(nameValue[1]);
-				var key = decodeURIComponent(nameValue[0]);
+				var value = decodeURIComponent(nameValue[1].replace(/\+/g, ' '));
+				var key = decodeURIComponent(nameValue[0].replace(/\+/g, ' '));
 				value = stringToValue(value);
 				// N.B. multiple same-named keys should be stored as an array
 				if (props[key] !== undefined) {

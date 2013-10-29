@@ -1,6 +1,6 @@
 {
   "name": "pintura",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Kris Zyp",
   "email": "kriszyp@gmail.com",
   "description": "JSGI-based RESTful JSON/JavaScript server",

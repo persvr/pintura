@@ -10,8 +10,7 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 	Response = require("./response").Response,
 	settings = require("perstore/util/settings");
 
-function dir(){var sys=require('sys');for(var i=0,l=arguments.length;i<l;i++)sys.debug(sys.inspect(arguments[i]));}
-exports.RestStore = function(options){
+module.exports = function(options){
 	return function(request){
 // N.B. in async, options.getDataModel() can be a promise, so have to wait for it
 		return when(options.getDataModel(request), function(model){
@@ -163,3 +162,5 @@ exports.RestStore = function(options){
 		});
 	};
 };
+// back-compat property access
+module.exports.RestStore = module.exports;

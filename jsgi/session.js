@@ -11,7 +11,7 @@ var promiseModule = require("promised-io/promise"),
 	sessionModel,
 	sha1 = require("../util/sha1").hex_sha1;
 
-exports.Session = function(options, nextApp){
+exports = module.exports = function(options, nextApp){
 	// assign defaults
 	if (!options) options = {};
 	if(options.model){
@@ -67,7 +67,8 @@ exports.Session = function(options, nextApp){
 		});
 	};
 };
-
+// back-compat property reference
+exports.Session = exports;
 // gets a session, creating a new one if necessary
 exports.forceSession = function(request, expires){
 	var session = request.session;

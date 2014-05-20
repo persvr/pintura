@@ -2,7 +2,7 @@
  * Applies metadata headers if the responseValue includes a getMetadata function
  */
 var when = require("promised-io/promise").when;
-exports.Metadata = function(nextApp){
+module.exports = function(nextApp){
 	return function(request){
 		var metadata;
 		var input = request.body || '';
@@ -53,7 +53,9 @@ exports.Metadata = function(nextApp){
 			return response;
 		});
 	};
-}
+};
+// back-compat property access
+module.exports.Metadata = module.exports;
 
 /*
 		var lastModified = callIfPossible(store, "getLastModified", value);

@@ -467,12 +467,46 @@ manipulate these JSGI modules unless you want to customize or alter the middlewa
 stack. The pintura module provides all these middleware components with a default working 
 setup that be immediately used without any knowledge of the middleware components
 described below. However, understanding the middleware modules can be important
-in understanding the full capabilities of Pintura.
+in understanding the full capabilities of Pintura, and for reconfiguring the middleware.
+
+Once you have defined a JSGI app, you can start your server with that app like:
+
+	require("pintura/start-node").start(app);
 
 The middleware modules in Pintura 
 are found in the "jsgi" folder. Most of these modules directly a function that can be
 used as the middleware function, and typically take configuration information as the
 first parameter and the next application as the second. Below are the syntax and description of these modules:
+
+## configure
+
+The Pintura middleware stack is defined by using the `configure` module. This is a function
+that takes an array of middleware definitions and creates the stack for you. Once the middleware
+stack has been created, you can also modify the stack, using standard array methods. For example,
+to create a stack of middleware, we could write:
+
+	require('pintura/jsgi/configure');
+	configuredApp = configure([
+			{ // we can define middleware by referencing the module
+				module: 'pintura/jsgi/auth',
+				// and providing a config
+				config: security
+			},
+			'pintura/jsgi/csrf' // or just use a module id directly
+		]);
+
+Each middleware entry in the stack can be defined as one of these:
+
+* An object with a module id in the `module` property, or a factory function in the `factory` property. You can optionally include a `config` property if the middleware takes a config in its arguments.
+* A plain module id.
+* A factory function.
+
+The return app will then have standard array methods available for modifying the stack. Any changes to the stack will cause it automatically rebuild itself. In addition, there are several extra methods:
+* get(id) - Get the configuration for a middleware by the module's last segment (in the case of 'pintura/jsgi/csrf', the id would 'csrf'), or the function name.
+* set(id, config) - Update the configuration of one of the middleware.
+* delete(id) - Remove a middleware component from the stack.
+
+The `indexOf` and `lastIndexOf` methods also support a string id as the argument, in which case it will search for a config with that id.
 
 ## auth
 

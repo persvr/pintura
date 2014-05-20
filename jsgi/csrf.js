@@ -5,8 +5,9 @@
 var CSRFDetect = function(customHeader, nextApp){
 	if(typeof customHeader == "function"){
 		nextApp = customHeader;
+		// default to this common header
+		customHeader = "x-requested-with";
 	}
-	customHeader = customHeader || "x-requested-with";
 	return function(request){
 		var headers = request.headers;
 		if(!(headers[customHeader] || /application\/j/.test(headers.accept) ||

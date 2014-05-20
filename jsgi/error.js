@@ -9,7 +9,7 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 	print = require("promised-io/process").print,
 	when = require("promised-io/promise").when;
 
-exports.ErrorHandler = function(nextApp){
+exports = module.exports = function(nextApp){
 	return function(request){
 		try{
 			return when(nextApp(request), function(response){
@@ -73,3 +73,5 @@ exports.ErrorHandler = function(nextApp){
 		}
 	};
 };
+
+exports.ErrorHandler = exports;

@@ -71,15 +71,14 @@ of exposing that model through an HTTP/REST API. A simple example of a model is:
         }
     }); 
 
-We can then expose this data model through Pintura's HTTP REST interface by implementing 
-the getDataModel function on the pintura module. This function is called for each HTTP
-request:
+We can then expose this data model through Pintura's HTTP REST by registering our
+models through the `pintura/jsgi/access` module. The module description contains
+more information on registering modules for different groups and users,
+but we can easily just register our model for use for everyone:
 
-	require("pintura/pintura").getDataModel = function(request){
-		return {
-			Product: Product
-		};
-	};
+	require("pintura/jsgi/access").registerModels({
+		Product: Product
+	});
 
 Our data model will then be available at the path of /Product/ such that we can make
 HTTP requests like GET /Product/2.
@@ -132,7 +131,8 @@ is [described in this article](http://www.sitepen.com/blog/2010/03/08/object-cap
 Facets are used to define the different levels of access for models. Pintura's security
 configuration object can then be configured to define how users are authenticated
 and which facets or access levels each user is given. The security configuration object
-is available at require("pintura/pintura").config.security. The primary functions
+is available at require("pintura/pintura").config.security, and can be configured
+by calling the `configure` method with object properties to be assigned. The primary functions
 that can be overriden or used are:
 
 * authenticate(username, password) -  The authenticate method
@@ -150,47 +150,92 @@ and facet for access to the user model (for unauthenticated users).
 For example, we could choose to store passwords in plaintext by changing the
 encryptPassword method to a return the password unchanged:
 
-	require("pintura/pintura").config.security.encryptPassword = function(username, password){
-		return password;
-	};
+	require("pintura/pintura").configure({
+		security: {
+			encryptPassword: function(username, password){
+				return password;
+			}
+		}
+	});
 
 ## Access After Authentication
 
-Once authentication is established, we could then use the user's authentication state to restrict or allow access to different
-parts of the application data model. For example, we could check to see if a user is
-logged to determine if we should provide access to the "Secret" data: 
+Once authentication is established, access to the data is determined by group membership.
+We can define group membership on the security object as well. The security object
+has several methods that are used to compute the groups for a user, and which models
+to expose based on these groups.
 
-	var publicModel = {
-		Product: Product
-	};
-	var authorizedModel = {
-		Product: Product,
-		Secret: SecretModel
-	};
-	require("pintura/pintura").getDataModel = function(request){
-		var user = request.remoteUser;
-		if(user){
-			return authorizedModel;
+The simplest way to define access to models is to define the groups for users on the
+security object's `groupsUsers`. We can do this be assigning groups to `groupsUsers`
+object by properties with the group name and a value of an array of the included users:
+
+	var pintura = require("pintura/pintura");
+	pintura.configure({
+		security: {
+			groupsUsers: {
+				// define john to be the only admin
+				admin: ['john'],
+				// define all users to be in the common group
+				common: ['*'],
+				// define unauthenticated users to be in the public group
+				public: [null]
+			}
 		}
-		return publicModel;
-	};
+	});
+
+We could then register our data models with group information associated with it. We
+use the registerModels function to accomplish this. This can defined with an object where
+properties define the model by name, where each property value can be a model, a model
+with the groups allowed, or an array of models with groups. This is best illustrated
+by an example:
+
+	pintura.registerModels({
+		// The User model is exposed (though /User/), regardless of which user/group
+		User: User,
+		// Expose the Product model, dependent on the group
+		Product: [
+			{
+				// The main (unrestricted) Product model, for anyone in the admin group
+				model: Product,
+				groups: ['admin']
+			},
+			{
+				// The public (restricted) Product facet, for those in the user or public group
+				model: PublicProduct,
+				groups: ['user', 'public']
+			}
+		],
+	}, {
+		// define a set of models to be exposed for the admin groups
+		groups: ['admin'],
+		models: {
+			// we could define multiple models (that are available to the admin),
+			// but here we are just defining the File model to be exposed.
+			File: File
+		}
+	});
+
 
 We could also potentially have a data model that is readonly for some users and 
-editable for others. In the example above, we could specify that the Product table
-is readonly for users that are not logged in:
+editable for others. In the example above, we had specified Product table
+to be readonly for users that do not have admin access, we can create this read-only
+facet using the Restrictive facet constructor:
 
 	var Restrictive = require("perstore/facet").Restrictive;
-	var publicModel = {
-		// the Product table is restricted to readonly for public access 
-		Product: Restrictive(Product)
-	};
-	var authorizedModel = {
-		// the Product table is unrestricted here for authorized users 
-		Product: Product,
-		Secret: SecretModel
-	};
-	// assign the data model based on authentication as above
-	
+	var PublicProduct = Restrictive(Product);
+
+The security object also includes the following methods and properties that can be overriden or used to
+provide customized determination of group membership or access to data models:
+
+* groupsUsers - This is the object that defines the users in each group, as described above.
+* getGroupsForUser(user) - This should return an array of groups, for which the user
+has membership.
+* getModelForUser(user) - This should return the specific set of data models for the given user.
+This can be overriden to define a custom method for determining the data model.
+
+In addition, you can also alternately define a `getDataModel(request)` method on the pintura
+module object, to determine the data model.
+
 Error Handling
 ===========
 
@@ -508,9 +553,23 @@ The return app will then have standard array methods available for modifying the
 
 The `indexOf` and `lastIndexOf` methods also support a string id as the argument, in which case it will search for a config with that id.
 
+## access
+
+	{
+		module: 'pintura/jsgi/access',
+		config: security
+	}
+
+The access module provides access to the data models, based on the group membership of the currently
+authenticated user. The group membership is typically defined on the security object, which is
+then used by access module to calculate the data models available for that user.
+
 ## auth
 
-	app = require('pintura/jsgi/auth')(security, nextApp);
+	{
+		module: 'pintura/jsgi/auth',
+		config: security
+	}
 
 The auth module handles HTTP authorization, performing the HTTP request side of user 
 authentication and calling the security module to perform the authentication and determine the authorization of
@@ -521,7 +580,10 @@ next app as the second argument.
 
 ## rest-store
 
-	app = require('pintura/jsgi/rest-store')(config);
+	{
+		module: 'pintura/jsgi/rest-store',
+		config: config
+	}
 
 This module delegates the HTTP REST requests to the appropriate data model. This
 component will call the method on the model corresponding the request method name 

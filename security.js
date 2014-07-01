@@ -8,7 +8,8 @@ var AccessError = require("perstore/errors").AccessError,
 	getCurrentSession = require("./jsgi/session").getCurrentSession,
 	Restrictive = require("perstore/facet").Restrictive,
 	sha1 = require("./util/sha1").b64_sha1,
-	settings = require("perstore/util/settings");
+	settings = require("perstore/util/settings"),
+	modelModule = require("perstore/model");
 
 try{
 	var uuid = require("uuid");
@@ -49,7 +50,9 @@ exports.DefaultSecurity = function(){
 
 	var userModel;
 	var admins = settings.security && settings.security.admins;
+	var groupToModels = {};
 	var security = {
+		// authentication methods:
 		encryptPassword: function(username, password){
 			return password && sha1(password);
 		},
@@ -113,6 +116,85 @@ exports.DefaultSecurity = function(){
 		},
 		setUserModel: function(value){
 			userModel = value;
+		},
+
+		// access methods:
+		groupsUsers: {
+			user: ['*'],
+			public: [null]
+		},
+		getGroupsForUser: function(user){
+			var groupsUsers = this.groupsUsers;
+			var groupsForUser = [];
+			// at some point we may want to convert this to an array for faster access
+			for(var groupName in groupsUsers){
+				var users = groupsUsers[groupName];
+				if(users.indexOf(user) > - 1 || users.indexOf('*') > - 1){
+					// the user is in this group
+					groupsForUser.push(groupName);
+				}
+			}
+			return groupsForUser;
+		},
+		modelForUsers: {},
+		getModelForUser: function(user){
+			if(this.modelForUsers[user]){
+				// check the cache
+				return this.modelForUsers[user];
+			}
+			var groups = this.getGroupsForUser(user).concat(['_default']);
+			var model = {};
+			groups.forEach(function(group){
+				var groupModel = groupToModels[group];
+				for(var key in groupModel){
+					if(!model[key] || !(model[key].quality > groupModel[key])){
+						model[key] = groupModel[key];
+					}
+				}
+			});
+
+			this.modelForUsers[user] = model;
+			modelModule.initializeRoot(model);
+			return model;
+		},
+		registerModels: function(){
+			var groups;
+			processItem([].slice.call(arguments));
+			function processItem(item, key){
+				if(item instanceof Array){
+					// process each item in an array
+					item.forEach(function(item){
+						processItem(item, key);
+					});
+				}else if(item && item.groups && typeof item === 'object'){
+					// define the groups and recurse
+					groups = item.groups;
+					if(item.model){
+						if(typeof item.model !== 'function'){
+							throw new Error('Model in ' + key + ' does not appear to be a valid model constructor' + item.model);
+						}
+					}else if(!item.models){
+						throw new Error('No valid model provided for ' + key + ' with groups ' + groups);
+					}
+					processItem(item.models || item.model, key);
+					groups = null;
+				}else if(typeof item === 'function'){
+					// a model itself, add the definition
+					if(!key){
+						throw new Error('No key defined for model');
+					}
+					(groups || item.groups || ['_default']).forEach(function(group){
+						(groupToModels[group] || (groupToModels[group] = {}))[key] = item;
+					});
+				}else if(item && typeof item === 'object'){
+					// an object hash, process each as a key
+					for(key in item){
+						processItem(item[key], key);
+					}
+				}else{
+					throw new Error('An invalid value encountered in model registration ' + item + ' for groups ' + groups + ' for name ' + key);
+				}
+			}
 		}
 	};
 	exports.userSchema.authenticate = authenticate;

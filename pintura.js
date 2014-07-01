@@ -15,6 +15,7 @@ require('./media/plain');
 require('./media/message/json');
 
 var configure = require('./jsgi/configure');
+var deepCopy = require('perstore/util/copy').deepCopy;
 var config = exports.config = {
 	mediaSelector: require('./media').Media.optimumMedia,
 	database: require('perstore/stores'),
@@ -22,13 +23,25 @@ var config = exports.config = {
 	responseCache: require('perstore/store/memory').Memory({path: 'response'}), //require('perstore/store/filesystem').FileSystem('response', {defaultExtension: 'cache',dataFolder: 'cache' }),
 	serverName: 'Pintura',
 	customRoutes: [],
-	getDataModel: function(request){ 
+	groups: {
+		public: [null],
+		user: '*',
+		admin: ['admin'],
+	},
+	getDataModel: function(request){
 		return exports.getDataModel(request);
 	}
 };
-exports.getDataModel = function(){ 
-	throw new Error('You must assign a getDataModel method to the pintura config object in order to expose data');
+exports.configure = function(newConfig){
+	// copy new configuration options into the config object
+	deepCopy(newConfig, config);
+}
+exports.getDataModel = function(request){
+	// this is a simple default model
+	return request.dataModel;
 };
+exports.registerModels = config.security.registerModels;
+
 exports.app = configure([
 		// This is the set of JSGI middleware and appliance that comprises the Pintura
 		// request handling framework.
@@ -55,6 +68,8 @@ exports.app = configure([
 		{module: './session', config: {}},
 		// Do authentication
 		{module: './auth', config: config.security},
+		// Determine access to data models
+		{module: './access', config: config.security},
 		// Handle request conneg, converting from byte representations to JS objects
 		{factory: require('./jsgi/media').Deserialize, config: config.mediaSelector},
 		// Non-REST custom handlers

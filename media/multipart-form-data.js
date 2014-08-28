@@ -41,7 +41,7 @@ var parseMultipart = typeof process == "undefined" ?
 	require("jsgi-node/jsgi/node").Node);
 	
 
-Media({
+return Media({
 	mediaType:"multipart/form-data",
 	getQuality: function(object){
 		return 0.2;
@@ -61,7 +61,9 @@ Media({
 			"content-type": "multipart/form-data; boundary=" + boundary
 		}
 	},
+	autoType: true,
 	deserialize: function(inputStream, parameters, request){
+		var autoType = this.autoType;
     	return when(parseMultipart(request), function(form){
     		var files = [];
     		var fileKeys = [];
@@ -72,7 +74,7 @@ Media({
 					fileKeys.push(i);
 				}
 				else{
-					form[i] = stringToValue(value);
+					form[i] = autoType ? stringToValue(value) : value;
 				}
 			}
 			return when(all(files), function(files){

@@ -41,7 +41,7 @@ var parseMultipart = typeof process == "undefined" ?
 	require("jsgi-node/jsgi/node").Node);
 	
 
-return Media({
+module.exports = Media({
 	mediaType:"multipart/form-data",
 	getQuality: function(object){
 		return 0.2;

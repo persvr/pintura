@@ -4,15 +4,17 @@
   "author": "Kris Zyp",
   "email": "kriszyp@gmail.com",
   "description": "JSGI-based RESTful JSON/JavaScript server",
-  "contributors": ["Vladimir Dronnikov <dronnikov@gmail.com>"],
+  "contributors": [
+    "Vladimir Dronnikov <dronnikov@gmail.com>"
+  ],
   "keywords": [
     "rest",
     "database",
     "web",
     "json",
     "persevere"
-  ],  
-  "mappings":{
+  ],
+  "mappings": {
     "perstore": "http://github.com/kriszyp/perstore/zipball/v0.2.4",
     "templify": "http://github.com/dmachi/templify/zipball/master",
     "promised-io": "jar:http://github.com/kriszyp/promised-io/zipball/v0.2.3!/",
@@ -35,36 +37,37 @@
     }
   },
   "licenses": [
-     {
-         "type": "AFLv2.1",
-         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
-     },
-     {
-         "type": "BSD",
-         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
-     }
+    {
+      "type": "AFLv2.1",
+      "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+    },
+    {
+      "type": "BSD",
+      "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+    }
   ],
   "repository": {
-    "type":"git",
-    "url":"http://github.com/persvr/pintura"
+    "type": "git",
+    "url": "http://github.com/persvr/pintura"
   },
   "directories": {
     "lib": "."
   },
   "maintainers": [
-  	{
-  		"name": "Kris Zyp",
-  		"email": "kriszyp@gmail.com"
-  	}
+    {
+      "name": "Kris Zyp",
+      "email": "kriszyp@gmail.com"
+    }
   ],
-  "dependencies":{
-    "tunguska": ">=0.3.0",
-    "rql": ">=0.3.1",
+  "dependencies": {
+    "formidable": ">=1.0.0",
+    "jsgi-node": ">=0.2.5",
     "perstore": ">=0.3.0",
     "promised-io": ">=0.3.0",
-    "formidable": ">=1.0.0",
+    "rql": ">=0.3.1",
     "templify": ">=0.9.0",
-    "jsgi-node": ">=0.2.5"
+    "tunguska": ">=0.3.0",
+    "ws": "^0.4.32"
   },
   "devDependencies": {
     "patr": ">=0.2.6"

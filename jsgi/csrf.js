@@ -12,6 +12,7 @@ var CSRFDetect = function(customHeader, nextApp){
 		var headers = request.headers;
 		if(!(headers[customHeader] || /application\/j/.test(headers.accept) ||
 			(request.method == "POST" && headers.referer && headers.referer.indexOf(headers.host + '/') > 0) ||
+			(headers.stream && headers.origin && headers.origin.indexOf(headers.host) > 0) ||
 			(request.method != "GET" && request.method != "POST"))){
 			request.crossSiteForgeable = true;
 		}

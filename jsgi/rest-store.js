@@ -12,6 +12,7 @@ var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 
 module.exports = function(options){
 	return function(request){
+// N.B. in async, options.getDataModel() can be a promise, so have to wait for it
 		return when(options.getDataModel(request), function(model){
 			var path = request.pathInfo.substring(1);
 			var scriptName = request.scriptName;

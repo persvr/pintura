@@ -14,7 +14,7 @@ var when = require('promised-io/promise').when,
 var routes = [];
 
 //function dir(){var sys=require('sys');for(var i=0,l=arguments.length;i<l;i++)sys.debug(sys.inspect(arguments[i]));}
-exports = module.exports = function(customRoutes, nextApp){
+exports.Routes = function(customRoutes, nextApp){
 	// append custom routes
 	for (var i = 0, l = customRoutes.length; i < l; ++i) {
 		declare(customRoutes[i]);
@@ -57,8 +57,7 @@ exports = module.exports = function(customRoutes, nextApp){
 		return nextApp(request);
 	};
 };
-// back-compat property access
-exports.Routes = exports;
+
 function declare(method, regexp, handler, args){
 	if (typeof regexp === 'string') {
 		var named_param_regex = /[\/\.]:(\w+)/g;

@@ -5,7 +5,7 @@
  * setting window.location to download data).
  */ 
 var httpParamRegex = /^http[_-]/;
-exports = module.exports = function(nextApp){
+exports.HttpParams = function(nextApp){
 	return function(request){
 		var parts = request.queryString.split("&");
 		
@@ -33,5 +33,3 @@ exports = module.exports = function(nextApp){
 		return nextApp(request);
 	};
 };
-// back-compat property reference
-exports.HttpParams = exports;

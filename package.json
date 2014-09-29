@@ -1,6 +1,6 @@
 {
   "name": "pintura",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "author": "Kris Zyp",
   "email": "kriszyp@gmail.com",
   "description": "JSGI-based RESTful JSON/JavaScript server",
@@ -61,7 +61,7 @@
   ],
   "dependencies": {
     "formidable": ">=1.0.0",
-    "jsgi-node": ">=0.3.2",
+    "jsgi-node": ">=0.3.3",
     "perstore": ">=0.3.0",
     "promised-io": ">=0.3.0",
     "rql": ">=0.3.1",

@@ -46,6 +46,7 @@ module.exports = Media({
 						responses.push(response);
 						when(response, function(response){
 							response.pathInfo = pathInfo;
+							response.id = message.id;
 							if(response.body && typeof response.body.observe === "function"){
 								clientConnection.expectMore = true;
 								response.body.observe(function(message){
@@ -77,7 +78,7 @@ module.exports = Media({
 				body.forEach(function(value){
 					clientConnection.push({
 						from: value.pathInfo,
-						id: request.id,
+						id: value.id,
 						error: value.status >= 400 ? value.status : undefined,
 						body: value.body
 					});

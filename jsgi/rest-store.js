@@ -21,7 +21,7 @@ module.exports = function(options){
 				metadata[i] = headers[i];
 			}
 			metadata.request = request;
-	
+
 			var responseValue;
 			var status = 200;
 			var headers = {
@@ -74,7 +74,7 @@ module.exports = function(options){
 				if(path){
 					metadata.id = decodeURIComponent(path);
 				}
-	
+
 				if(!METHOD_HAS_BODY[method]){
 					if(method === "get" && (!path || path.charAt(path.length-1) == '/')){
 						var queryString = request.queryString.replace(/\?.*/,'');
@@ -141,7 +141,7 @@ module.exports = function(options){
 							status = 201;
 							headers.location = headers["content-location"]; // maybe it should come from transaction.generatedId?
 						}
-					});
+					}, ignore); // prevent an unhandled rejection being thrown.  the return value below will propagate errors
 				}
 			}
 			else{
@@ -161,5 +161,8 @@ module.exports = function(options){
 		});
 	};
 };
+
+function ignore() {}
+
 // back-compat property access
 module.exports.RestStore = module.exports;

@@ -79,6 +79,7 @@ module.exports = Media({
 					clientConnection.push({
 						from: value.pathInfo,
 						id: value.id,
+						metadata: value.headers,
 						error: value.status >= 400 ? value.status : undefined,
 						body: value.body
 					});

@@ -113,7 +113,7 @@ module.exports = function(options){
 								return responseValue && when(responseValue.totalCount, function(count){
 									delete responseValue.totalCount;
 									var end = start + (responseValue.length || 0) - 1;
-									headers["content-range"] = "items " + start + '-' + end + '/' + (count || '*');
+									headers["content-range"] = "items " + start + '-' + end + '/' + (count || count === 0 ? count : '*');
 									status = (start === 0 && count -1 === end) ? 200 : 206;
 									return responseValue;
 								});

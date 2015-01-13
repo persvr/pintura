@@ -81,7 +81,8 @@ module.exports = Media({
 						id: value.id,
 						metadata: value.headers,
 						error: value.status >= 400 ? value.status : undefined,
-						body: value.body
+						body: value.body,
+						status: value.status
 					});
 				});
 			}else{

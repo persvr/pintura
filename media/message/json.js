@@ -49,7 +49,8 @@ module.exports = Media({
 							if(response.body && typeof response.body.observe === "function"){
 								clientConnection.expectMore = true;
 								response.body.observe(function(message){
-									message.from = message.channel;
+									message.from = pathInfo;
+									message.id = request.id;
 									clientConnection.send(message);
 								});
 							}

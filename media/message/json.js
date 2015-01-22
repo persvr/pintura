@@ -32,6 +32,15 @@ module.exports = Media({
 					var responses = [];
 					var clientConnection = getClientConnection(request);
 					body.forEach(function(message){
+						if (!message) {
+							return {
+								status: clientConnection.expectMore ? 202 : 200,
+								headers: {},
+								messages: true,
+								body: []
+							};
+						}
+
 						message.__proto__ = request;
 						if(!("to" in message)){
 							message.to = "";

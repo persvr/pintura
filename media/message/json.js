@@ -32,17 +32,30 @@ module.exports = Media({
 					var responses = [];
 					var clientConnection = getClientConnection(request);
 					body.forEach(function(message){
-						message.__proto__ = request;
-						if(!("to" in message)){
-							message.to = "";
+						var response;
+
+						if (!message) {
+							response = {
+								headers: {},
+								status: 400,
+								body: []
+							};
+							message = {};
 						}
-						var pathInfo = message.to.charAt(0) === '/' ? message.to : request.pathInfo.substring(0, request.pathInfo.lastIndexOf('/') + 1) + message.to;
-						while(lastPath !== pathInfo){
-							var lastPath = pathInfo;
-							pathInfo = pathInfo.replace(/\/[^\/]*\/\.\.\//,'/');
+						else {
+							message.__proto__ = request;
+							if(!("to" in message)){
+								message.to = "";
+							}
+							var pathInfo = message.to.charAt(0) === '/' ? message.to : request.pathInfo.substring(0, request.pathInfo.lastIndexOf('/') + 1) + message.to;
+							while(lastPath !== pathInfo){
+								var lastPath = pathInfo;
+								pathInfo = pathInfo.replace(/\/[^\/]*\/\.\.\//,'/');
+							}
+							message.pathInfo = pathInfo;
+							response = nextApp(message);
 						}
-						message.pathInfo = pathInfo;
-						var response = nextApp(message);
+
 						responses.push(response);
 						when(response, function(response){
 							response.pathInfo = pathInfo;

@@ -21,7 +21,10 @@ Media.optimumMedia = function(source, acceptTypeHeader){
 	for(var i = 0;i < acceptTypes.length; i++){
 		var acceptType = acceptTypes[i];
 		var parts = acceptType.split(/\s*;\s*/);
-		var type = parts[0];
+		var mediaRange = parts[0];
+		var typePieces = mediaRange.split(/\s*\/\s*/);
+		var type = typePieces[0];
+		var subtype = typePieces[1];
 		var clientQuality = 1;
 		var parameters = {};
 		for(var j = 1; j < parts.length; j++){
@@ -31,24 +34,28 @@ Media.optimumMedia = function(source, acceptTypeHeader){
 		}
 		clientQuality = +(parameters.q || 1);
 
-		if("*/*" == type){
-			for(var instanceType in Media.instances){
-				checkMedia(Media.instances[instanceType]);
-			}
-			/* for persvr compatibility:
-			for(var i in source){
-				if(i.substring(0,15) == "representation:"){
-					checkMedia(source[i]);
+		var instanceType;
+		if(subtype === '*'){
+			if(type === '*'){
+				for(instanceType in Media.instances){
+					checkMedia(Media.instances[instanceType]);
 				}
-			}*/
+			}
+			else{
+				for(instanceType in Media.instances){
+					if(instanceType.indexOf(type + '/') == 0){
+						checkMedia(Media.instances[instanceType]);
+					}
+				}
+			}
 		}
 		else{
-			var media = Media.instances[type];
+			var media = Media.instances[mediaRange];
 			if(media){
 				checkMedia(media);
 			}
 			/* for persvr compatibility:
-			media = source && source["representation:" + type];
+			media = source && source["representation:" + mediaRange];
 			if(media){
 				checkMedia(media);
 			}*/
@@ -61,7 +68,7 @@ Media.optimumMedia = function(source, acceptTypeHeader){
 			}
 			alternates.forEach(function(alternate){
 				var mediaType = alternate["content-type"];
-				if("*/*" == type || mediaType == type){;
+				if(type == '*' || (subtype == '*' && mediaType.indexOf(type + '/') == 0) || mediaType == mediaRange){
 					checkMedia({
 						serialize: function(){
 							return {

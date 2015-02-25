@@ -28,11 +28,11 @@ function StreamingSerializer(stringify){
 						write("{}&&");
 					}
 					// progressively stream arrays for better performance and memory
-					write("[")
 					var first = true;
 					var undefined; // make it a fast, closely-scoped lookup
 					return when(object.forEach(function(item){
 						if(first){
+							write("[")
 							first = false;
 						}
 						else{

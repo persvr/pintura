@@ -5,6 +5,7 @@
 var METHOD_HAS_BODY = require("./methods").METHOD_HAS_BODY,
 	DatabaseError = require("perstore/errors").DatabaseError,
 	AccessError = require("perstore/errors").AccessError,
+	AcceptError = require("perstore/errors").AcceptError,
 	MethodNotAllowedError = require("perstore/errors").MethodNotAllowedError,
 	print = require("promised-io/process").print,
 	when = require("promised-io/promise").when;
@@ -48,10 +49,13 @@ exports.ErrorHandler = function(nextApp){
 			}else if(e instanceof DatabaseError){
 				if(e.code == 2){
 					status = 404;
-				}
-				else if(e.code == 3){
+				} else if(e.code == 3){
 					status = 412;
+				} else if(e.code == 4) {
+					status = 409;
 				}
+			}else if(e instanceof AcceptError){
+				status = 406;
 			}else if(e instanceof TypeError){
 				status = 403;
 			}else if(e instanceof RangeError){

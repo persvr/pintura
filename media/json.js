@@ -45,6 +45,9 @@ function StreamingSerializer(stringify){
 							write(stringify(item));
 						}
 					}), function(){
+						if(first){
+							write("[")
+						}
 						write("]");
 					});
 				}else if(object == undefined){

@@ -67,7 +67,7 @@
     "rql": ">=0.3.1",
     "templify": ">=0.9.0",
     "tunguska": ">=0.3.0",
-    "ws": "^0.4.32"
+    "ws": "^7.2.0"
   },
   "devDependencies": {
     "patr": ">=0.2.6"
